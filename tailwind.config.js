@@ -6,7 +6,8 @@ module.exports = {
       colors: {
         primary: "#3d405b",
         secondary: "#005f73",
-        main: "#FFF2E6"
+        main: "#FFF2E6",
+        tabbar: "#2C3E50"
 
     }
     },
