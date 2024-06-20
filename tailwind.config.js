@@ -7,7 +7,7 @@ module.exports = {
         primary: "#3d405b",
         secondary: "#005f73",
         main: "#FFF2E6",
-        tabbar: "#2C3E50"
+        tabbar: "#08080f"
 
     }
     },
