@@ -64,12 +64,12 @@ const TabsLayout = () => {
           options={{
             title: '',
             headerShown: false,
-            tabBarActiveTintColor: '#000000',
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ color, focused }) => (
               <View
-                className='-top-5 h-20 rounded-full'
+                className='-top-5 h-20 rounded-full justify-center items-center border'
                 style={{
-                  backgroundColor: '#FFA500'
+                  backgroundColor: focused ? '#FFFFFF' : '#FFA500',
+                  borderColor: '#08080f',
                 }}
               >
                 {/* <Fontisto/> */}
