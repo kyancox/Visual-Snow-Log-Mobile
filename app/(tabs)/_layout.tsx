@@ -66,14 +66,14 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-                className='-top-5 h-20 rounded-full justify-center items-center border'
+                className='-top-5 h-20 rounded-full justify-center items-center border-4'
                 style={{
                   backgroundColor: focused ? '#FFFFFF' : '#FFA500',
                   borderColor: '#08080f',
                 }}
               >
                 {/* <Fontisto/> */}
-                <MaterialIcons name='add' color={color} size={77} />
+                <MaterialIcons name='add' color={color} size={70} />
               </View>
             )
           }}
