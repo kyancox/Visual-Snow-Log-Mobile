@@ -5,11 +5,10 @@ import Slider from '@react-native-community/slider'
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 
 const SymptomDetails = () => {
-    const [intensity, setIntensity] = useState(0);
+    const [intensity, setIntensity] = useState<number>();
     const [frequency, setFrequency] = useState('');
 
     const [selectedId, setSelectedId] = useState<string | undefined>();
-
     const radioButtons: RadioButtonProps[] = useMemo(() => ([
         {
             id: '1',
@@ -40,7 +39,7 @@ const SymptomDetails = () => {
             <Text className='text-xl font-bold'>Symptom Details:</Text>
 
             <View className='flex flex-row justify-between items-center'>
-                <Text className='text-xl font-semibold'>Intensity:</Text>
+                <Text className='text-xl font-semibold'>Intensity{intensity != 0 && ` (${intensity})`}:</Text>
                 <Slider
                     style={{
                         width: '70%'
