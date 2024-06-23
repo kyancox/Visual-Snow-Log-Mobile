@@ -34,45 +34,16 @@ const SymptomDetails = () => {
         }
     ]), [selectedId]);
 
+    const [triggerList, setTriggerList] = useState([
+        { title: 'Stress', key: 'stress' },
+        { title: 'Fatigue', key: 'fatigue' },
+        { title: 'Lighting', key: 'lighting' },
+        { title: 'Lack of Sleep', key: 'sleep' },
+        { title: 'Weather', key: 'weather' },
+        { title: 'Environment', key: 'environment' }
+    ]);
+    
     const [triggersState, setTriggersState] = useState<{ [key: string]: boolean }>({})
-    const triggers = useMemo(() => [
-        {
-            title: 'Stress',
-            state: triggersState.stress,
-            onPress: () => handleTriggerChange('stress'),
-            key: uuidv4()
-        },
-        {
-            title: 'Fatigue',
-            state: triggersState.fatigue,
-            onPress: () => handleTriggerChange('fatigue'),
-            key: uuidv4()
-        },
-        {
-            title: 'Lighting',
-            state: triggersState.lighting,
-            onPress: () => handleTriggerChange('lighting'),
-            key: uuidv4()
-        },
-        {
-            title: 'Lack of Sleep',
-            state: triggersState.sleep,
-            onPress: () => handleTriggerChange('sleep'),
-            key: uuidv4()
-        },
-        {
-            title: 'Weather',
-            state: triggersState.weather,
-            onPress: () => handleTriggerChange('weather'),
-            key: uuidv4()
-        },
-        {
-            title: 'Environment',
-            state: triggersState.environment,
-            onPress: () => handleTriggerChange('environment'),
-            key: uuidv4()
-        },
-    ], [triggersState]);
 
     const handleTriggerChange = (trigger: string) => {
         setTriggersState(prevState => ({
@@ -81,56 +52,24 @@ const SymptomDetails = () => {
         }));
     };
 
-
-    // const triggers = useMemo(() => [
-    //     { title: 'Stress', onPress: () => handleTriggerChange('stress') },
-    //     { title: 'Fatigue', onPress: () => handleTriggerChange('fatigue') },
-    //     { title: 'Lighting', onPress: () => handleTriggerChange('lighting') },
-    //     { title: 'Lack of Sleep', onPress: () => handleTriggerChange('sleep') },
-    //     { title: 'Weather', onPress: () => handleTriggerChange('weather') },
-    //     { title: 'Environment', onPress: () => handleTriggerChange('environment') },
-    // ].map(item => ({
-    //     ...item,
-    //     key: uuidv4(),
-    //     state: triggersState[item.title.toLowerCase()] || false 
-    // })), [triggersState]);
-
-
     const [customTrigger, setCustomTrigger] = useState('')
 
-    // const handleTriggerChange = (trigger: string) => {
-    //     const key = trigger.toLowerCase()
-    //     setTriggersState(prevState => {
-    //         if (key in prevState) {
-    //             return {
-    //                 ...prevState,
-    //                 [key]: !prevState[key]
-    //             }
-    //         } else {
-    //             return {
-    //                 ...prevState,
-    //                 [key]: true
-    //             }
-    //         }
- 
-    //     })
-    // }
-
-    // const handleTriggerChange = (trigger: string) => {
-    //     const key = trigger.toLowerCase();
-    //     setTriggersState(prevState => ({
-    //         ...prevState,
-    //         [key]: !(key in prevState) || !prevState[key]  // Toggle if exists, set true if new
-    //     }));
-    //     setCustomTrigger('');  // Clear the input after adding
-    // }
-    
-    // // When adding a new trigger from TextInput
-    // const addTrigger = () => {
-    //     if (customTrigger && !(customTrigger.toLowerCase() in triggersState)) {
-    //         handleTriggerChange(customTrigger);
-    //     }
-    // }
+    const addTrigger = () => {
+        const key = customTrigger.toLowerCase();
+        // Check if the trigger with the given key does not already exist in the triggerList
+        if (!triggerList.some(item => item.key === key)) {
+            const newTrigger = {
+                title: customTrigger,
+                key: key
+            };
+            setTriggerList([...triggerList, newTrigger]);  
+            setTriggersState(prevState => ({
+                ...prevState,
+                [key]: true  
+            }));
+            setCustomTrigger('');  
+        }
+    }
 
     return (
         <View>
@@ -162,10 +101,10 @@ const SymptomDetails = () => {
                 <Text className='text-xl font-semibold'>Triggers:</Text>
                 <View className=''>
                     {/* checkbox element */}
-                    {triggers.map((item) => (
-                        <TouchableOpacity key={item.key} className='flex-row justify-start items-center' onPress={item.onPress}>
+                    {triggerList.map((item) => (
+                        <TouchableOpacity key={item.key} className='flex-row justify-start items-center' onPress={() => handleTriggerChange(item.key)}>
                             <CheckBox
-                                value={item.state}
+                                value={triggersState[item.key] || false}
                             />
                             <Text className='m-1'>{item.title}</Text>
                         </TouchableOpacity>
@@ -178,7 +117,7 @@ const SymptomDetails = () => {
                         value={customTrigger}
                         onChangeText={setCustomTrigger}
                     />
-                    {/* <Button title="Add Symptom" color={'#FFA500'} onPress={handleTriggerChange} /> */}
+                    <Button title="Add Trigger" color={'#FFA500'} onPress={addTrigger} />
 
                 </View>
             </View>
