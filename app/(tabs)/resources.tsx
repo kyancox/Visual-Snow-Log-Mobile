@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, router } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const resources = () => {
+const Resources = () => {
 
   interface settingsItemProps {
     icon: any,
@@ -82,4 +82,4 @@ const resources = () => {
   )
 }
 
-export default resources
+export default Resources

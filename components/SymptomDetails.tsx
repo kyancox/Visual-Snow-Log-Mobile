@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Button } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, Button, Platform, KeyboardAvoidingView } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import Slider from '@react-native-community/slider'
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
@@ -6,34 +6,10 @@ import CheckBox from 'expo-checkbox';
 import { v4 as uuidv4 } from 'uuid';
 
 const SymptomDetails = () => {
+    // Intensity 
     const [intensity, setIntensity] = useState<number>(-1);
-    const [frequency, setFrequency] = useState('');
 
-    const [selectedId, setSelectedId] = useState<string | undefined>();
-    const radioButtons: RadioButtonProps[] = useMemo(() => ([
-        {
-            id: '1',
-            label: 'Occasionally',
-            value: 'Occasionally',
-            borderColor: selectedId === '1' ? '#FFA500' : '#000',
-            color: '#FFA500'
-        },
-        {
-            id: '2',
-            label: 'Frequently',
-            value: 'Frequently',
-            borderColor: selectedId === '2' ? '#FFA500' : '#000',
-            color: '#FFA500'
-        },
-        {
-            id: '3',
-            label: 'Constantly',
-            value: 'Constantly',
-            borderColor: selectedId === '3' ? '#FFA500' : '#000',
-            color: '#FFA500'
-        }
-    ]), [selectedId]);
-
+    // Triggers
     const [triggerList, setTriggerList] = useState([
         { title: 'Stress', key: 'stress' },
         { title: 'Fatigue', key: 'fatigue' },
@@ -42,7 +18,7 @@ const SymptomDetails = () => {
         { title: 'Weather', key: 'weather' },
         { title: 'Environment', key: 'environment' }
     ]);
-    
+
     const [triggersState, setTriggersState] = useState<{ [key: string]: boolean }>({})
 
     const handleTriggerChange = (trigger: string) => {
@@ -57,24 +33,89 @@ const SymptomDetails = () => {
     const addTrigger = () => {
         const key = customTrigger.toLowerCase();
         // Check if the trigger with the given key does not already exist in the triggerList
-        if (!triggerList.some(item => item.key === key)) {
+        if (key && !triggerList.some(item => item.key === key)) {
             const newTrigger = {
                 title: customTrigger,
                 key: key
             };
-            setTriggerList([...triggerList, newTrigger]);  
+            setTriggerList([...triggerList, newTrigger]);
             setTriggersState(prevState => ({
                 ...prevState,
-                [key]: true  
+                [key]: true
             }));
-            setCustomTrigger('');  
+            setCustomTrigger('');
         }
     }
 
+    // Frequency 
+    const [frequency, setFrequency] = useState('');
+    const [selectedFreqId, setSelectedFreqId] = useState<string | undefined>();
+    const freqRadioButtons: RadioButtonProps[] = useMemo(() => ([
+        {
+            id: '1',
+            label: 'Occasionally',
+            value: 'Occasionally',
+            borderColor: selectedFreqId === '1' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        },
+        {
+            id: '2',
+            label: 'Frequently',
+            value: 'Frequently',
+            borderColor: selectedFreqId === '2' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        },
+        {
+            id: '3',
+            label: 'Constantly',
+            value: 'Constantly',
+            borderColor: selectedFreqId === '3' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        }
+    ]), [selectedFreqId]);
+
+    // Time of Day
+    const [time, setTime] = useState('')
+    const [selectedTimeId, setSelectedTimeId] = useState<string | undefined>()
+    const timeRadioButtons: RadioButtonProps[] = useMemo(() => ([
+        {
+            id: '1',
+            label: 'Morning',
+            value: 'Morning',
+            borderColor: selectedTimeId === '1' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        },
+        {
+            id: '2',
+            label: 'Afternoon',
+            value: 'Afternoon',
+            borderColor: selectedTimeId === '2' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        },
+        {
+            id: '3',
+            label: 'Evening',
+            value: 'Evening',
+            borderColor: selectedTimeId === '3' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        },
+        {
+            id: '4',
+            label: 'Night',
+            value: 'Night',
+            borderColor: selectedTimeId === '4' ? '#FFA500' : '#000',
+            color: '#FFA500'
+        }
+    ]), [selectedTimeId])
+
+    // Additional Notes
+    const [notes, setNotes] = useState('')
+
     return (
-        <View>
+        <View className=''>
             <Text className='text-xl font-bold'>Symptom Details:</Text>
 
+            {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-semibold'>Intensity{intensity >= 0 && ` (${intensity})`}:</Text>
                 <Slider
@@ -91,27 +132,33 @@ const SymptomDetails = () => {
                 // thumbTintColor="#1EB1FC"
                 />
             </View>
-            <Text>Intensity Level: {intensity}</Text>
+            {/* <Text>Intensity Level: {intensity}</Text> */}
 
+            {/* Duration */}
             <View>
                 <Text className='text-xl font-semibold'>Duration:</Text>
             </View>
 
-            <View className='flex-row justify-between items-center'>
+            {/* Triggers */}
+            <View className='flex-row justify-between items-start'>
                 <Text className='text-xl font-semibold'>Triggers:</Text>
-                <View className=''>
-                    {/* checkbox element */}
-                    {triggerList.map((item) => (
-                        <TouchableOpacity key={item.key} className='flex-row justify-start items-center' onPress={() => handleTriggerChange(item.key)}>
-                            <CheckBox
-                                value={triggersState[item.key] || false}
-                            />
-                            <Text className='m-1'>{item.title}</Text>
-                        </TouchableOpacity>
-                    ))}
-                    <Text> </Text>
-                    {/* add additional trigger element  */}
+                <View className='flex-1'
+                    style={{
+
+                    }}
+                >
+                    <View className='mx-auto'>
+                        {triggerList.map((item) => (
+                            <TouchableOpacity key={item.key} className='flex-row justify-start items-center' onPress={() => handleTriggerChange(item.key)}>
+                                <CheckBox
+                                    value={triggersState[item.key] || false}
+                                />
+                                <Text className='m-1'>{item.title}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
                     <TextInput
+                        multiline
                         className='border rounded shadow p-2 mx-4 flex-1'
                         placeholder="Add custom trigger"
                         value={customTrigger}
@@ -122,25 +169,55 @@ const SymptomDetails = () => {
                 </View>
             </View>
 
-            <View className='flex flex-row justify-between items-start '>
+            {/* Frequency */}
+            <View className='flex flex-row justify-start items-start '>
                 <Text className='text-xl font-semibold'>Frequency:</Text>
                 <RadioGroup
-                    radioButtons={radioButtons}
+                    radioButtons={freqRadioButtons}
                     onPress={(id: string) => {
-                        setSelectedId(id);
-                        const selection: string | undefined = radioButtons.find(rb => rb.id === id)?.value;
+                        setSelectedFreqId(id);
+                        const selection: string | undefined = freqRadioButtons.find(rb => rb.id === id)?.value;
                         if (selection !== undefined) {
                             setFrequency(selection);
                         }
                     }}
-                    selectedId={selectedId}
+                    selectedId={selectedFreqId}
                     containerStyle={{
                         alignItems: 'flex-start'
                     }}
                 />
             </View>
-            <Text>Selected Frequency: {frequency}</Text>
+            {/* <Text>Selected Frequency: {frequency}</Text> */}
 
+            {/* Time of Day */}
+            <View className='flex flex-row justify-between items-start '>
+                <Text className='text-xl font-semibold'>Time of Day:</Text>
+                <RadioGroup
+                    radioButtons={timeRadioButtons}
+                    onPress={(id: string) => {
+                        setSelectedTimeId(id);
+                        const selection: string | undefined = timeRadioButtons.find(rb => rb.id === id)?.value;
+                        if (selection !== undefined) {
+                            setTime(selection);
+                        }
+                    }}
+                    selectedId={selectedTimeId}
+                    containerStyle={{
+                        alignItems: 'flex-start'
+                    }}
+                />
+            </View>
+            {/* <Text>Selected Time: {time}</Text> */}
+
+            {/* Additional Notes */}
+            <Text className='text-xl font-semibold'>Additional Notes:</Text>
+            <TextInput
+                multiline
+                className='border rounded shadow p-2 mx-4 min-w-[20px] items-center'
+                placeholder="Add additional notes about {symptom}"
+                value={notes}
+                onChangeText={setNotes}
+            />
 
         </View>
     )

@@ -1,13 +1,11 @@
-import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import React, { useMemo, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid'; // Import the UUID library
+import { v4 as uuidv4 } from 'uuid';
 
 import SymptomDetails from '@/components/SymptomDetails';
-
-
 
 const Create = () => {
 
@@ -70,101 +68,119 @@ const Create = () => {
     setSymptomsLogged(symptomsLogged.filter(s => s.id !== id));
   };
 
+
   return (
     <SafeAreaView
       className='mx-4'
     >
 
-      <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
-      <ScrollView className=''>
+      {/* <KeyboardAvoidingView
+        behavior='padding'
+      > */}
+
+
+        <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
+        <ScrollView className=''>
 
 
 
-        <View className='flex flex-row justify-between items-center my-2'>
-          <Text className='text-xl font-bold'>
-            Log Title:
-          </Text>
-          <TextInput
-            className='border rounded shadow p-2 ml-4 flex-1'
-            placeholder={getDefaultTitle()}
-            placeholderTextColor="#888"
-            onChangeText={setTitle}
-          />
-        </View>
+          <View className='flex flex-row justify-between items-center my-2'>
+            <Text className='text-xl font-bold'>
+              Log Title:
+            </Text>
+            <TextInput
+              className='border rounded shadow p-2 ml-4 flex-1'
+              placeholder={getDefaultTitle()}
+              placeholderTextColor="#888"
+              onChangeText={setTitle}
+            />
+          </View>
 
-        <View className='flex flex-row justify-between items-center my-1'>
-          <Text className='text-xl font-bold '>
-            Date:
-          </Text>
-          <DateTimePicker
-            className=''
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            display="default"
-            onChange={dateChange}
-          />
-        </View>
-        {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
+          <View className='flex flex-row justify-between items-center my-1'>
+            <Text className='text-xl font-bold '>
+              Date:
+            </Text>
+            <DateTimePicker
+              className=''
+              testID="dateTimePicker"
+              value={date}
+              mode="date"
+              display="default"
+              onChange={dateChange}
+            />
+          </View>
+          {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
 
-        <View className='flex flex-row justify-between items-center my-1'>
-          <Text className='text-xl font-bold '>
-            Time:
-          </Text>
+          <View className='flex flex-row justify-between items-center my-1'>
+            <Text className='text-xl font-bold '>
+              Time:
+            </Text>
 
-          <DateTimePicker
-            className=''
-            testID="timePicker"
-            value={time}
-            mode="time"
-            display="default"
-            onChange={timeChange}
+            <DateTimePicker
+              className=''
+              testID="timePicker"
+              value={time}
+              mode="time"
+              display="default"
+              onChange={timeChange}
 
-          />
-        </View>
-        {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
+            />
+          </View>
+          {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
 
-        <Text className='text-2xl font-bold '>Symptoms: <Text className='text-red-500'>*</Text></Text>
-        <FlatList
-          horizontal={true}
-          data={defaultSymptoms}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleSymptomPress(item)}>
-              <View className='p-4 bg-gray-200 m-2'>
-                <Text>{item.symptom}</Text>
+          <View className=''>
+            <Text className='text-2xl font-bold '>Symptoms: <Text className='text-red-500'>*</Text></Text>
+            <FlatList
+              horizontal={true}
+              data={defaultSymptoms}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleSymptomPress(item)}>
+                  <View className='p-4 bg-gray-200 m-2'>
+                    <Text>{item.symptom}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.id}
+            
+            />
+            <TextInput
+              className='border rounded shadow p-2 mx-4 flex-1'
+              placeholder="Add custom symptom"
+              value={customSymptom}
+              onChangeText={setCustomSymptom}
+            />
+            <Button title="Add Symptom" color={'#FFA500'} onPress={addSymptom} />
+          </View>
+
+          {symptomsLogged.length > 0 && (
+            <>
+              <Text className='text-xl font-bold'>Symptoms Logged:</Text>
+              <View>
+                {symptomsLogged.map((item) => (
+                  <View key={item.id} className='flex-row justify-between items-center'>
+                    <Text className='flex-1 mr-10'>&#8226; {item.symptom}</Text>
+                    <TouchableOpacity onPress={() => handleRemoveSymptom(item.id)}>
+                      <Text className='text-red-500' > Remove </Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
               </View>
-            </TouchableOpacity>
+            </>
           )}
-          keyExtractor={item => item.id}
 
-        />
-        <TextInput
-          className='border rounded shadow p-2 mx-4 flex-1'
-          placeholder="Add custom symptom"
-          value={customSymptom}
-          onChangeText={setCustomSymptom}
-        />
-        <Button title="Add Symptom" onPress={addSymptom} />
+          <SymptomDetails />
 
-        {symptomsLogged.length > 0 && (
-          <>
-            <Text className='text-xl font-bold'>Symptoms Logged:</Text>
-            <View>
-              {symptomsLogged.map((item) => (
-                <View key={item.id} className='flex-row justify-between items-center'>
-                  <Text>&#8226; {item.symptom}</Text>
-                  <TouchableOpacity onPress={() => handleRemoveSymptom(item.id)}>
-                    <Text className='text-red-500' > Remove </Text>
-                  </TouchableOpacity >
-                </View>
-              ))}
-            </View>
-          </>
-        )}
+          <Text>Medication/Treatments</Text>
+          {/* OpenFDA */}
 
-        <SymptomDetails/>
-        
-      </ScrollView>
+          <Text>Other Notes:</Text>
+
+          <Text>Review:</Text>
+
+          <Button title='Submit'/>
+
+        </ScrollView>
+      {/* </KeyboardAvoidingView> */}
     </SafeAreaView >
   )
 }

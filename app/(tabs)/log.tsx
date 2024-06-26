@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlatList } from 'react-native-reanimated/lib/typescript/Animated'
 
-const log = () => {
+const Log = () => {
   return (
     <SafeAreaView>
       <Text>log</Text>
@@ -11,4 +11,4 @@ const log = () => {
   )
 }
 
-export default log
+export default Log

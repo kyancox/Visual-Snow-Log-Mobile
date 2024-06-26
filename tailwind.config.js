@@ -7,7 +7,8 @@ module.exports = {
         primary: "#3d405b",
         secondary: "#005f73",
         main: "#FFF2E6",
-        tabbar: "#08080f"
+        tabbar: "#08080f",
+        projectOrange: '#FFA500'
 
     }
     },
