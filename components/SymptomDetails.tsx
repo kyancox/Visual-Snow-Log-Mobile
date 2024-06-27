@@ -1,11 +1,17 @@
 import { View, Text, TouchableOpacity, TextInput, Button, Platform, KeyboardAvoidingView } from 'react-native'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Slider from '@react-native-community/slider'
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import CheckBox from 'expo-checkbox';
 import { v4 as uuidv4 } from 'uuid';
 
-const SymptomDetails = () => {
+interface SymptomDetailsProps {
+    title: string,
+    onDetailsChange: (details: any) => void,
+    hideDetails: () => void,
+}
+
+const SymptomDetails = ({title, onDetailsChange, hideDetails}: SymptomDetailsProps) => {
     // Intensity 
     const [intensity, setIntensity] = useState<number>(-1);
 
@@ -111,10 +117,27 @@ const SymptomDetails = () => {
     // Additional Notes
     const [notes, setNotes] = useState('')
 
-    return (
-        <View className=''>
-            <Text className='text-xl font-bold'>Symptom Details:</Text>
+    // Update details
 
+    useEffect(() => {
+        const triggers = Object.keys(triggersState).filter(key => triggersState[key]);
+
+        const object: { [key: string]: any } = {};
+        if (intensity > -1) object.Intensity = intensity;
+        if (triggers.length > 0) object.Triggers = triggers;
+        if (frequency) object.Frequency = frequency;
+        if (time) object.Time = time;
+        if (notes) object.Notes = notes;
+
+        onDetailsChange(object);
+    }, [intensity, triggersState, frequency, time, notes]);
+
+    return (
+        <View className='bg-gray-200 m-2'>
+           <View className='flex flex-row justify-between items-center'>
+             <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
+             <Button title='Hide' color={'#FFA500'} onPress={hideDetails}  />
+           </View >
             {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-semibold'>Intensity{intensity >= 0 && ` (${intensity})`}:</Text>
@@ -213,8 +236,8 @@ const SymptomDetails = () => {
             <Text className='text-xl font-semibold'>Additional Notes:</Text>
             <TextInput
                 multiline
-                className='border rounded shadow p-2 mx-4 min-w-[20px] items-center'
-                placeholder="Add additional notes about {symptom}"
+                className='text-center border rounded shadow p-2 mx-4 min-w-[20px] items-center'
+                placeholder={`Add additional notes about ${title}`}
                 value={notes}
                 onChangeText={setNotes}
             />
