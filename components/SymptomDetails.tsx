@@ -7,13 +7,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface SymptomDetailsProps {
     title: string,
+    details: any,
     onDetailsChange: (details: any) => void,
     hideDetails: () => void,
 }
 
-const SymptomDetails = ({title, onDetailsChange, hideDetails}: SymptomDetailsProps) => {
+const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomDetailsProps) => {
     // Intensity 
-    const [intensity, setIntensity] = useState<number>(-1);
+    const [intensity, setIntensity] = useState<number>( -1);
 
     // Triggers
     const [triggerList, setTriggerList] = useState([
@@ -120,6 +121,7 @@ const SymptomDetails = ({title, onDetailsChange, hideDetails}: SymptomDetailsPro
     // Update details
 
     useEffect(() => {
+        console.log(`Details: ${details}`)
         const triggers = Object.keys(triggersState).filter(key => triggersState[key]);
 
         const object: { [key: string]: any } = {};
@@ -133,7 +135,7 @@ const SymptomDetails = ({title, onDetailsChange, hideDetails}: SymptomDetailsPro
     }, [intensity, triggersState, frequency, time, notes]);
 
     return (
-        <View className='bg-gray-200 m-2'>
+        <View key={title} className='bg-gray-200 m-2'>
            <View className='flex flex-row justify-between items-center'>
              <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
              <Button title='Hide' color={'#FFA500'} onPress={hideDetails}  />

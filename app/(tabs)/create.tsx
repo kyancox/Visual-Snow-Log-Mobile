@@ -96,7 +96,7 @@ const Create = () => {
   };
 
   const handleEditSymptom = (id: string) => {
-    console.log(symptomsLogged)
+    // console.log(symptomsLogged)
     setEditingSymptomId(id);
   };
 
@@ -126,11 +126,11 @@ const Create = () => {
       }
       return prevState;
     });
+    console.log(editingTitle)
     // console.log(symptomsLogged)
   }
 
   const [response, setResponse] = useState<{ [key: string]: any }>({})
-  const [review, setReview] = useState<{ [key: string]: any }>({})
 
   useEffect(() => {
     const object = symptomsLogged.reduce((acc, symptom) => {
@@ -257,7 +257,9 @@ const Create = () => {
 
         {editingSymptomId && (
           <SymptomDetails
+            key={editingSymptomId}
             title={editingTitle}
+            details={response}
             onDetailsChange={(details) => handleSymptomDetailsChange(details)}
             hideDetails={hideDetails} />
         )}
@@ -287,13 +289,14 @@ const Create = () => {
             <Text className='text-xl font-semibold'>Review:</Text>
             {Object.keys(response).map((key) => (
               <View key={key}>
+              {/* add title date, etc, other info  */}
                 <Text>&#8226; {key}</Text>
                 {Object.keys(response[key]).length > 0 && (
                   <Text>
                     (
-                    {Object.entries(response[key]).map(([subKey, subValue]) => (
+                    {Object.entries(response[key]).map(([subKey, subValue], index, array) => (
                       <Text key={subKey}>
-                        {subKey}: {subValue}{' '}
+                        {subKey}: {Array.isArray(subValue) ? subValue.join(', ') : String(subValue)}{index === array.length - 1 ? '' : ', '}
                       </Text>
                     ))}
                     )
