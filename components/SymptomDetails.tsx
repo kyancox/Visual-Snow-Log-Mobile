@@ -13,8 +13,12 @@ interface SymptomDetailsProps {
 }
 
 const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomDetailsProps) => {
+    // console.log(`Details: ${details?.Intensity || 'DNE'}`)
+    // console.log(`Response: ${details}`)
+
+
     // Intensity 
-    const [intensity, setIntensity] = useState<number>( -1);
+    const [intensity, setIntensity] = useState<number>(details.Intensity || -1);
 
     // Triggers
     const [triggerList, setTriggerList] = useState([
@@ -121,7 +125,6 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
     // Update details
 
     useEffect(() => {
-        console.log(`Details: ${details}`)
         const triggers = Object.keys(triggersState).filter(key => triggersState[key]);
 
         const object: { [key: string]: any } = {};

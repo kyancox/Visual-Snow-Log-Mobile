@@ -126,9 +126,17 @@ const Create = () => {
       }
       return prevState;
     });
-    console.log(editingTitle)
+    // console.log(editingTitle)
     // console.log(symptomsLogged)
   }
+
+  const getResponseData = () => {
+    return symptomsLogged.reduce((acc, symptom) => {
+      acc[symptom.symptom] = symptom.details;
+      return acc;
+    }, {} as { [key: string]: any });
+  };
+
 
   const [response, setResponse] = useState<{ [key: string]: any }>({})
 
@@ -139,6 +147,7 @@ const Create = () => {
     }, {} as { [key: string]: any });
     setResponse(object)
     console.log(object)
+    // console.log(response[editingTitle])
   }, [symptomsLogged])
 
   // Now: we have symptomsLogged which is [{id, symptom}...]
@@ -259,7 +268,7 @@ const Create = () => {
           <SymptomDetails
             key={editingSymptomId}
             title={editingTitle}
-            details={response}
+            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
             onDetailsChange={(details) => handleSymptomDetailsChange(details)}
             hideDetails={hideDetails} />
         )}
@@ -284,17 +293,18 @@ const Create = () => {
           onChangeText={setNotes}
         />
 
-        {response && (
+        {symptomsLogged.length > 0 && (
           <>
             <Text className='text-xl font-semibold'>Review:</Text>
-            {Object.keys(response).map((key) => (
-              <View key={key}>
-              {/* add title date, etc, other info  */}
-                <Text>&#8226; {key}</Text>
-                {Object.keys(response[key]).length > 0 && (
+            {symptomsLogged.map( (item) =>  (
+                        // {Object.keys(response).map((key) => (
+              <View key={item.id}>
+                {/* add title date, etc, other info  */}
+                <Text>&#8226; {item.symptom}</Text>
+                {Object.keys(item.details).length > 0 && (
                   <Text>
                     (
-                    {Object.entries(response[key]).map(([subKey, subValue], index, array) => (
+                    {Object.entries(item.details).map(([subKey, subValue], index, array) => (
                       <Text key={subKey}>
                         {subKey}: {Array.isArray(subValue) ? subValue.join(', ') : String(subValue)}{index === array.length - 1 ? '' : ', '}
                       </Text>
@@ -309,7 +319,9 @@ const Create = () => {
 
 
 
-        <Button title='Submit' />
+        <View className='mb-3'>
+          <Button title='Submit' />
+        </View>
 
       </ScrollView>
       {/* </KeyboardAvoidingView> */}
