@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons';
 
 import SymptomDetails from '@/components/SymptomDetails';
+import Accordion from '@/components/Accordion';
 
 const Create = () => {
 
@@ -253,7 +254,7 @@ const Create = () => {
                 <View key={item.id} className='flex-row justify-between items-center'>
                   <Text className='flex-1 mr-10'>&#8226; {item.symptom}</Text>
                   <TouchableOpacity onPress={() => handleEditSymptom(item.id)}>
-                    <Text className='text-projectOrange' >Edit</Text>
+                    <Text className='text-projectOrange' >Show Details</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => handleRemoveSymptom(item.id)}>
                     <Text className='text-red-500' > Remove </Text>
@@ -274,6 +275,31 @@ const Create = () => {
             hideDetails={hideDetails} />
         )}
 
+        {/* <Accordion title='Symptom Test'>
+          <SymptomDetails
+            key={editingSymptomId}
+            title={editingTitle}
+            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
+            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
+            hideDetails={hideDetails} />
+        </Accordion>
+        <Accordion title='Symptom Test'>
+          <SymptomDetails
+            key={editingSymptomId}
+            title={editingTitle}
+            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
+            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
+            hideDetails={hideDetails} />
+        </Accordion>
+        <Accordion title='Symptom Test'>
+          <SymptomDetails
+            key={editingSymptomId}
+            title={editingTitle}
+            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
+            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
+            hideDetails={hideDetails} />
+        </Accordion> */}
+
         {/* Medications / Treatments */}
         <View >
           <Text className='text-xl font-bold'>Medication/Treatments:</Text>
@@ -281,6 +307,7 @@ const Create = () => {
             <View className='flex flex-row items-center m-1' key={item.id}>
               <TextInput
                 multiline
+                autoCorrect={false}
                 className='border rounded shadow p-2 mx-4 flex-1'
                 placeholder="Enter medication/treatment"
                 value={medications.find(s => s.id === item.id)?.name || ''}

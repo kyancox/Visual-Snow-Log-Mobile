@@ -183,7 +183,7 @@ const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: Sympto
     }, [intensity, triggersState, frequency, time, notes]);
 
     return (
-        <View key={title} className='bg-gray-200 m-2'>
+        <View key={title} className=''>
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
                 <Button title='Hide' color={'#FFA500'} onPress={hideDetails} />
