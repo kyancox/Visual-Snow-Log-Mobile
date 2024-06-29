@@ -36,7 +36,7 @@ const Accordion = ({
     }
 
     return (
-        <View style={styles.container}>
+        <View className='flex-1' style={styles.container}>
             <TouchableWithoutFeedback onPress={toggleAccordion}>
                 <View style={styles.header}>
                     <Text style={styles.title}>{title}</Text>

@@ -106,18 +106,18 @@ const Create = () => {
     setEditingSymptomId(null)
   }
 
-  const [editingTitle, setEditingTitle] = useState('');
-  useEffect(() => {
-    const selectedSymptom = symptomsLogged.find(s => s.id === editingSymptomId);
-    if (selectedSymptom) {
-      setEditingTitle(selectedSymptom.symptom);
-    }
-  }, [editingSymptomId, symptomsLogged])
+  // const [editingTitle, setEditingTitle] = useState('');
+  // useEffect(() => {
+  //   const selectedSymptom = symptomsLogged.find(s => s.id === editingSymptomId);
+  //   if (selectedSymptom) {
+  //     setEditingTitle(selectedSymptom.symptom);
+  //   }
+  // }, [editingSymptomId, symptomsLogged])
 
 
-  const handleSymptomDetailsChange = (details: any) => {
+  const handleSymptomDetailsChange = (details: any, id: string) => {
     setSymptomsLogged(prevState => {
-      const index = prevState.findIndex(s => s.id === editingSymptomId);
+      const index = prevState.findIndex(s => s.id === id);
       if (index !== -1) {
         const updatedSymptom = { ...prevState[index], details };
         const newState = [...prevState];
@@ -251,14 +251,29 @@ const Create = () => {
             <Text className='text-xl font-bold'>Symptoms Logged:</Text>
             <View>
               {symptomsLogged.map((item) => (
-                <View key={item.id} className='flex-row justify-between items-center'>
+                <View key={item.id} className='flex-row justify-center items-start'>
+                  <Accordion title={`• ${item.symptom}`}>
+                    <SymptomDetails
+                      key={item.id}
+                      title={item.symptom}
+                      // Issue is editingsymptomid. things arent being updated because editingsymtpomid, 
+                      // no on press being called, not knowing what to change 
+                      details={item.details}
+                      onDetailsChange={(details) => handleSymptomDetailsChange(details, item.id)}
+                      hideDetails={hideDetails}
+                    />
+                  </Accordion>
+                  <AntDesign name='delete' size={24} color='#FFA500'  onPress={() => handleRemoveSymptom(item.id)} />
+
+                  {/* 
                   <Text className='flex-1 mr-10'>&#8226; {item.symptom}</Text>
                   <TouchableOpacity onPress={() => handleEditSymptom(item.id)}>
                     <Text className='text-projectOrange' >Show Details</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => handleRemoveSymptom(item.id)}>
                     <Text className='text-red-500' > Remove </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> 
+                  */}
                 </View>
               ))}
             </View>
@@ -266,14 +281,14 @@ const Create = () => {
         )}
 
 
-        {editingSymptomId && (
+        {/* {editingSymptomId && (
           <SymptomDetails
             key={editingSymptomId}
             title={editingTitle}
             details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
             onDetailsChange={(details) => handleSymptomDetailsChange(details)}
             hideDetails={hideDetails} />
-        )}
+        )} */}
 
         {/* <Accordion title='Symptom Test'>
           <SymptomDetails
@@ -371,7 +386,7 @@ const Create = () => {
 
             {medications.length > 0 && (
               <>
-                <Text className='font-bold'>Medications/Treatements:</Text>
+                <Text className='font-bold'>Medications/Treatments:</Text>
                 {medications.map((item) => (
                   <View key={item.id}>
                     <Text>{medications.indexOf(item) + 1}. {item.name}</Text>

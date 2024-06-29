@@ -169,6 +169,7 @@ const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: Sympto
 
     // Update details
 
+    // This useEffect is lagging out the intensity slider 
     useEffect(() => {
         const triggers = Object.keys(triggersState).filter(key => triggersState[key]);
 
@@ -186,7 +187,7 @@ const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: Sympto
         <View key={title} className=''>
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
-                <Button title='Hide' color={'#FFA500'} onPress={hideDetails} />
+                <Button title='CLEAR' color={'#FFA500'} onPress={hideDetails} />
             </View >
             {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
