@@ -21,6 +21,12 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
     // Intensity 
     const [intensity, setIntensity] = useState<number>(details.Intensity || -1);
 
+    // Duration
+    const [hours, setHours] = useState('')
+    const [minutes, setMinutes] = useState('')
+
+    const [duration, setDuration] = useState<{ hours: string, minutes: string, seconds: string }>({ hours: '', minutes: '', seconds: '' })
+
     // Triggers
     const [triggerList, setTriggerList] = useState([
         { title: 'Stress', key: 'stress' },
@@ -170,6 +176,8 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
 
     // Update details
     const debouncedIntensity = useDebounce(intensity, 300);
+    const debouncedHours = useDebounce(hours, 300);
+    const debouncedMinutes = useDebounce(minutes, 300)
     const debouncedTriggersState = useDebounce(triggersState, 300);
     const debouncedFrequency = useDebounce(frequency, 300);
     const debouncedTime = useDebounce(time, 300);
@@ -180,13 +188,19 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
 
         const object: { [key: string]: any } = {};
         if (debouncedIntensity > -1) object.Intensity = debouncedIntensity;
+        if (debouncedHours || debouncedMinutes) {
+            const duration: { [key: string]: any } = {};
+            if (debouncedHours) duration.hours = debouncedHours;
+            if (debouncedMinutes) duration.minutes = debouncedMinutes;
+            object.Duration = duration
+        }
         if (triggers.length > 0) object.Triggers = triggers;
         if (debouncedFrequency) object.Frequency = debouncedFrequency;
         if (debouncedTime) object.Time = debouncedTime;
         if (debouncedNotes) object.Notes = debouncedNotes;
 
         onDetailsChange(object);
-    }, [debouncedIntensity, debouncedTriggersState, debouncedFrequency, debouncedTime, debouncedNotes]);
+    }, [debouncedIntensity, debouncedTriggersState, debouncedFrequency, debouncedTime, debouncedNotes, debouncedHours, debouncedMinutes]);
 
     const clearState = () => {
         setIntensity(-1)
@@ -225,6 +239,32 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
             {/* Duration */}
             <View>
                 <Text className='text-xl font-semibold'>Duration:</Text>
+                <View className='my-2 flex flex-1 flex-row justify-around items-center'>
+                    <TextInput
+                        className='border rounded shadow text-center p-2'
+                        placeholder="0"
+                        keyboardType="numeric"
+                        value={hours}
+                        onChangeText={(text) => {
+                            if (/^\d{0,2}$/.test(text) || text === '') {
+                                setMinutes(text);
+                            }
+                        }}  
+                    />
+                    <Text>hours</Text>
+                    <TextInput
+                        className='border rounded shadow text-center p-2'
+                        placeholder="0"
+                        keyboardType="numeric"
+                        value={minutes}
+                        onChangeText={(text) => {
+                            if (/^\d{0,2}$/.test(text) || text === '') {
+                                setMinutes(text);
+                            }
+                        }}
+                    />
+                    <Text>minutes</Text>
+                </View>
             </View>
 
             {/* Triggers */}

@@ -59,6 +59,7 @@ const Create = () => {
 
 
   const handleSymptomPress = (symptom: { id: string; symptom: string; }) => {
+    console.log(JSON.stringify(symptomsLogged))
     if (!symptomsLogged.some(s => s.symptom === symptom.symptom)) {
       const newSymptom = { id: uuidv4(), symptom: symptom.symptom, details: {} };
       setSymptomsLogged([...symptomsLogged, newSymptom]);
@@ -298,7 +299,12 @@ const Create = () => {
                       {' '}— (
                       {Object.entries(item.details).map(([subKey, subValue], index, array) => (
                         <Text key={subKey}>
-                          <Text className='font-semibold'>{subKey}</Text>: {Array.isArray(subValue) ? `${subValue.join(', ')}` : String(subValue)}{index === array.length - 1 ? '' : ', '}
+                          <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null
+                            ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
+                              <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' '}</Text>
+                            ))
+                            : (Array.isArray(subValue) ? `${subValue.join(', ')}` : String(subValue))}
+                          {index === array.length - 1 ? '' : ', '}
                         </Text>
                       ))}
                       )
