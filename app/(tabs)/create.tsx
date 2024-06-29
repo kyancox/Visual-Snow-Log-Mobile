@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { AntDesign } from '@expo/vector-icons';
 
 import SymptomDetails from '@/components/SymptomDetails';
 
@@ -112,8 +113,6 @@ const Create = () => {
     }
   }, [editingSymptomId, symptomsLogged])
 
-  // Additional Notes
-  const [notes, setNotes] = useState('')
 
   const handleSymptomDetailsChange = (details: any) => {
     setSymptomsLogged(prevState => {
@@ -126,40 +125,42 @@ const Create = () => {
       }
       return prevState;
     });
-    // console.log(editingTitle)
-    // console.log(symptomsLogged)
   }
 
-  const getResponseData = () => {
+  // Medication / Treatments
+
+  interface Medication {
+    id: string;
+    name: string;
+  }
+
+  const [medications, setMedications] = useState<Medication[]>([]);
+
+  const deleteMedication = (id: string) => {
+    setMedications(medications.filter(med => med.id !== id));
+  };
+
+  const updateMedication = (id: string, text: string) => {
+    console.log(medications)
+    setMedications(prevState => prevState.map(med => {
+      if (med.id === id) {
+        return { ...med, name: text };
+      }
+      return med;
+    }));
+  }
+
+  // Additional Notes
+  const [notes, setNotes] = useState('')
+
+  // API Request Body
+  const getBodyData = () => {
     return symptomsLogged.reduce((acc, symptom) => {
       acc[symptom.symptom] = symptom.details;
       return acc;
     }, {} as { [key: string]: any });
   };
 
-
-  const [response, setResponse] = useState<{ [key: string]: any }>({})
-
-  useEffect(() => {
-    const object = symptomsLogged.reduce((acc, symptom) => {
-      acc[symptom.symptom] = symptom.details;
-      return acc;
-    }, {} as { [key: string]: any });
-    setResponse(object)
-    console.log(object)
-    // console.log(response[editingTitle])
-  }, [symptomsLogged])
-
-  // Now: we have symptomsLogged which is [{id, symptom}...]
-
-  // We can: store all details in symptomsLogged, and then refactor 
-  // - make symptomsLogged a {id: {symptom, details... }}
-  // - make symptomsLogged [{id, symptom, details}... ]
-
-  // Or: make a brand new state, meaning we have two states to manage: symptomsLogged and symptomDetails, and refactor that state. 
-
-  // End goal is to have an object where {[key: symptom] : {object: details} }
-  // details of each symptom, empty or only needed key-values 
 
   return (
     <SafeAreaView
@@ -172,7 +173,7 @@ const Create = () => {
 
 
       <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
-      <ScrollView className=''>
+      <ScrollView className='h-full'>
 
 
 
@@ -273,16 +274,38 @@ const Create = () => {
             hideDetails={hideDetails} />
         )}
 
-        <View className='flex-row justify-center items-center'>
-          <Text className='text-xl font-bold'>WIPMedication/Treatments:</Text>
-          <TextInput
-            className='border rounded shadow p-2 mx-4 flex-1'
-            placeholder=""
-          // value={customSymptom}
-          // onChangeText={setCustomSymptom}
+        {/* Medications / Treatments */}
+        <View >
+          <Text className='text-xl font-bold'>Medication/Treatments:</Text>
+          {medications.map((item => (
+            <View className='flex flex-row items-center m-1' key={item.id}>
+              <TextInput
+                multiline
+                className='border rounded shadow p-2 mx-4 flex-1'
+                placeholder="Enter medication/treatment"
+                value={medications.find(s => s.id === item.id)?.name || ''}
+                onChangeText={(text) => updateMedication(item.id, text)}
+              />
+
+              <AntDesign name='delete' size={24} color='#FFA500' onPress={() => deleteMedication(item.id)} />
+
+
+              {/* <Button title="Delete" onPress={() => deleteMedication(item.id)} /> */}
+            </View>
+
+          )))}
+
+          <Button
+            title='Add'
+            color='#FFA500'
+            onPress={() => {
+              if (medications.length === 0 || (medications.length > 0 && medications[medications.length - 1].name)) {
+                setMedications([...medications, { id: Date.now().toString(), name: '' }]);
+              }
+            }}
           />
-        </View >
-        {/* OpenFDA */}
+
+        </View>
 
         <Text className='text-xl font-semibold'>Additional Notes:</Text>
         <TextInput
@@ -293,33 +316,51 @@ const Create = () => {
           onChangeText={setNotes}
         />
 
+        {/* Review Section */}
         {symptomsLogged.length > 0 && (
           <>
             <Text className='text-xl font-semibold'>Review:</Text>
-            {symptomsLogged.map( (item) =>  (
-                        // {Object.keys(response).map((key) => (
+            <Text><Text className='font-bold'>Title:</Text> {title}</Text>
+            <Text><Text className='font-bold'>Date:</Text> {date.toLocaleDateString()}</Text>
+            <Text><Text className='font-bold'>Time:</Text> {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+            <Text className='font-bold'>Symptoms (Symptom Details):</Text>
+            {symptomsLogged.map((item) => (
               <View key={item.id}>
-                {/* add title date, etc, other info  */}
-                <Text>&#8226; {item.symptom}</Text>
-                {Object.keys(item.details).length > 0 && (
-                  <Text>
-                    (
-                    {Object.entries(item.details).map(([subKey, subValue], index, array) => (
-                      <Text key={subKey}>
-                        {subKey}: {Array.isArray(subValue) ? subValue.join(', ') : String(subValue)}{index === array.length - 1 ? '' : ', '}
-                      </Text>
-                    ))}
-                    )
-                  </Text>
-                )}
+                <Text>&#8226; {item.symptom}
+                  {Object.keys(item.details).length > 0 && (
+                    <Text>
+                      {' '}— (
+                      {Object.entries(item.details).map(([subKey, subValue], index, array) => (
+                        <Text key={subKey}>
+                          <Text className='font-semibold'>{subKey}</Text>: {Array.isArray(subValue) ? `${subValue.join(', ')}` : String(subValue)}{index === array.length - 1 ? '' : ', '}
+                        </Text>
+                      ))}
+                      )
+                    </Text>
+                  )}
+                </Text>
               </View>
             ))}
+
+            {medications.length > 0 && (
+              <>
+                <Text className='font-bold'>Medications/Treatements:</Text>
+                {medications.map((item) => (
+                  <View key={item.id}>
+                    <Text>{medications.indexOf(item) + 1}. {item.name}</Text>
+                  </View>
+                ))}
+
+              </>
+            )}
+
+            {notes && (
+              <Text><Text className='font-bold'>Log Notes:</Text> {notes}</Text>
+            )}
           </>
         )}
 
-
-
-        <View className='mb-3'>
+        <View className='mb-8'>
           <Button title='Submit' />
         </View>
 

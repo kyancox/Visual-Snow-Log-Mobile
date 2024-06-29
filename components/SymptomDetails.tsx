@@ -12,7 +12,7 @@ interface SymptomDetailsProps {
     hideDetails: () => void,
 }
 
-const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomDetailsProps) => {
+const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: SymptomDetailsProps) => {
     // console.log(`Details: ${details?.Intensity || 'DNE'}`)
     // console.log(`Response: ${details}`)
 
@@ -30,7 +30,15 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
         { title: 'Environment', key: 'environment' }
     ]);
 
-    const [triggersState, setTriggersState] = useState<{ [key: string]: boolean }>({})
+    const [triggersState, setTriggersState] = useState<{ [key: string]: boolean }>(() => {
+        const initialState: { [key: string]: boolean } = {};
+        if (details.Triggers) {
+            details.Triggers.forEach((trigger: string) => {
+                initialState[trigger] = true;
+            });
+        }
+        return initialState;
+    });
 
     const handleTriggerChange = (trigger: string) => {
         setTriggersState(prevState => ({
@@ -59,8 +67,23 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
     }
 
     // Frequency 
-    const [frequency, setFrequency] = useState('');
-    const [selectedFreqId, setSelectedFreqId] = useState<string | undefined>();
+    const [frequency, setFrequency] = useState(details.Frequency || '');
+    const [selectedFreqId, setSelectedFreqId] = useState<string | undefined>(() => {
+        const freqIds = [{
+            id: '1',
+            label: 'Occasionally',
+        },
+        {
+            id: '2',
+            label: 'Frequently',
+        },
+        {
+            id: '3',
+            label: 'Constantly',
+        }]
+        const foundButton = freqIds.find(s => s.label === details.Frequency)
+        return foundButton ? foundButton.id : undefined
+    });
     const freqRadioButtons: RadioButtonProps[] = useMemo(() => ([
         {
             id: '1',
@@ -86,8 +109,30 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
     ]), [selectedFreqId]);
 
     // Time of Day
-    const [time, setTime] = useState('')
-    const [selectedTimeId, setSelectedTimeId] = useState<string | undefined>()
+    const [time, setTime] = useState(details.Time || '')
+    const [selectedTimeId, setSelectedTimeId] = useState<string | undefined>(() => {
+        const timeIds = [
+            {
+                id: '1',
+                label: 'Morning',
+            },
+            {
+                id: '2',
+                label: 'Afternoon',
+            },
+            {
+                id: '3',
+                label: 'Evening',
+            },
+            {
+                id: '4',
+                label: 'Night',
+            }
+        ]
+        const foundButton = timeIds.find(s => s.label === details.Time)
+        return foundButton ? foundButton.id : undefined
+
+    })
     const timeRadioButtons: RadioButtonProps[] = useMemo(() => ([
         {
             id: '1',
@@ -120,7 +165,7 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
     ]), [selectedTimeId])
 
     // Additional Notes
-    const [notes, setNotes] = useState('')
+    const [notes, setNotes] = useState(details.Notes || '')
 
     // Update details
 
@@ -139,10 +184,10 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
 
     return (
         <View key={title} className='bg-gray-200 m-2'>
-           <View className='flex flex-row justify-between items-center'>
-             <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
-             <Button title='Hide' color={'#FFA500'} onPress={hideDetails}  />
-           </View >
+            <View className='flex flex-row justify-between items-center'>
+                <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
+                <Button title='Hide' color={'#FFA500'} onPress={hideDetails} />
+            </View >
             {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-semibold'>Intensity{intensity >= 0 && ` (${intensity})`}:</Text>
@@ -242,7 +287,7 @@ const SymptomDetails = ({title, details, onDetailsChange, hideDetails}: SymptomD
             <TextInput
                 multiline
                 className='text-center border rounded shadow p-2 mx-4 min-w-[20px] items-center'
-                placeholder={`Add additional notes about ${title}`}
+                placeholder={`Add additional notes about your ${title.toLowerCase()}`}
                 value={notes}
                 onChangeText={setNotes}
             />

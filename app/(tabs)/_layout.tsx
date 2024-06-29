@@ -2,7 +2,6 @@ import { View, Text } from 'react-native'
 import { Tabs, Redirect } from 'expo-router'
 import React from 'react'
 import { MaterialIcons, Fontisto } from '@expo/vector-icons'
-import { TabBarIcon } from '@/components-example/navigation/TabBarIcon'
 
 const TabsLayout = () => {
   return (
