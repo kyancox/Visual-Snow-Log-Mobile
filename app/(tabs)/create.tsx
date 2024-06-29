@@ -126,105 +126,106 @@ const Create = () => {
 
 
   return (
-    <SafeAreaView
-      className='mx-4'
+
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
     >
-
-      {/* <KeyboardAvoidingView
-        behavior='padding'
-      > */}
-
-
-      <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
-      <ScrollView className='h-full'>
+      < SafeAreaView
+        className='mx-4'
+      >
 
 
+        <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
+        <ScrollView className='h-full'>
 
-        <View className='flex flex-row justify-between items-center my-2'>
-          <Text className='text-xl font-bold'>
-            Log Title:
-          </Text>
-          <TextInput
-            className='border rounded shadow p-2 ml-4 flex-1'
-            placeholder={getDefaultTitle()}
-            placeholderTextColor="#888"
-            onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
-          />
-        </View>
 
-        <View className='flex flex-row justify-between items-center my-1'>
-          <Text className='text-xl font-bold '>
-            Date:
-          </Text>
-          <DateTimePicker
-            className=''
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            display="default"
-            onChange={dateChange}
-          />
-        </View>
-        {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
 
-        <View className='flex flex-row justify-between items-center my-1'>
-          <Text className='text-xl font-bold '>
-            Time:
-          </Text>
+          <View className='flex flex-row justify-between items-center my-2'>
+            <Text className='text-xl font-bold'>
+              Log Title:
+            </Text>
+            <TextInput
+              className='border rounded shadow p-2 ml-4 flex-1'
+              placeholder={getDefaultTitle()}
+              placeholderTextColor="#888"
+              onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
+            />
+          </View>
 
-          <DateTimePicker
-            className=''
-            testID="timePicker"
-            value={time}
-            mode="time"
-            display="default"
-            onChange={timeChange}
+          <View className='flex flex-row justify-between items-center my-1'>
+            <Text className='text-xl font-bold '>
+              Date:
+            </Text>
+            <DateTimePicker
+              className=''
+              testID="dateTimePicker"
+              value={date}
+              mode="date"
+              display="default"
+              onChange={dateChange}
+            />
+          </View>
+          {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
 
-          />
-        </View>
-        {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
+          <View className='flex flex-row justify-between items-center my-1'>
+            <Text className='text-xl font-bold '>
+              Time:
+            </Text>
 
-        <View className=''>
-          <Text className='text-2xl font-bold '>Symptoms: <Text className='text-red-500'>*</Text></Text>
-          <FlatList
-            horizontal={true}
-            data={defaultSymptoms}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSymptomPress(item)}>
-                <View className='p-4 bg-gray-200 m-2'>
-                  <Text>{item.symptom}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item.id}
+            <DateTimePicker
+              className=''
+              testID="timePicker"
+              value={time}
+              mode="time"
+              display="default"
+              onChange={timeChange}
 
-          />
-          <TextInput
-            className='border rounded shadow p-2 mx-4 flex-1'
-            placeholder="Add custom symptom"
-            value={customSymptom}
-            onChangeText={setCustomSymptom}
-          />
-          <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
-        </View>
+            />
+          </View>
+          {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
 
-        {symptomsLogged.length > 0 && (
-          <>
-            <Text className='text-xl font-bold'>Symptoms Logged:</Text>
-            <View>
-              {symptomsLogged.map((item) => (
-                <View key={item.id} className='flex-row justify-center items-start'>
-                  <Accordion title={`• ${item.symptom}`} onDelete={() => handleRemoveSymptom(item.id)}>
-                    <SymptomDetails
-                      key={item.id}
-                      title={item.symptom}
-                      details={item.details}
-                      onDetailsChange={(details) => handleSymptomDetailsChange(details, item.id)}
-                    />
-                  </Accordion>
-                  {/* <AntDesign name='delete' size={24} color='#FFA500'  onPress={() => handleRemoveSymptom(item.id)} /> */}
+          <View className=''>
+            <Text className='text-2xl font-bold '>Symptoms: <Text className='text-red-500'>*</Text></Text>
+            <FlatList
+              horizontal={true}
+              data={defaultSymptoms}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleSymptomPress(item)}>
+                  <View className='p-4 bg-gray-200 m-2'>
+                    <Text>{item.symptom}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.id}
 
-                  {/* 
+            />
+            <TextInput
+              className='border rounded shadow p-2 mx-4 flex-1'
+              placeholder="Add custom symptom"
+              value={customSymptom}
+              onChangeText={setCustomSymptom}
+            />
+            <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
+          </View>
+
+          {symptomsLogged.length > 0 && (
+            <>
+              <Text className='text-xl font-bold'>Symptoms Logged:</Text>
+              <View>
+                {symptomsLogged.map((item) => (
+                  <View key={item.id} className='flex-row justify-center items-start'>
+                    <Accordion title={`• ${item.symptom}`} onDelete={() => handleRemoveSymptom(item.id)}>
+                      <SymptomDetails
+                        key={item.id}
+                        title={item.symptom}
+                        details={item.details}
+                        onDetailsChange={(details) => handleSymptomDetailsChange(details, item.id)}
+                      />
+                    </Accordion>
+                    {/* <AntDesign name='delete' size={24} color='#FFA500'  onPress={() => handleRemoveSymptom(item.id)} /> */}
+
+                    {/* 
                   <Text className='flex-1 mr-10'>&#8226; {item.symptom}</Text>
                   <TouchableOpacity onPress={() => handleEditSymptom(item.id)}>
                     <Text className='text-projectOrange' >Show Details</Text>
@@ -233,112 +234,113 @@ const Create = () => {
                     <Text className='text-red-500' > Remove </Text>
                   </TouchableOpacity> 
                   */}
-                </View>
-              ))}
-            </View>
-          </>
-        )}
-
-
-        {/* Medications / Treatments */}
-        <View >
-          <Text className='text-xl font-bold'>Medication/Treatments:</Text>
-          {medications.map((item => (
-            <View className='flex flex-row items-center m-1' key={item.id}>
-              <TextInput
-                multiline
-                autoCorrect={false}
-                className='border rounded shadow p-2 mx-4 flex-1'
-                placeholder="Enter medication/treatment"
-                value={medications.find(s => s.id === item.id)?.name || ''}
-                onChangeText={(text) => updateMedication(item.id, text)}
-              />
-
-              <AntDesign name='delete' size={24} color='#FFA500' onPress={() => deleteMedication(item.id)} />
-
-
-              {/* <Button title="Delete" onPress={() => deleteMedication(item.id)} /> */}
-            </View>
-
-          )))}
-
-          <Button
-            title='Add'
-            color='#FFA500'
-            onPress={() => {
-              if (medications.length === 0 || (medications.length > 0 && medications[medications.length - 1].name)) {
-                setMedications([...medications, { id: Date.now().toString(), name: '' }]);
-              }
-            }}
-          />
-
-        </View>
-
-        <Text className='text-xl font-semibold'>Additional Notes:</Text>
-        <TextInput
-          multiline
-          className='text-center border rounded shadow p-2 mx-4 min-w-[20px] items-center'
-          placeholder={`Add additional notes about ${title}`}
-          value={notes}
-          onChangeText={setNotes}
-        />
-
-        {/* Review Section */}
-        {symptomsLogged.length > 0 && (
-          <>
-            <Text className='text-xl font-semibold'>Review:</Text>
-            <Text><Text className='font-bold'>Title:</Text> {title}</Text>
-            <Text><Text className='font-bold'>Date:</Text> {date.toLocaleDateString()}</Text>
-            <Text><Text className='font-bold'>Time:</Text> {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-            <Text className='font-bold'>Symptoms (Symptom Details):</Text>
-            {symptomsLogged.map((item) => (
-              <View key={item.id}>
-                <Text>&#8226; {item.symptom}
-                  {Object.keys(item.details).length > 0 && (
-                    <Text>
-                      {' '}— (
-                      {Object.entries(item.details).map(([subKey, subValue], index, array) => (
-                        <Text key={subKey}>
-                          <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null
-                            ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
-                              <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' '}</Text>
-                            ))
-                            : (Array.isArray(subValue) ? `${subValue.join(', ')}` : String(subValue))}
-                          {index === array.length - 1 ? '' : ', '}
-                        </Text>
-                      ))}
-                      )
-                    </Text>
-                  )}
-                </Text>
-              </View>
-            ))}
-
-            {medications.length > 0 && (
-              <>
-                <Text className='font-bold'>Medications/Treatments:</Text>
-                {medications.map((item) => (
-                  <View key={item.id}>
-                    <Text>{medications.indexOf(item) + 1}. {item.name}</Text>
                   </View>
                 ))}
+              </View>
+            </>
+          )}
 
-              </>
-            )}
 
-            {notes && (
-              <Text><Text className='font-bold'>Log Notes:</Text> {notes}</Text>
-            )}
-          </>
-        )}
+          {/* Medications / Treatments */}
+          <View >
+            <Text className='text-xl font-bold'>Medication/Treatments:</Text>
+            {medications.map((item => (
+              <View className='flex flex-row items-center m-1' key={item.id}>
+                <TextInput
+                  multiline
+                  autoCorrect={false}
+                  className='border rounded shadow p-2 mx-4 flex-1'
+                  placeholder="Enter medication/treatment"
+                  value={medications.find(s => s.id === item.id)?.name || ''}
+                  onChangeText={(text) => updateMedication(item.id, text)}
+                />
 
-        <View className='mb-8'>
-          <Button title='Submit' />
-        </View>
+                <AntDesign name='delete' size={24} color='#FFA500' onPress={() => deleteMedication(item.id)} />
 
-      </ScrollView>
-      {/* </KeyboardAvoidingView> */}
-    </SafeAreaView >
+
+                {/* <Button title="Delete" onPress={() => deleteMedication(item.id)} /> */}
+              </View>
+
+            )))}
+
+            <Button
+              title='Add'
+              color='#FFA500'
+              onPress={() => {
+                if (medications.length === 0 || (medications.length > 0 && medications[medications.length - 1].name)) {
+                  setMedications([...medications, { id: Date.now().toString(), name: '' }]);
+                }
+              }}
+            />
+
+          </View>
+
+          <Text className='text-xl font-semibold'>Additional Notes:</Text>
+          <TextInput
+            multiline
+            className='text-center border rounded shadow p-2 mx-4 min-w-[20px] items-center'
+            placeholder={`Add additional notes about ${title}`}
+            value={notes}
+            onChangeText={setNotes}
+          />
+
+          {/* Review Section */}
+          {symptomsLogged.length > 0 && (
+            <>
+              <Text className='text-xl font-semibold'>Review:</Text>
+              <Text><Text className='font-bold'>Title:</Text> {title}</Text>
+              <Text><Text className='font-bold'>Date:</Text> {date.toLocaleDateString()}</Text>
+              <Text><Text className='font-bold'>Time:</Text> {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+              <Text className='font-bold'>Symptoms (Symptom Details):</Text>
+              {symptomsLogged.map((item) => (
+                <View key={item.id}>
+                  <Text>&#8226; {item.symptom}
+                    {Object.keys(item.details).length > 0 && (
+                      <Text>
+                        {' '}— (
+                        {Object.entries(item.details).map(([subKey, subValue], index, array) => (
+                          <Text key={subKey}>
+                            <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null
+                              ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
+                                <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' '}</Text>
+                              ))
+                              : (Array.isArray(subValue) ? `${subValue.join(', ')}` : String(subValue))}
+                            {index === array.length - 1 ? '' : ', '}
+                          </Text>
+                        ))}
+                        )
+                      </Text>
+                    )}
+                  </Text>
+                </View>
+              ))}
+
+              {medications.length > 0 && (
+                <>
+                  <Text className='font-bold'>Medications/Treatments:</Text>
+                  {medications.map((item) => (
+                    <View key={item.id}>
+                      <Text>{medications.indexOf(item) + 1}. {item.name}</Text>
+                    </View>
+                  ))}
+
+                </>
+              )}
+
+              {notes && (
+                <Text><Text className='font-bold'>Log Notes:</Text> {notes}</Text>
+              )}
+            </>
+          )}
+
+          <View className=''>
+            <Button title='Submit' />
+          </View>
+
+        </ScrollView>
+
+      </SafeAreaView >
+    </KeyboardAvoidingView>
   )
 }
 
