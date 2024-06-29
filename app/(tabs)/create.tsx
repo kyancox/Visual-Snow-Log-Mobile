@@ -56,64 +56,25 @@ const Create = () => {
 
   const [customSymptom, setCustomSymptom] = useState('');
   const [symptomsLogged, setSymptomsLogged] = useState<{ id: string, symptom: string, details: any }[]>([]);
-  // const [symptomDetails, setSymptomDetails] = useState<{ [key: string]: any }>(() => {
-  //   const initialSymptomDetails: { [key: string]: any } = {};
-  //   symptomsLogged.forEach((symptom) => {
-  //     initialSymptomDetails[symptom.symptom] = {};
-  //   });
-  //   return initialSymptomDetails;
-  // });
-  const [editingSymptomId, setEditingSymptomId] = useState<string | null>(null);
+
 
   const handleSymptomPress = (symptom: { id: string; symptom: string; }) => {
     if (!symptomsLogged.some(s => s.symptom === symptom.symptom)) {
       const newSymptom = { id: uuidv4(), symptom: symptom.symptom, details: {} };
       setSymptomsLogged([...symptomsLogged, newSymptom]);
-      // setSymptomDetails(prevState => ({
-      //   ...prevState,
-      //   // Maybe add symptom name here for ease of use
-      //   [newSymptom.id]: {}
-      // }));
     }
   };
 
   const addCustomSymptom = () => {
     if (customSymptom.trim() && !symptomsLogged.some(s => s.symptom === customSymptom)) {
       setSymptomsLogged([...symptomsLogged, { id: uuidv4(), symptom: customSymptom, details: {} }]);
-      // setSymptom
       setCustomSymptom('');
     }
   };
 
   const handleRemoveSymptom = (id: string) => {
     setSymptomsLogged(symptomsLogged.filter(s => s.id !== id));
-    // setSymptomDetails(prevState => {
-    //   const newState = { ...prevState };
-    //   delete newState[id];
-    //   return newState;
-    // });
-    if (editingSymptomId === id) {
-      setEditingSymptomId(null);
-    }
   };
-
-  const handleEditSymptom = (id: string) => {
-    // console.log(symptomsLogged)
-    setEditingSymptomId(id);
-  };
-
-  const hideDetails = () => {
-    setEditingSymptomId(null)
-  }
-
-  // const [editingTitle, setEditingTitle] = useState('');
-  // useEffect(() => {
-  //   const selectedSymptom = symptomsLogged.find(s => s.id === editingSymptomId);
-  //   if (selectedSymptom) {
-  //     setEditingTitle(selectedSymptom.symptom);
-  //   }
-  // }, [editingSymptomId, symptomsLogged])
-
 
   const handleSymptomDetailsChange = (details: any, id: string) => {
     setSymptomsLogged(prevState => {
@@ -252,18 +213,15 @@ const Create = () => {
             <View>
               {symptomsLogged.map((item) => (
                 <View key={item.id} className='flex-row justify-center items-start'>
-                  <Accordion title={`• ${item.symptom}`}>
+                  <Accordion title={`• ${item.symptom}`} onDelete={() => handleRemoveSymptom(item.id)}>
                     <SymptomDetails
                       key={item.id}
                       title={item.symptom}
-                      // Issue is editingsymptomid. things arent being updated because editingsymtpomid, 
-                      // no on press being called, not knowing what to change 
                       details={item.details}
                       onDetailsChange={(details) => handleSymptomDetailsChange(details, item.id)}
-                      hideDetails={hideDetails}
                     />
                   </Accordion>
-                  <AntDesign name='delete' size={24} color='#FFA500'  onPress={() => handleRemoveSymptom(item.id)} />
+                  {/* <AntDesign name='delete' size={24} color='#FFA500'  onPress={() => handleRemoveSymptom(item.id)} /> */}
 
                   {/* 
                   <Text className='flex-1 mr-10'>&#8226; {item.symptom}</Text>
@@ -280,40 +238,6 @@ const Create = () => {
           </>
         )}
 
-
-        {/* {editingSymptomId && (
-          <SymptomDetails
-            key={editingSymptomId}
-            title={editingTitle}
-            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
-            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
-            hideDetails={hideDetails} />
-        )} */}
-
-        {/* <Accordion title='Symptom Test'>
-          <SymptomDetails
-            key={editingSymptomId}
-            title={editingTitle}
-            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
-            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
-            hideDetails={hideDetails} />
-        </Accordion>
-        <Accordion title='Symptom Test'>
-          <SymptomDetails
-            key={editingSymptomId}
-            title={editingTitle}
-            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
-            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
-            hideDetails={hideDetails} />
-        </Accordion>
-        <Accordion title='Symptom Test'>
-          <SymptomDetails
-            key={editingSymptomId}
-            title={editingTitle}
-            details={symptomsLogged.find(s => s.id === editingSymptomId)?.details || {}}
-            onDetailsChange={(details) => handleSymptomDetailsChange(details)}
-            hideDetails={hideDetails} />
-        </Accordion> */}
 
         {/* Medications / Treatments */}
         <View >

@@ -5,14 +5,15 @@ import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import CheckBox from 'expo-checkbox';
 import { v4 as uuidv4 } from 'uuid';
 
+import useDebounce from '@/hooks/useDebounce';
+
 interface SymptomDetailsProps {
     title: string,
     details: any,
     onDetailsChange: (details: any) => void,
-    hideDetails: () => void,
 }
 
-const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: SymptomDetailsProps) => {
+const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps) => {
     // console.log(`Details: ${details?.Intensity || 'DNE'}`)
     // console.log(`Response: ${details}`)
 
@@ -168,26 +169,39 @@ const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: Sympto
     const [notes, setNotes] = useState(details.Notes || '')
 
     // Update details
+    const debouncedIntensity = useDebounce(intensity, 300);
+    const debouncedTriggersState = useDebounce(triggersState, 300);
+    const debouncedFrequency = useDebounce(frequency, 300);
+    const debouncedTime = useDebounce(time, 300);
+    const debouncedNotes = useDebounce(notes, 300);
 
-    // This useEffect is lagging out the intensity slider 
     useEffect(() => {
-        const triggers = Object.keys(triggersState).filter(key => triggersState[key]);
+        const triggers = Object.keys(debouncedTriggersState).filter(key => debouncedTriggersState[key]);
 
         const object: { [key: string]: any } = {};
-        if (intensity > -1) object.Intensity = intensity;
+        if (debouncedIntensity > -1) object.Intensity = debouncedIntensity;
         if (triggers.length > 0) object.Triggers = triggers;
-        if (frequency) object.Frequency = frequency;
-        if (time) object.Time = time;
-        if (notes) object.Notes = notes;
+        if (debouncedFrequency) object.Frequency = debouncedFrequency;
+        if (debouncedTime) object.Time = debouncedTime;
+        if (debouncedNotes) object.Notes = debouncedNotes;
 
         onDetailsChange(object);
-    }, [intensity, triggersState, frequency, time, notes]);
+    }, [debouncedIntensity, debouncedTriggersState, debouncedFrequency, debouncedTime, debouncedNotes]);
+
+    const clearState = () => {
+        setIntensity(-1)
+        setTriggersState({})
+        setFrequency('')
+        setSelectedFreqId('')
+        setTime('')
+        setSelectedTimeId('')
+        setNotes('')
+    }
 
     return (
         <View key={title} className=''>
             <View className='flex flex-row justify-between items-center'>
                 <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
-                <Button title='CLEAR' color={'#FFA500'} onPress={hideDetails} />
             </View >
             {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
@@ -292,6 +306,8 @@ const SymptomDetails = ({ title, details, onDetailsChange, hideDetails }: Sympto
                 value={notes}
                 onChangeText={setNotes}
             />
+
+            <Button title='Clear Details' color={'#FFA500'} onPress={clearState} />
 
         </View>
     )

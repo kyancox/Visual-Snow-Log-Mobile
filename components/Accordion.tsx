@@ -8,14 +8,16 @@ import {
     LayoutAnimation,
 } from 'react-native';
 import React, { useState } from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 const Accordion = ({
     title,
     children,
+    onDelete,
 }: {
     title: string;
     children?: React.ReactNode;
+    onDelete?: () => void
 }) => {
     const [opened, setOpened] = useState(true);
 
@@ -36,43 +38,24 @@ const Accordion = ({
     }
 
     return (
-        <View className='flex-1' style={styles.container}>
+        <View className="flex-1 m-2.5 p-3.5 bg-white rounded-lg">
             <TouchableWithoutFeedback onPress={toggleAccordion}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>{title}</Text>
-                    <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
+                <View className="flex-row justify-between items-center">
+                    <Text className="capitalize">{title}</Text>
+                    <View className='flex flex-row justify-center items-center space-x-3'>
+                        <MaterialIcons name='delete' size={24} color='#FFA500'  onPress={onDelete} />
+                        <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
 
             {opened && (
-                <View style={[styles.content]}>
+                <View className="mt-2">
                     {children}
                 </View>
             )}
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    details: {
-        opacity: 0.65,
-    },
-    title: {
-        textTransform: 'capitalize',
-    },
-    content: {
-        marginTop: 8,
-    },
-    container: {
-        margin: 10,
-        padding: 15,
-        backgroundColor: 'white',
-        borderRadius: 6,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-});
 
 export default Accordion
