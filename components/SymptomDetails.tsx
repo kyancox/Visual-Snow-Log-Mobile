@@ -247,7 +247,7 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
                         value={hours}
                         onChangeText={(text) => {
                             if (/^\d{0,2}$/.test(text) || text === '') {
-                                setMinutes(text);
+                                setHours(text);
                             }
                         }}  
                     />
