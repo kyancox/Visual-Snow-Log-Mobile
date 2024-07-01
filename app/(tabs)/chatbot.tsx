@@ -19,7 +19,7 @@ const Chatbot = () => {
 
   const systemMessage = {
     'role': 'system',
-    'content': 'You are to answer all of my questions.'
+    'content': 'Pretend to be a 10 year old.'
   }
 
   const [messages, setMessages] = useState<IMessage[]>([])
@@ -144,21 +144,23 @@ const Chatbot = () => {
 
   return (
     <>
-      <SafeAreaView>
+      {/* <SafeAreaView>
         {messages.map(message => (
           <View key={message._id}> 
           <Text>{message.text}</Text>
           </View>
         ))}
-      </SafeAreaView>
-      <GiftedChat
-        messages={messages}
-        onSend={message => onSend(message)}
-        user={{
-          _id: 1,
-        }}
-        bottomOffset={100}
-      />
+      </SafeAreaView> */}
+     <SafeAreaView className="flex-1">
+       <GiftedChat
+         messages={messages}
+         onSend={message => onSend(message)}
+         user={{
+           _id: 1,
+         }}
+         bottomOffset={100}
+       />
+     </SafeAreaView>
     </>
   );
 };
