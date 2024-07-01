@@ -300,7 +300,7 @@ const Create = () => {
                         {' '}— (
                         {Object.entries(item.details).map(([subKey, subValue], index, array) => (
                           <Text key={subKey}>
-                            <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null
+                            <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
                               ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
                                 <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' '}</Text>
                               ))
