@@ -65,7 +65,7 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-                className='-top-5 h-20 rounded-full justify-center items-center border-4'
+                className='h-20 rounded-full justify-center items-center border-4'
                 style={{
                   backgroundColor: focused ? '#FFFFFF' : '#FFA500',
                   borderColor: '#08080f',
