@@ -7,32 +7,28 @@ import {
   LogBox,
   Image,
   ImageBackground,
-  Button
+  Button,
+  Pressable
 
 } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
-import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+import { GiftedChat, IMessage, Send, SendProps, Bubble, BubbleProps } from 'react-native-gifted-chat'
 import { v4 as uuidv4 } from 'uuid';
 
 const Chatbot = () => {
   const error = console.error; console.error = (...args) => { if (/defaultProps/.test(args[0])) return; error(...args); };
   // https://www.youtube.com/watch?v=Lag9Pj_33hM
-  const [chatStarted, setChatStarted] = useState(false);
+  const [chatStarted, setChatStarted] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
 
   const gptAvatar = require('../../assets/images/gpt-trans.png');
 
   const systemMessage = {
     'role': 'system',
-    'content': 'You are an expert in Visual Snow Syndrome (VSS). Your role is to provide advice, support, and information to individuals experiencing VSS. You should be empathetic, understanding, and knowledgeable about the condition. Offer practical advice, coping strategies, and emotional support. If users need to vent, listen and provide comfort. Always ensure your responses are supportive and helpful.'
+    'content': `You are an expert in Visual Snow Syndrome (VSS). Your role is to provide advice, support, and information to individuals experiencing VSS. You should be empathetic, understanding, and knowledgeable about the condition. Offer practical advice, coping strategies, and emotional support. If users need to vent, listen and provide comfort. Always ensure your responses are supportive and helpful. Keep in mind, you are inside of an app designed to help those with VSS. Don't include markdown like ** because it will not be rendered in the app, you can use new line symbols and numbered lists though.`
   }
 
   const [messages, setMessages] = useState<IMessage[]>([])
-
-  const test = {
-    'role': 'assistant',
-    'content': `Hello! I'm here to help you.`
-  }
-
 
   useEffect(() => {
     setMessages([
@@ -54,15 +50,9 @@ const Chatbot = () => {
     // https://github.com/expo/expo/issues/28933
     // EXPO_PUBLIC for development, come back and fix in production
 
-    // console.log(messages)
-
     const apiMessages = messages.slice().reverse().map(message => {
       return { role: message.user.name === 'ChatGPT' ? 'assistant' : 'user', content: message.text }
     })
-
-    // console.log(apiMessages)
-
-    // console.log(message)
 
     const apiRequestBody = {
       'model': 'gpt-3.5-turbo',
@@ -72,6 +62,7 @@ const Chatbot = () => {
         message
       ]
     }
+
     console.log(`apiRequestMessages: ${JSON.stringify([
       systemMessage,
       ...apiMessages,
@@ -94,7 +85,6 @@ const Chatbot = () => {
       }
 
       const response = await chatCompletion.json();
-      // console.log('OpenAI response:', response);
 
       if (!response.choices || response.choices.length === 0) {
         console.error('No choices in OpenAI response');
@@ -124,57 +114,112 @@ const Chatbot = () => {
       );
     } catch (error) {
       console.error('Error in fetchOpenAIResponse:', error);
+
+      const formattedChatMessage = {
+        _id: uuidv4(),
+        text: 'There was an error fetching your response from ChatGPT. Please try again later.',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'ChatGPT',
+          avatar: gptAvatar,
+        }
+      };
+
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, [formattedChatMessage]),
+      );
+
+
+    } finally {
+      setIsTyping(false)
     }
   }
 
   const onSend = (message: IMessage[] = []) => {
+    setIsTyping(true)
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, message),
     )
-    // console.log(`messages: ${JSON.stringify(messages)}`)
+
     const formattedApiMessage = {
       role: 'user',
       content: message[0].text
     }
-    // console.log(`formattedApiMessage: ${JSON.stringify(formattedApiMessage)}`)
-    // await setApiMessages(prevState => {
-    //   const newState = [...prevState, formattedApiMessage];
-    //   console.log(`newState: ${JSON.stringify(newState)}`); // Log the new state to verify
-    //   return newState;
-    // });
-    // console.log(`apiMessages: ${JSON.stringify(apiMessages)}`)
-    //
+
     fetchOpenAIResponse(formattedApiMessage);
   };
 
+  const renderSend = (props: SendProps<IMessage>) => {
+    return (
+      <Send
+        {...props}
+        textStyle={{
+          color: "#FFA500"
+        }}
+      />
+    )
+  }
+
+  const renderBubble = (props: BubbleProps<IMessage>) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "#FFA500"
+          }
+        }}
+      />
+    )
+  }
+
   return (
     <>
-     {!chatStarted && (<SafeAreaView
-     className="flex-1"
-     >
-      <View className="h-full border-red-500 border-4 flex flex-col items-center justify-center">
-        <Text>Texxt</Text>
-        <Button title='button rn' onPress={() => setChatStarted(true)}/>
-      </View>
-    
-         <Image
-           source={require('../../assets/images/image.png')}
-           resizeMode="contain"
-           className="w-full -mb-16 mt-auto"
-         />
-      
-     </SafeAreaView     >)}
+      {!chatStarted && (<SafeAreaView
+        className="flex-1"
+        style={{
+          backgroundColor: '#fcfcfc'
+        }}
+      >
+        <View className="h-full px-1 flex flex-col items-center justify-center space-y-2">
+          <Text className="text-4xl text-center font-extrabold text-tabbar">VSS Chatbot</Text>
+          <Text className="text-xl text-center font-semibold text-tabbar">A chatbot trained to help those with Visual Snow Syndrome, powered by ChatGPT.</Text>
+          <Text className="text-tabbar">Note: Chatbot does not save your conversations.</Text>
+          <Pressable
+            onPress={() => setChatStarted(true)}
+            style={{
+              backgroundColor: '#FFA500',
+              padding: 10,
+              borderRadius: 5,
+              elevation: 3,
+            }}
+          >
+            <Text className="text-white font-bold">Get started</Text>
+          </Pressable>
+        </View>
+
+        <Image
+          source={require('../../assets/images/image.png')}
+          resizeMode="contain"
+          className="w-full -mb-16 mt-auto"
+        />
+
+      </SafeAreaView     >)}
 
       {chatStarted && (<SafeAreaView className="flex-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-         <GiftedChat
+        <GiftedChat
           messages={messages}
           onSend={message => onSend(message)}
           user={{
             _id: 1,
           }}
           bottomOffset={100}
+          isTyping={isTyping}
+          renderSend={renderSend}
+          renderBubble={renderBubble}
         />
-      </SafeAreaView> )}
+      </SafeAreaView>)}
     </>
   );
 };
