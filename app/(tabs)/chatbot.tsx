@@ -5,6 +5,10 @@ import {
   SafeAreaView,
   Platform,
   LogBox,
+  Image,
+  ImageBackground,
+  Button
+
 } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
@@ -34,6 +38,7 @@ const Chatbot = () => {
     setMessages([
       {
         _id: uuidv4(),
+        // change in production
         text: `Hello! I'm here to help you.`,
         createdAt: new Date(),
         user: {
@@ -71,7 +76,7 @@ const Chatbot = () => {
       systemMessage,
       ...apiMessages,
       message
-    ],null,2)}`)
+    ], null, 2)}`)
 
     try {
       const chatCompletion = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -144,23 +149,32 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* <SafeAreaView>
-        {messages.map(message => (
-          <View key={message._id}> 
-          <Text>{message.text}</Text>
-          </View>
-        ))}
-      </SafeAreaView> */}
-     <SafeAreaView className="flex-1">
-       <GiftedChat
-         messages={messages}
-         onSend={message => onSend(message)}
-         user={{
-           _id: 1,
-         }}
-         bottomOffset={100}
-       />
-     </SafeAreaView>
+     {!chatStarted && (<SafeAreaView
+     className="flex-1"
+     >
+      <View className="h-full border-red-500 border-4 flex flex-col items-center justify-center">
+        <Text>Texxt</Text>
+        <Button title='button rn' onPress={() => setChatStarted(true)}/>
+      </View>
+    
+         <Image
+           source={require('../../assets/images/image.png')}
+           resizeMode="contain"
+           className="w-full -mb-16 mt-auto"
+         />
+      
+     </SafeAreaView     >)}
+
+      {chatStarted && (<SafeAreaView className="flex-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+         <GiftedChat
+          messages={messages}
+          onSend={message => onSend(message)}
+          user={{
+            _id: 1,
+          }}
+          bottomOffset={100}
+        />
+      </SafeAreaView> )}
     </>
   );
 };
