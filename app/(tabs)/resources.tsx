@@ -1,10 +1,14 @@
-import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ScrollView, Button } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link, router } from 'expo-router'
+import { Link, Redirect, router } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/AuthProvider'
 
 const Resources = () => {
+
+  const { session } = useAuth()
 
   interface settingsItemProps {
     icon: any,
@@ -33,19 +37,17 @@ const Resources = () => {
     );
   }
 
-
-
-
   return (
     <SafeAreaView
       className='bg-main h-screen'
     >
       <ScrollView>
 
-        {/* <FlatList
-          data={settingsItems}
-          renderItem={({ item }) => renderSettingsItem(item)}
-        /> */}
+        {!session && (
+          <Button title='Login' onPress={() => router.push('/(auth)/login')}/>
+        )}
+
+        <Button title='Log Out' onPress={() => supabase.auth.signOut()} />
 
         <View className='mx-1 px-1'>
           <Text className='text-xl'>Settings</Text>

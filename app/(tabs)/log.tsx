@@ -1,11 +1,24 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, } from 'react-native'
 import { Link } from "expo-router";
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated'
+import { supabase } from '@/lib/supabase'
+import { Session } from '@supabase/supabase-js'
 
 const Log = () => {
   const [logs, setLogs] = useState(false)
+
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
   return (
     <SafeAreaView
