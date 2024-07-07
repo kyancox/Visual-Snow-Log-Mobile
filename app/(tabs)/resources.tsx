@@ -8,7 +8,7 @@ import { useAuth } from '@/providers/AuthProvider'
 
 const Resources = () => {
 
-  const { session } = useAuth()
+  const { session, user } = useAuth()
 
   interface settingsItemProps {
     icon: any,
@@ -43,8 +43,10 @@ const Resources = () => {
     >
       <ScrollView>
 
-        {!session && (
+        {!session ? (
           <Button title='Login' onPress={() => router.push('/(auth)/login')}/>
+        ) : (
+          <Text className='text-center text-xl font-extrabold'>Logged in: {user?.email}</Text>
         )}
 
         <Button title='Log Out' onPress={() => supabase.auth.signOut()} />

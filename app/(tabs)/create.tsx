@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -8,8 +8,12 @@ import { AntDesign } from '@expo/vector-icons';
 
 import SymptomDetails from '@/components/SymptomDetails';
 import Accordion from '@/components/Accordion';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/providers/AuthProvider';
 
 const Create = () => {
+
+  const { session, user } = useAuth()
 
   // Date, Time, Title
 
@@ -118,12 +122,70 @@ const Create = () => {
 
   // API Request Body
   const getBodyData = () => {
-    return symptomsLogged.reduce((acc, symptom) => {
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const formatTime = (date: Date) => {
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
+    };
+
+    const formattedDate = formatDate(date);
+    const formattedTime = formatTime(time);
+
+    const symptoms = symptomsLogged.reduce((acc, symptom) => {
       acc[symptom.symptom] = symptom.details;
       return acc;
     }, {} as { [key: string]: any });
+
+    return {
+      user_id: user?.id,
+      title,
+      date: formattedDate,
+      time: formattedTime,
+      symptoms,
+      medications,
+      notes
+    }
   };
 
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = async () => {
+
+    if (symptomsLogged.length === 0) {
+      Alert.alert('Please add some symptoms', 'test')
+      return
+    }
+
+
+    if (submitted) {
+      console.error('Log already submitted')
+      return
+    }
+
+    const logData = getBodyData()
+
+    console.log('time ' + time)
+    console.log('date ' + date)
+    const { data, error } = await supabase
+      .from('logs')
+      .insert([
+        logData,
+      ])
+      .select()
+
+    setSubmitted(true)
+    if (error) console.error(error)
+    else console.log(`Data: ${JSON.stringify(data)}`)
+
+  }
 
   return (
 
@@ -333,9 +395,13 @@ const Create = () => {
             </>
           )}
 
-          <View className=''>
-            <Button title='Submit' />
-          </View>
+          {symptomsLogged.length !== 0 && (
+
+            <View className=''>
+              <Button title='Submit' onPress={handleSubmit} />
+            </View>
+
+          )}
 
         </ScrollView>
 
