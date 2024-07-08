@@ -151,7 +151,7 @@ const Create = () => {
       date: formattedDate,
       time: formattedTime,
       symptoms,
-      medications,
+      medications: JSON.stringify(medications),
       notes
     }
   };
