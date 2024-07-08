@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons';
+import { router } from 'expo-router'
 
 import SymptomDetails from '@/components/SymptomDetails';
 import Accordion from '@/components/Accordion';
@@ -14,7 +15,6 @@ import { useAuth } from '@/providers/AuthProvider';
 const Create = () => {
 
   const { session, user } = useAuth()
-  const [id, setID] = useState<number>()
 
   // Date, Time, Title
 
@@ -158,13 +158,23 @@ const Create = () => {
 
   const [submitted, setSubmitted] = useState(false)
 
+  const clearState = () => {
+    setTitle(getDefaultTitle());
+    setDate(new Date());
+    setTime(new Date());
+    setCustomSymptom('')
+    setSymptomsLogged([]);
+    setMedications([]);
+    setNotes('');
+    setSubmitted(false);
+  }
+
   const handleSubmit = async () => {
 
     if (symptomsLogged.length === 0) {
       Alert.alert('Please add some symptoms', 'test')
       return
     }
-
 
     if (submitted) {
       console.error('Log already submitted')
@@ -173,8 +183,6 @@ const Create = () => {
 
     const logData = getBodyData()
 
-    console.log('time ' + time)
-    console.log('date ' + date)
     const { data, error } = await supabase
       .from('logs')
       .insert([
@@ -185,8 +193,9 @@ const Create = () => {
     setSubmitted(true)
     if (error) console.error(error)
     else {
-      Alert.alert('logged')
       console.log(`Data: ${JSON.stringify(data)}`)
+      router.push(`/logs/${data[0].id}`)
+      clearState()
     }
 
   }

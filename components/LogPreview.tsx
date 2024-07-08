@@ -18,7 +18,9 @@ interface LogPreviewProps {
 const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPreviewProps) => {
 
     const formattedDate = format(parseISO(date), 'MM-dd-yyyy')
-    const formattedTime = format(new Date(`1970-01-01T${time}Z`), 'hh:mm a')
+    const formattedTime = format(parseISO(date + 'T' + time), 'hh:mm a')
+
+    console.log(new Date())
 
     const handleDelete = async () => {
 
@@ -38,7 +40,7 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
     return (
         <TouchableOpacity className='flex flex-row justify-between rounded shadow bg-gray-300 mx-3 my-2 p-2' onPress={() => router.push(`/logs/${id}`)}>
             <View className='flex-1 mr-2'>
-                <Text className='text-xs'>{formattedDate} {formattedTime} </Text>
+                <Text className='text-xs'>{formattedDate} at {formattedTime} </Text>
                 <Text className='text-xl font-bold'>{title}</Text>
                 <Text><Text className='font-semibold'>Symptoms</Text>: {symptoms.join(', ')}</Text>
             </View>

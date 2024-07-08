@@ -50,6 +50,7 @@ const LogDetails = () => {
 
   return (
     <SafeAreaView>
+      {/* include header? leftheader: backarrow, header title: title, rightheader: share  */}
       <View>
         <Text className='text-3xl font-extrabold'>{log.title}</Text>
         <Text>Date: {log.date}</Text>

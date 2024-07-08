@@ -1,7 +1,7 @@
-import { View, Text, Pressable, } from 'react-native'
+import { View, Text, Pressable, ScrollView, SafeAreaView} from 'react-native'
 import { Link } from "expo-router";
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {  } from 'react-native-safe-area-context'
 import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
 import { useAuth } from '@/providers/AuthProvider';
@@ -41,7 +41,7 @@ const Log = () => {
 
   return (
     <SafeAreaView
-      className='flex-1'
+    className='flex-1'
     >
       {logs?.length === 0 && (
         <View
@@ -62,27 +62,25 @@ const Log = () => {
             </Pressable>
           </Link>
 
-        </View>)}
+        </View>
+      )}
 
       {logs && (
-        logs.map(item => (
-          // <View key={item.created_at}>
-          //   <Text>Item {index}</Text>
-          //   <Text>{item.title}</Text>
-          //   <Text>{item.date}</Text>
-          //   <Text>{item.time}</Text>
-          //   <Text>{item.notes}</Text>
-          // </View>
-          <LogPreview key={item.id}
-            id={item.id}
-            title={item.title}
-            date={item.date}
-            time={item.time}
-            symptoms={Object.keys(item.symptoms)}
-            handleRefresh={handleRefresh}
-             />
-        ))
+        <ScrollView className='' >
+          {logs.map(item => (
+            <LogPreview key={item.id}
+              id={item.id}
+              title={item.title}
+              date={item.date}
+              time={item.time}
+              symptoms={Object.keys(item.symptoms)}
+              handleRefresh={handleRefresh}
+            />
+          ))}
+        </ScrollView>
       )}
+
+
     </SafeAreaView>
   )
 }
