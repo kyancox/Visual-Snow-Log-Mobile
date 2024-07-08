@@ -14,6 +14,7 @@ import { useAuth } from '@/providers/AuthProvider';
 const Create = () => {
 
   const { session, user } = useAuth()
+  const [id, setID] = useState<number>()
 
   // Date, Time, Title
 
@@ -183,7 +184,10 @@ const Create = () => {
 
     setSubmitted(true)
     if (error) console.error(error)
-    else console.log(`Data: ${JSON.stringify(data)}`)
+    else {
+      Alert.alert('logged')
+      console.log(`Data: ${JSON.stringify(data)}`)
+    }
 
   }
 

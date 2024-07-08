@@ -78,7 +78,7 @@ const TabsLayout = () => {
           }}
         />
         <Tabs.Screen
-          name='log'
+          name='logs'
           options={{
             title: '',
             headerShown: false,

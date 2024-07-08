@@ -13,7 +13,7 @@ export default function App() {
             <Link href="/chatbot" className='text-6xl text-secondary font-extrabold'>Chatbot</Link>
             <Link href="/community" className='text-6xl text-secondary font-extrabold'>Community</Link>
             <Link href="/create" className='text-6xl text-secondary font-extrabold'>Create</Link>
-            <Link href="/log" className='text-6xl text-secondary font-extrabold'>Log</Link>
+            <Link href="/logs" className='text-6xl text-secondary font-extrabold'>Log</Link>
             <Link href="/resources" className='text-6xl text-secondary font-extrabold'>Resources</Link>
 
         </SafeAreaView>
