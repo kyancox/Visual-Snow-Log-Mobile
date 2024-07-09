@@ -5,10 +5,13 @@ import { Link, Redirect, router } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/AuthProvider'
+import { useReducedMotion } from 'react-native-reanimated'
+import { useRefresh } from '@/providers/RefreshContext'
 
 const Resources = () => {
 
   const { session, user } = useAuth()
+  const {triggerRefresh} = useRefresh()
 
   interface settingsItemProps {
     icon: any,
@@ -37,6 +40,11 @@ const Resources = () => {
     );
   }
 
+  const handleLogOut = () => {
+    supabase.auth.signOut()
+    triggerRefresh()
+  }
+
   return (
     <SafeAreaView
       className='bg-main h-screen'
@@ -49,7 +57,7 @@ const Resources = () => {
           <Text className='text-center text-xl font-extrabold'>Logged in: {user?.email}</Text>
         )}
 
-        <Button title='Log Out' onPress={() => supabase.auth.signOut()} />
+        <Button title='Log Out' onPress={handleLogOut} />
 
         <View className='mx-1 px-1'>
           <Text className='text-xl'>Settings</Text>

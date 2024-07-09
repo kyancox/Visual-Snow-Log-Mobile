@@ -6,10 +6,11 @@ import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
 import { useAuth } from '@/providers/AuthProvider';
 import LogPreview from '@/components/LogPreview';
+import { useRefresh } from '@/providers/RefreshContext';
 
 const Log = () => {
   const [logs, setLogs] = useState<any[] | null>(null)
-  const [refresh, setRefresh] = useState(false)
+  const {refresh, triggerRefresh} = useRefresh()
 
   const { session, user } = useAuth()
 
@@ -31,12 +32,8 @@ const Log = () => {
     readUserLogs()
   }, [refresh])
 
-  const handleRefresh = () => {
-    setRefresh(prev => !prev)
-  }
-
   useEffect(() => {
-    handleRefresh()
+    triggerRefresh()
   }, [])
 
   return (
@@ -74,7 +71,7 @@ const Log = () => {
               date={item.date}
               time={item.time}
               symptoms={Object.keys(item.symptoms)}
-              handleRefresh={handleRefresh}
+              handleRefresh={triggerRefresh}
             />
           ))}
         </ScrollView>

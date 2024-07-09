@@ -20,8 +20,6 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
     const formattedDate = format(parseISO(date), 'MM-dd-yyyy')
     const formattedTime = format(parseISO(date + 'T' + time), 'hh:mm a')
 
-    console.log(new Date())
-
     const handleDelete = async () => {
 
         const { error } = await supabase

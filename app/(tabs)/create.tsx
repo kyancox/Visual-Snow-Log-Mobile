@@ -11,10 +11,12 @@ import SymptomDetails from '@/components/SymptomDetails';
 import Accordion from '@/components/Accordion';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
+import { useRefresh } from '@/providers/RefreshContext';
 
 const Create = () => {
 
   const { session, user } = useAuth()
+  const {triggerRefresh} = useRefresh()
 
   // Date, Time, Title
 
@@ -196,6 +198,7 @@ const Create = () => {
       console.log(`Data: ${JSON.stringify(data)}`)
       router.push(`/logs/${data[0].id}`)
       clearState()
+      triggerRefresh()
     }
 
   }
