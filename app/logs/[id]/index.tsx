@@ -2,12 +2,14 @@ import { View, Text, SafeAreaView, Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 type Log = {
   created_at: string | null
   date: string
   id: number
-  medications: {id: string, name: string}[]
+  medications: { id: string, name: string }[]
   notes: string | null
   symptoms: { [key: string]: any }
   time: string
@@ -22,7 +24,7 @@ const LogDetails = () => {
 
   useEffect(() => {
     const fetchLogDetails = async () => {
-      if (!id) return; 
+      if (!id) return;
 
       const { data, error } = await supabase
         .from('logs')
@@ -48,6 +50,29 @@ const LogDetails = () => {
     );
   }
 
+  const shareLog = async () => {
+    if (log) {
+      const shareContent = `
+        Title: ${log.title}
+        Date: ${log.date}
+        Time: ${log.time}
+        Symptoms: ${JSON.stringify(log.symptoms, null, 2)}
+        Medications: ${log.medications.map(med => med.name).join(', ')}
+        Notes: ${log.notes}
+      `;
+
+      const fileUri = FileSystem.cacheDirectory + 'log.txt';
+      await FileSystem.writeAsStringAsync(fileUri, shareContent);
+
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (isAvailable) {
+        await Sharing.shareAsync(fileUri);
+      } else {
+        alert('Sharing is not available on this device');
+      }
+    }
+  };
+
   return (
     <SafeAreaView>
       {/* include header? leftheader: backarrow, header title: title, rightheader: share  */}
@@ -69,6 +94,7 @@ const LogDetails = () => {
         <Text>Notes: {log.notes}</Text>
       </View>
       <Button title="Back to Logs" onPress={() => router.push('/logs')} />
+      <Button title='share' onPress={shareLog} />
     </SafeAreaView>
   );
 };

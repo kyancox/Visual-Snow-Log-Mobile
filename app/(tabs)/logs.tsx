@@ -64,7 +64,7 @@ const Log = () => {
 
       {logs && (
         <ScrollView className='' >
-          {logs.map(item => (
+          {logs.slice(0).reverse().map(item => (
             <LogPreview key={item.id}
               id={item.id}
               title={item.title}

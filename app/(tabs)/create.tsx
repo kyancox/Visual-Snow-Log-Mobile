@@ -193,10 +193,19 @@ const Create = () => {
       .select()
 
     setSubmitted(true)
-    if (error) console.error(error)
-    else {
+    if (error) {
+      console.error(error)
+      Alert.alert(error.message)
+    } else {
       console.log(`Data: ${JSON.stringify(data)}`)
-      router.push(`/logs/${data[0].id}`)
+      Alert.alert(
+        'Log submitted!',
+        '',
+        [
+          { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`) , style: 'default', isPreferred: true },
+          { text: 'Exit', style: 'cancel' }
+        ]
+      )
       clearState()
       triggerRefresh()
     }
@@ -270,7 +279,7 @@ const Create = () => {
               data={defaultSymptoms}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => handleSymptomPress(item)}>
-                  <View className='p-4 bg-gray-200 m-2'>
+                  <View className='p-4 bg-gray-200 m-2 rounded-md'>
                     <Text>{item.symptom}</Text>
                   </View>
                 </TouchableOpacity>
