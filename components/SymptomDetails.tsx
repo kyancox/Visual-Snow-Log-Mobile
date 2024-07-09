@@ -249,7 +249,7 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
                             if (/^\d{0,2}$/.test(text) || text === '') {
                                 setHours(text);
                             }
-                        }}  
+                        }}
                     />
                     <Text>hours</Text>
                     <TextInput
@@ -278,10 +278,13 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
                     <View className='mx-auto'>
                         {triggerList.map((item) => (
                             <TouchableOpacity key={item.key} className='flex-row justify-start items-center' onPress={() => handleTriggerChange(item.key)}>
-                                <CheckBox
-                                    value={triggersState[item.key] || false}
-                                />
-                                <Text className='m-1'>{item.title}</Text>
+                                <>
+                                    <CheckBox
+                                        value={triggersState[item.key] || false}
+                                        onValueChange={() => handleTriggerChange(item.key)}
+                                    />
+                                    <Text className='m-1'>{item.title}</Text>
+                                </>
                             </TouchableOpacity>
                         ))}
                     </View>
