@@ -85,7 +85,9 @@ const LogDetails = () => {
         <Text className='text-3xl font-extrabold '>{log.title}</Text>
         <Text className='font-semibold'>{formattedDate} at {formattedTime}</Text>
       </View>
-      <ScrollView>
+      <ScrollView
+        className='bg-white mx-2 py-1 rounded-2xl'
+      >
         <View className='mx-auto'>
           <Text className='text-2xl font-bold'>Symptoms Logged:</Text>
 
@@ -106,14 +108,20 @@ const LogDetails = () => {
                         ))
                         : (Array.isArray(subValue) ?
                           subValue.map((item, index) => {
-                            if (index === subValue.length - 1 && subValue.length > 1) {
-                              return `and ${item}`;
+                            if (index === 0 && subValue.length > 2) {
+                              return item.charAt(0).toUpperCase() + item.slice(1) + ',';
                             }
                             if (index === 0) {
                               return item.charAt(0).toUpperCase() + item.slice(1);
                             }
+                            if (index === subValue.length - 1 && subValue.length > 1) {
+                              return `and ${item}`;
+                            }
+                            if (index < subValue.length - 1 && subValue.length > 2) {
+                              return `${item},`
+                            }
                             return item
-                          }).join(', ')
+                          }).join(' ')
                           : String(subValue))}
                     </Text>
                   ))}
@@ -121,12 +129,23 @@ const LogDetails = () => {
               )}
             </View>
           ))}
-          <Text className='text-2xl font-bold'>Medications:</Text>
-          {log.medications.map((med, index) => (
-            <Text key={med.id} className='text-lg'>{index + 1}. {med.name}</Text>
-          ))}
-          <Text className='text-2xl font-bold'>Notes: {log.notes}</Text>
+          {log.medications.length > 0 && (
+            <>
+              <Text className='text-2xl font-bold'>Medications:</Text>
+              {log.medications.map((med, index) => (
+                <Text key={med.id} className='text-lg'>{index + 1}. {med.name}</Text>
+              ))}
+            </>
+          )}
+
+          {log.notes && (
+            <>
+              <Text className='text-2xl font-bold'>Notes:</Text>
+              <Text className='text-lg'>{log.notes}</Text>
+            </>
+          )}
         </View>
+        <Text className='mb-1'></Text>
       </ScrollView>
       <Button title="Back to Logs" color='#FFA500' onPress={() => router.push('/logs')} />
     </SafeAreaView>
