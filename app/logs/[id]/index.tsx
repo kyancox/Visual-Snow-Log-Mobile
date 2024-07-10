@@ -80,29 +80,28 @@ const LogDetails = () => {
 
 
   return (
-    <SafeAreaView className=' h-full'>
+    <SafeAreaView className=''>
       <View className='flex flex-col items-center justify-center rounded shadow p-2 bg-gray-300 border border-gray-400 mx-auto my-3'>
         <Text className='text-3xl font-extrabold '>{log.title}</Text>
         <Text className='font-semibold'>{formattedDate} at {formattedTime}</Text>
       </View>
       <ScrollView
-        className='bg-white mx-2 py-1 rounded-2xl'
+        className='bg-white mx-2 rounded-2xl'
       >
-        <View className='mx-auto'>
+        <View className='my-3 mx-6'>
           <Text className='text-2xl font-bold'>Symptoms Logged:</Text>
-
-          {Object.entries(log.symptoms).map(([symptom, details]) => (
-            <View key={uuidv4()} className='rounded shadow p-2 bg-gray-200 border border-gray-300 my-2'>
-              <Text className='text-xl font-bold text-center'
+          {Object.entries(log.symptoms).map(([symptom, details], index) => (
+            <View key={uuidv4()} className='my-1'>
+              <Text className='text-xl font-semibold'
               //  style={{
               //   color:'#e69502'
               //  }}
-              >{symptom}</Text>
+              >{index + 1}. {symptom}</Text>
               {Object.keys(details).length !== 0 && (
                 <>
                   {Object.entries(details).map(([subKey, subValue], index, array) => (
                     <Text key={subKey} className='mx-1 text-base'>
-                      <Text className='font-semibold'>{subKey}</Text>: {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
+                      <Text className='font-semibold'>- {subKey}</Text>: {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
                         ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
                           <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' and '}</Text>
                         ))
@@ -131,7 +130,7 @@ const LogDetails = () => {
           ))}
           {log.medications.length > 0 && (
             <>
-              <Text className='text-2xl font-bold'>Medications:</Text>
+              <Text className='text-2xl font-bold'>Medications/Treatments:</Text>
               {log.medications.map((med, index) => (
                 <Text key={med.id} className='text-lg'>{index + 1}. {med.name}</Text>
               ))}
@@ -145,9 +144,13 @@ const LogDetails = () => {
             </>
           )}
         </View>
-        <Text className='mb-1'></Text>
+
       </ScrollView>
-      <Button title="Back to Logs" color='#FFA500' onPress={() => router.push('/logs')} />
+      
+      <View className='mt-auto'>
+        <Button title="Back to Logs" color='#FFA500' onPress={() => router.push('/logs')} />
+        
+      </View>
     </SafeAreaView>
   );
 };
