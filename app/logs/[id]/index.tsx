@@ -46,8 +46,8 @@ const LogDetails = () => {
 
   if (!log) {
     return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
+      <SafeAreaView className='h-full'>
+        <Text className='mx-auto my-auto text-4xl'>Loading...</Text>
       </SafeAreaView>
     );
   }
