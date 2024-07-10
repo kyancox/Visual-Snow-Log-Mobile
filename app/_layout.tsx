@@ -7,33 +7,6 @@ import { RefreshProvider } from '@/providers/RefreshContext'
 import { supabase } from '@/lib/supabase'
 
 const RootLayout = () => {
-  // // Header title for log page
-  // const { id } = useLocalSearchParams();
-  // const [title, setTitle] = useState('')
-
-  // useEffect(() => {
-  //   const fetchLogDetails = async () => {
-  //     if (!id) return; 
-
-  //     const { data, error } = await supabase
-  //       .from('logs')
-  //       .select('*')
-  //       .eq('id', id)
-  //       .single();
-
-  //     if (error) {
-  //       console.error(error);
-  //     } else {
-  //       console.log(data)
-  //       setTitle(data.id);
-  //     }
-  //   };
-
-  //   fetchLogDetails();
-  //   console.log(title)
-  // }, []);
-
-
   return (
     <AuthProvider>
       <RefreshProvider>

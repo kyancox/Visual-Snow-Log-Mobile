@@ -196,7 +196,7 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
         }
         if (triggers.length > 0) object.Triggers = triggers;
         if (debouncedFrequency) object.Frequency = debouncedFrequency;
-        if (debouncedTime) object.Time = debouncedTime;
+        if (debouncedTime) object['Time of Day'] = debouncedTime;
         if (debouncedNotes) object.Notes = debouncedNotes;
 
         onDetailsChange(object);

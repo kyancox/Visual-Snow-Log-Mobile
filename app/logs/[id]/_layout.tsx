@@ -73,7 +73,7 @@ const LogsLayout = () => {
     return (
         <Stack
             screenOptions={{
-                headerTitle: title,
+                headerTitle: title ?? 'Loading',
                 headerShown: true,
                 headerLeft: () => (
                     <MaterialIcons

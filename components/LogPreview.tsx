@@ -17,8 +17,8 @@ interface LogPreviewProps {
 
 const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPreviewProps) => {
 
-    const formattedDate = format(parseISO(date), 'MM-dd-yyyy')
-    const formattedTime = format(parseISO(date + 'T' + time), 'hh:mm a')
+    const formattedDate = format(parseISO(date), 'MMMM do, yyyy')
+    const formattedTime = format(parseISO(date + 'T' + time), 'h:mm a')
 
     const handleDelete = async () => {
 
