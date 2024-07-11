@@ -1,9 +1,8 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Share } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Stack, Slot, useRouter, useLocalSearchParams } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
-import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { format, parseISO } from 'date-fns'
 
@@ -103,15 +102,17 @@ ${log.notes &&
 
 `;
 
-            const sanitizedTitle = sanitizeFileName(log.title);
-            const fileUri = FileSystem.cacheDirectory + sanitizedTitle + '.txt';
-            await FileSystem.writeAsStringAsync(fileUri, shareContent);
-
-            const isAvailable = await Sharing.isAvailableAsync();
-            if (isAvailable) {
-                await Sharing.shareAsync(fileUri);
-            } else {
-                alert('Sharing is not available on this device');
+            try {
+                await Share.share({
+                    message: shareContent,
+                    title: log.title,
+                });
+            } catch (error) {
+                if (error instanceof Error) {
+                    alert('Error sharing log: ' + error.message);
+                } else {
+                    alert('Error sharing log: ' + String(error));
+                }
             }
         }
     };
