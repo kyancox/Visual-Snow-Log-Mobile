@@ -2,8 +2,6 @@ import { View, Text, SafeAreaView, Button, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
-import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
 import { format, parseISO } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid'
 

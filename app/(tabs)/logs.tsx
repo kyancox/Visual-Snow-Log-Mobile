@@ -1,13 +1,13 @@
 import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button } from 'react-native'
 import { Link } from "expo-router";
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
 import { useAuth } from '@/providers/AuthProvider';
 import LogPreview from '@/components/LogPreview';
 import { useRefresh } from '@/providers/RefreshContext';
 import useDebounce from '@/hooks/useDebounce';
-
+import { useToast } from "react-native-toast-notifications";
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Log = () => {
@@ -16,6 +16,8 @@ const Log = () => {
   const debouncedSearchQuery = useDebounce(searchQuery, 150);
   const [sortOrder, setSortOrder] = useState(true) // True = Latest, False = Oldest
   const { refresh, triggerRefresh } = useRefresh()
+  const toast = useToast()
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const readUserLogs = async () => {
@@ -36,6 +38,17 @@ const Log = () => {
   useEffect(() => {
     triggerRefresh()
   }, [])
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const order = sortOrder ? 'Latest' : 'Oldest'
+    toast.show(`Sort by: ${order}`, {
+    })
+
+  }, [sortOrder])
 
   const filteredLogs = logs?.filter(log =>
     log.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
