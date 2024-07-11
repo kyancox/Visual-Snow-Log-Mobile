@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import { format, parseISO } from 'date-fns'
 
 type Log = {
     created_at: string | null
@@ -46,18 +47,64 @@ const LogsLayout = () => {
         fetchLogDetails();
     }, []);
 
+    const sanitizeFileName = (name: string) => {
+        return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    };
+    
     const shareLog = async () => {
         if (log) {
-            const shareContent = `
-            Title: ${log.title}
-            Date: ${log.date}
-            Time: ${log.time}
-            Symptoms: ${JSON.stringify(log.symptoms, null, 2)}
-            Medications: ${log.medications.map(med => med.name).join(', ')}
-            Notes: ${log.notes}
-          `;
+            const formattedDate = format(parseISO(log.date), 'MMMM do, yyyy')
+            const formattedTime = format(parseISO(log.date + 'T' + log.time), 'h:mm a')
 
-            const fileUri = FileSystem.cacheDirectory + 'log.txt';
+            const shareContent = 
+`
+${log.title}
+${formattedDate} at ${formattedTime}
+
+${Object.entries(log.symptoms).map(([symptom, details], index) => {
+    const detailsContent = Object.keys(details).length !== 0 ? 
+        Object.entries(details).map(([subKey, subValue]) => (
+            `  - ${subKey}: ${typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
+                ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
+                    `${subItemValue} ${subItemKey}${subIndex === subArray.length - 1 ? '' : ' and '}`
+                )).join('')
+                : (Array.isArray(subValue) ?
+                    subValue.map((item, index) => {
+                        if (index === 0 && subValue.length > 2) {
+                            return item.charAt(0).toUpperCase() + item.slice(1) + ',';
+                        }
+                        if (index === 0) {
+                            return item.charAt(0).toUpperCase() + item.slice(1);
+                        }
+                        if (index === subValue.length - 1 && subValue.length > 1) {
+                            return `and ${item}`;
+                        }
+                        if (index < subValue.length - 1 && subValue.length > 2) {
+                            return `${item},`
+                        }
+                        return item
+                    }).join(' ')
+                    : String(subValue))}`
+        )).join('\n')
+        : '';
+
+    return `${index + 1}. ${symptom}${detailsContent ? '\n' + detailsContent : ''}`;
+}).join('\n\n')}
+
+${log.medications.length > 0 ? 
+`Medications:\n${log.medications.map((med, index) => (
+    `${index + 1}. ${med.name}`
+  )).join('\n')}` 
+: ''}
+
+${log.notes &&  
+`Notes:\n${log.notes}`
+}
+
+`;
+
+            const sanitizedTitle = sanitizeFileName(log.title);
+            const fileUri = FileSystem.cacheDirectory + sanitizedTitle + '.txt';
             await FileSystem.writeAsStringAsync(fileUri, shareContent);
 
             const isAvailable = await Sharing.isAvailableAsync();

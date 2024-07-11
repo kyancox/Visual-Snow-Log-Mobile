@@ -52,28 +52,6 @@ const LogDetails = () => {
     );
   }
 
-  const shareLog = async () => {
-    if (log) {
-      const shareContent = `
-        Title: ${log.title}
-        Date: ${log.date}
-        Time: ${log.time}
-        Symptoms: ${JSON.stringify(log.symptoms, null, 2)}
-        Medications: ${log.medications.map(med => med.name).join(', ')}
-        Notes: ${log.notes}
-      `;
-
-      const fileUri = FileSystem.cacheDirectory + 'log.txt';
-      await FileSystem.writeAsStringAsync(fileUri, shareContent);
-
-      const isAvailable = await Sharing.isAvailableAsync();
-      if (isAvailable) {
-        await Sharing.shareAsync(fileUri);
-      } else {
-        alert('Sharing is not available on this device');
-      }
-    }
-  };
 
   const formattedDate = format(parseISO(log.date), 'MMMM do, yyyy')
   const formattedTime = format(parseISO(log.date + 'T' + log.time), 'h:mm a')
