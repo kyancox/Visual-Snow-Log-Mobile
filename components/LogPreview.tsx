@@ -22,16 +22,27 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
 
     const handleDelete = async () => {
 
-        const { error } = await supabase
-            .from('logs')
-            .delete()
-            .eq('id', id)
+        Alert.alert(`Are you sure you want to delete ${title}?`, 'This action cannot be undone.', [
+            {
+              text: 'Delete',
+              onPress: async () => {
+                const { error } = await supabase
+                .from('logs')
+                .delete()
+                .eq('id', id)
 
-        if (error) console.error(error)
-        else {
-            Alert.alert('Delete successful')
-            handleRefresh()
-        }
+                if (error) {
+                    Alert.alert(error.message)
+                    console.error(error)
+                }
+                else handleRefresh()
+              },
+              style: 'destructive',
+            },
+            {text: 'Cancel', style: 'cancel'},
+          ]);
+
+       
     }
 
 
