@@ -86,20 +86,16 @@ ${Object.entries(log.symptoms).map(([symptom, details], index) => {
                     : String(subValue))}`
         )).join('\n')
         : '';
-
     return `${index + 1}. ${symptom}${detailsContent ? '\n' + detailsContent : ''}`;
 }).join('\n\n')}
-
 ${log.medications.length > 0 ? 
-`Medications:\n${log.medications.map((med, index) => (
+`\nMedications:\n${log.medications.map((med, index) => (
     `${index + 1}. ${med.name}`
   )).join('\n')}` 
 : ''}
-
 ${log.notes &&  
-`Notes:\n${log.notes}`
+`\nNotes:\n${log.notes}`
 }
-
 `;
 
             try {

@@ -57,7 +57,7 @@ const LogDetails = () => {
 
   return (
     <SafeAreaView className=''>
-      <View className='flex flex-col items-center justify-center rounded shadow p-2 bg-gray-300 border border-gray-400 mx-auto my-3'>
+      <View className='flex flex-col items-center justify-center rounded-lg shadow p-2 bg-gray-300 mx-auto my-3'>
         <Text className='text-3xl font-extrabold '>{log.title}</Text>
         <Text className='font-semibold'>{formattedDate} at {formattedTime}</Text>
       </View>
