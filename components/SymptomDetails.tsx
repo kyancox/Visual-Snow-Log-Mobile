@@ -239,7 +239,7 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
             {/* Duration */}
             <View>
                 <Text className='text-xl font-semibold'>Duration:</Text>
-                <View className='my-2 flex flex-1 flex-row justify-around items-center'>
+                <View className='my-2 flex flex-row justify-around items-center'>
                     <TextInput
                         className='border rounded shadow text-center p-2'
                         placeholder="0"
