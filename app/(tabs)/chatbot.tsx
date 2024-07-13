@@ -35,7 +35,7 @@ const Chatbot = () => {
       {
         _id: uuidv4(),
         // change in production
-        text: `Hello! I'm here to help you.`,
+        text: `Hello! I'm here to help you. Ask me a question about VSS!`,
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -202,7 +202,7 @@ const Chatbot = () => {
         <Image
           source={require('../../assets/images/image.png')}
           resizeMode="contain"
-          className="w-full -mb-16 mt-auto"
+          className="w-full -mb-20 mt-auto"
         />
 
       </SafeAreaView     >)}
