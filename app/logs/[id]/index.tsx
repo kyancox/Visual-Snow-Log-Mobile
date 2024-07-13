@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Button, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, Button, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
@@ -54,6 +54,18 @@ const LogDetails = () => {
   const formattedDate = format(parseISO(log.date), 'MMMM do, yyyy')
   const formattedTime = format(parseISO(log.date + 'T' + log.time), 'h:mm a')
 
+  const handleEdit = async () => {
+
+    Alert.alert(`Do you want to edit ${log.title}?`, '', [
+      {
+        text: 'Edit',
+        onPress:() => router.push({ pathname: '/create', params: { log: JSON.stringify(log) } }),
+        style: 'default',
+      },
+      { text: 'Cancel', style: 'cancel' },
+    ]);
+
+  }
 
   return (
     <SafeAreaView className=''>
@@ -122,10 +134,10 @@ const LogDetails = () => {
         </View>
 
       </ScrollView>
-      
+
       <View className='mt-auto'>
+        <Button title="Edit Log" color='#FFA500' onPress={handleEdit} />
         <Button title="Back to Logs" color='#FFA500' onPress={() => router.push('/logs')} />
-        
       </View>
     </SafeAreaView>
   );
