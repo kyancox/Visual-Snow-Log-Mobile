@@ -24,25 +24,52 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
 
         Alert.alert(`Are you sure you want to delete ${title}?`, 'This action cannot be undone.', [
             {
-              text: 'Delete',
-              onPress: async () => {
-                const { error } = await supabase
-                .from('logs')
-                .delete()
-                .eq('id', id)
+                text: 'Delete',
+                onPress: async () => {
+                    const { error } = await supabase
+                        .from('logs')
+                        .delete()
+                        .eq('id', id)
 
-                if (error) {
-                    Alert.alert(error.message)
-                    console.error(error)
-                }
-                else handleRefresh()
-              },
-              style: 'destructive',
+                    if (error) {
+                        Alert.alert(error.message)
+                        console.error(error)
+                    }
+                    else handleRefresh()
+                },
+                style: 'destructive',
             },
-            {text: 'Cancel', style: 'cancel'},
-          ]);
+            { text: 'Cancel', style: 'cancel' },
+        ]);
 
-       
+
+    }
+
+    const handleEdit = async () => {
+
+
+        Alert.alert(`Do you want to edit ${title}?`, '', [
+            {
+                text: 'Edit',
+                onPress: async () => {
+                    let { data: log, error } = await supabase
+                        .from('logs')
+                        .select('*')
+                        .eq('id', id)
+                        .single()
+
+                    if (error) {
+                        Alert.alert(error.message)
+                        console.error(error)
+                    } else {
+                        router.push({ pathname: '/create', params: { log: JSON.stringify(log) } })
+                    }
+                },
+                style: 'default',
+            },
+            { text: 'Cancel', style: 'cancel' },
+        ]);
+
     }
 
 
@@ -57,7 +84,7 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
                 <TouchableOpacity className='p-0.5 rounded' style={{
                     backgroundColor: "#e89c0e"
                 }}>
-                    <AntDesign name='edit' size={24} color={'#FFF'} />
+                    <AntDesign name='edit' size={24} color={'#FFF'} onPress={handleEdit} />
                 </TouchableOpacity>
                 <TouchableOpacity className='p-0.5 rounded' style={{
                     backgroundColor: "#e89c0e"

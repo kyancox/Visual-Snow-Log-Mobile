@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { AntDesign } from '@expo/vector-icons';
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 
 import SymptomDetails from '@/components/SymptomDetails';
 import Accordion from '@/components/Accordion';
@@ -16,7 +16,10 @@ import { useRefresh } from '@/providers/RefreshContext';
 const Create = () => {
 
   const { session, user } = useAuth()
-  const {triggerRefresh} = useRefresh()
+  const { triggerRefresh } = useRefresh()
+
+  const { log: logParam } = useLocalSearchParams();
+  const log = logParam && typeof logParam === 'string' ? JSON.parse(logParam) : null;
 
   // Date, Time, Title
 
@@ -202,7 +205,7 @@ const Create = () => {
         'Log submitted!',
         '',
         [
-          { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`) , style: 'default', isPreferred: true },
+          { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`), style: 'default', isPreferred: true },
           { text: 'Exit', style: 'cancel' }
         ]
       )
@@ -211,6 +214,59 @@ const Create = () => {
     }
 
   }
+
+  const handleEdit = async () => {
+
+    if (symptomsLogged.length === 0) {
+      Alert.alert('Please add some symptoms', 'test')
+      return
+    }
+
+    if (submitted) {
+      console.error('Log already submitted')
+      return
+    }
+
+    const logData = getBodyData()
+
+    const { data, error } = await supabase
+      .from('logs')
+      .update([logData])
+      .eq('id', log.id)
+      .select()
+
+    setSubmitted(true)
+    if (error) {
+      console.error(error)
+      Alert.alert(error.message)
+    } else {
+      console.log(`Data: ${JSON.stringify(data)}`)
+      Alert.alert(
+        'Changes saved!',
+        '',
+        [
+          { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`), style: 'default', isPreferred: true },
+          { text: 'Exit', style: 'cancel' }
+        ]
+      )
+      clearState()
+      router.push('/create')
+      triggerRefresh()
+    }
+  }
+
+  useEffect(() => {
+    if (log) {
+      setTitle(log.title)
+      setDate(new Date(log.date))
+      setTime(new Date(`${log.date}T${log.time}`))
+      setSymptomsLogged(Object.entries(log.symptoms).map(([symptom, details]) => ({ id: uuidv4(), symptom, details })))
+      setMedications(log.medications)
+      setNotes(log.notes || '')
+    } else {
+      clearState()
+    }
+  }, [logParam])
 
   return (
 
@@ -221,9 +277,14 @@ const Create = () => {
       < SafeAreaView
         className='mx-4'
       >
-
-
-        <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
+        {log?.title ?
+          <>
+            <Text className='text-2xl font-bold text-center'>Editing: {log.title}</Text>
+            <Button title='Cancel Edit' color={'red'} onPress={() => router.push(`/create`)} />
+          </>
+          :
+          <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
+        }
         <ScrollView className='h-full'>
 
 
@@ -232,12 +293,21 @@ const Create = () => {
             <Text className='text-xl font-bold'>
               Log Title:
             </Text>
-            <TextInput
-              className='border rounded shadow p-2 ml-4 flex-1'
-              placeholder={getDefaultTitle()}
-              placeholderTextColor="#888"
-              onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
-            />
+            {log?.title ?
+              <TextInput
+                className='border rounded shadow p-2 ml-4 flex-1'
+                placeholder={title}
+                placeholderTextColor="#888"
+                onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
+              />
+              :
+              <TextInput
+                className='border rounded shadow p-2 ml-4 flex-1'
+                placeholder={getDefaultTitle()}
+                placeholderTextColor="#888"
+                onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
+              />
+            }
           </View>
 
           <View className='flex flex-row justify-between items-center my-1'>
@@ -422,8 +492,12 @@ const Create = () => {
 
           {symptomsLogged.length !== 0 && (
 
-            <View className=''>
-              <Button title='Submit' onPress={handleSubmit} />
+            <View className='mb-8'>
+              {log ?
+                <Button title='Save Changes' onPress={handleEdit} />
+                :
+                <Button title='Submit' onPress={handleSubmit} />
+              }
             </View>
 
           )}
