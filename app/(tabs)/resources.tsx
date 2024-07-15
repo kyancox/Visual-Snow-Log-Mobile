@@ -47,7 +47,7 @@ const Resources = () => {
 
   return (
     <SafeAreaView
-      className='bg-main h-screen'
+      className='h-screen'
     >
       <ScrollView>
 
