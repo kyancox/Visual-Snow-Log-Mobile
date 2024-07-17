@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Alert } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/providers/AuthProvider'
 
@@ -9,7 +9,6 @@ const Backend = () => {
     const user_id = user?.id
 
     const handleExport = async () => {
-        const token = session?.access_token
         const email = user?.email
 
         const response = await fetch('http://localhost:8000/export', {
@@ -20,7 +19,9 @@ const Backend = () => {
             body: JSON.stringify({ email, user_id })
         })
 
-        console.log(JSON.stringify(response, null, 2))
+        const responseBody = await response.text()
+
+        Alert.alert(responseBody)
     }
 
     return (
