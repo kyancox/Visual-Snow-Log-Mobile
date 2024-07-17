@@ -8,6 +8,8 @@ import { useAuth } from '@/providers/AuthProvider'
 import { useReducedMotion } from 'react-native-reanimated'
 import { useRefresh } from '@/providers/RefreshContext'
 
+import Backend  from '@/app/backend'
+
 const Resources = () => {
 
   const { session, user } = useAuth()
@@ -50,6 +52,8 @@ const Resources = () => {
       className='h-screen'
     >
       <ScrollView>
+
+        <Backend/>
 
         {!session ? (
           <Button title='Login' onPress={() => router.push('/(auth)/login')}/>
