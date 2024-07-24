@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, Button, TextInput } from 'react-native'
+import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView } from 'react-native'
 import { supabase } from '@/lib/supabase'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -46,33 +46,35 @@ export default function Auth() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <TextInput
-          className='bg-gray-50 p-2 border border-black rounded'
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={'none'}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <TextInput
-        className='bg-gray-50 p-2 border border-black rounded'
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={'none'}
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+    <SafeAreaView className='bg-white h-full'>
+
+       <View className='mx-auto w-3/4 space-y-4'> 
+         <TextInput
+           className='bg-gray-50 p-2 border border-projectOrange rounded'
+           onChangeText={(text) => setEmail(text)}
+           value={email}
+           placeholder="email@address.com"
+           autoCapitalize={'none'}
+         />
+        
+        
+         <TextInput
+           className='bg-gray-50 p-2 border border-projectOrange rounded'
+           onChangeText={(text) => setPassword(text)}
+           value={password}
+           secureTextEntry={true}
+           placeholder="Password"
+           autoCapitalize={'none'}
+         />
+        
+       </View>
+      <View>
         <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
       </View>
-      <View style={styles.verticallySpaced}>
+      <View >
         <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

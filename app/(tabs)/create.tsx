@@ -363,7 +363,12 @@ const Create = () => {
               value={customSymptom}
               onChangeText={setCustomSymptom}
             />
+            
+            { customSymptom.length > 0 && (
             <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
+            )}
+
+        
           </View>
 
           {symptomsLogged.length > 0 && (

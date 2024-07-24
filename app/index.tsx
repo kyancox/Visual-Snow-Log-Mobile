@@ -1,21 +1,29 @@
-import { Text, View, ScrollView } from 'react-native'
-import { Link } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View, Text, Button, SafeAreaView, Pressable } from 'react-native'
+import React from 'react'
+import { useRouter } from 'expo-router'
+import Logo from '@/components/Logo'
 
-import Auth from '@/components/Auth'
+const Onboarding = () => {
+    const router = useRouter();
 
-
-export default function App() {
     return (
-        <SafeAreaView className="flex-1 gap-6 items-center justify-center bg-white">
-            <Link href="/backend" className='text-6xl text-secondary font-extrabold'>Backend</Link>
-            <Link href="/login" className='text-6xl text-secondary font-extrabold'>Login</Link>
-            <Link href="/chatbot" className='text-6xl text-secondary font-extrabold'>Chatbot</Link>
-            <Link href="/community" className='text-6xl text-secondary font-extrabold'>Community</Link>
-            <Link href="/create" className='text-6xl text-secondary font-extrabold'>Create</Link>
-            <Link href="/logs" className='text-6xl text-secondary font-extrabold'>Log</Link>
-            <Link href="/resources" className='text-6xl text-secondary font-extrabold'>Resources</Link>
-
+        <SafeAreaView className='bg-white h-full'>
+            <Button title='To /pages' onPress={() => router.push('/pages')} />
+            <View className='w-5/6 mx-auto gap-y-3 mt-12'
+            >
+                <Logo />
+                <Text className='text-5xl mb-4'>Start tracking your <Text className='text-projectOrange'>Visual Snow Syndrome</Text>.</Text>
+                <Pressable className=' bg-projectOrange rounded-full mx-8'>
+                    <Text className='text-white font-bold p-3 text-center text-lg'>Create an account</Text>
+                </Pressable>
+                <Pressable className=' bg-white border-2 border-projectOrange rounded-full mx-8'
+                onPress={() => router.push('/login')}
+                >
+                    <Text className='text-projectOrange font-bold p-3 text-center text-lg'>Sign in</Text>
+                </Pressable>
+            </View>
         </SafeAreaView>
     )
 }
+
+export default Onboarding
