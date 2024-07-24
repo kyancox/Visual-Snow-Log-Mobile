@@ -2,6 +2,7 @@ import { View, Text, Button, SafeAreaView, Pressable } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
 import Logo from '@/components/Logo'
+import { Apple } from '@/components/Apple'
 
 const Onboarding = () => {
     const router = useRouter();
@@ -17,10 +18,11 @@ const Onboarding = () => {
                     <Text className='text-white font-bold p-3 text-center text-lg'>Create an account</Text>
                 </Pressable>
                 <Pressable className=' bg-white border-2 border-projectOrange rounded-full mx-8'
-                onPress={() => router.push('/login')}
+                    onPress={() => router.push('/login')}
                 >
                     <Text className='text-projectOrange font-bold p-3 text-center text-lg'>Sign in</Text>
                 </Pressable>
+                <Apple />
             </View>
         </SafeAreaView>
     )
