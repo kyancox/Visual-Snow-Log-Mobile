@@ -12,6 +12,15 @@ module.exports = {
 
     }
     },
+    fontFamily: {
+      pbold: ['PlusJakartaSans-Bold', 'sans-serif'],
+      pextrabold: ['PlusJakartaSans-ExtraBold', 'sans-serif'],
+      pextralight: ['PlusJakartaSans-ExtraLight', 'sans-serif'],
+      plight: ['PlusJakartaSans-Light', 'sans-serif'],
+      pmedium: ['PlusJakartaSans-Medium', 'sans-serif'],
+      pregular: ['PlusJakartaSans-Regular', 'sans-serif'],
+      psemibold: ['PlusJakartaSans-SemiBold', 'sans-serif'],
+    }
   },
   plugins: [],
 }
