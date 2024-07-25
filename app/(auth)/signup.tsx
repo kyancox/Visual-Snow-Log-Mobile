@@ -24,6 +24,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [emailFocused, setEmailFocused] = useState(false)
   const [passwordFocused, setPasswordFocused] = useState(false)
+  const [secondPassword, setSecondPassword] = useState('')
 
   async function signInWithEmail() {
     setLoading(true)
@@ -88,9 +89,9 @@ export default function Auth() {
         <View>
           <Text className='text-2xl mb-1 font-psemibold'>Re-enter Password</Text>
           <TextInput
-            className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
+            className={`bg-gray-100 p-3 border rounded-lg ${secondPassword === password ? 'border-projectOrange' : 'border-red'}`}
             onChangeText={(text) => setPassword(text)}
-            value={password}
+            value={secondPassword}
             secureTextEntry={true}
             placeholder="Password"
             autoCapitalize={'none'}
@@ -117,6 +118,15 @@ export default function Auth() {
             </View>
 
       </View>
+
+      <Pressable className='mt-auto mx-auto'
+      onPress={() => {
+        supabase.auth.signInAnonymously()
+        router.push('/create')
+      }}
+      >
+        <Text className='text-projectOrange'>Continue as Guest</Text>
+      </Pressable>
 
     </SafeAreaView>
   )
