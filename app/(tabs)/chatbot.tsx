@@ -184,7 +184,7 @@ const Chatbot = () => {
       >
         <View className="h-full px-1 flex flex-col items-center justify-center space-y-2">
           <Text className="text-4xl text-center font-extrabold text-tabbar">VSS Chatbot</Text>
-          <Text className="text-xl text-center font-semibold text-tabbar">A chatbot trained to help those with Visual Snow Syndrome, powered by ChatGPT.</Text>
+          <Text className="text-xl text-center font-semibold text-tabbar ">A chatbot trained to help those with Visual Snow Syndrome, powered by ChatGPT.</Text>
           <Text className="text-tabbar">Note: Chatbot does not save your conversations.</Text>
           <Pressable
             onPress={() => setChatStarted(true)}

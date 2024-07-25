@@ -6,11 +6,11 @@ export function Apple() {
   if (Platform.OS === 'ios')
     return (
       <AppleAuthentication.AppleAuthenticationButton
-        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
         buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-        cornerRadius={5}
+        cornerRadius={100}
         className='mx-auto'
-        style={{ width: 200, height: 48 }}
+        style={{ width: '80%', height:'10%' }}
         onPress={async () => {
           try {
             const credential = await AppleAuthentication.signInAsync({

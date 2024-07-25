@@ -83,24 +83,36 @@ export default function Auth() {
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
           />
-          <Pressable className='flex flex-row items-center justify-end mt-2'>
-            <Text className='text-gray-600'>Forgot Password?</Text>
-          </Pressable>
         </View>
 
+        <View>
+          <Text className='text-2xl mb-1 font-psemibold'>Re-enter Password</Text>
+          <TextInput
+            className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
+            placeholder="Password"
+            autoCapitalize={'none'}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
+          />
+        </View>
+
+
         <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
-          onPress={() => signInWithEmail()}
+          onPress={() => signUpWithEmail()}
           disabled={loading}
         >
-          <Text className='text-white font-bold text-center text-lg'>Sign in</Text>
+          <Text className='text-white font-bold text-center text-lg'>Sign up</Text>
         </TouchableOpacity>
 
         <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-                <Text className=''>Don't have an account?</Text>
+                <Text className=''>Already have an account?</Text>
                 <Pressable
-                    onPress={() => router.push('/signup')}
+                    onPress={() => router.push('/login')}
                 >
-                    <Text className='font-bold text-projectOrange'> Sign up</Text>
+                    <Text className='font-bold text-projectOrange'> Sign in</Text>
                 </Pressable>
             </View>
 

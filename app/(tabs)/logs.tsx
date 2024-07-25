@@ -67,21 +67,6 @@ const Log = () => {
     <SafeAreaView
       className='flex-1'
     >
-      <View className='flex flex-row mx-3'>
-        <TextInput
-          className='p-2 border-b border-gray-300 flex-1'
-          placeholder='Search logs...'
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        <View className='ml-3 mr-1 my-auto'>
-          {sortOrder ?
-            <MaterialIcons name='keyboard-arrow-down' onPress={changeSortOrder} size={36} color='#FFA500' />
-            :
-            <MaterialIcons name='keyboard-arrow-up' onPress={changeSortOrder} size={36} color='#FFA500' />
-          }
-        </View>
-      </View>
 
       {logs?.length === 0 && (
         <View
@@ -106,32 +91,50 @@ const Log = () => {
       )}
 
       {logs && (
-        <ScrollView className='' >
-          {sortOrder ?
-            filteredLogs?.slice(0).reverse().map(item => (
-              <LogPreview key={item.id}
-                id={item.id}
-                title={item.title}
-                date={item.date}
-                time={item.time}
-                symptoms={Object.keys(item.symptoms)}
-                handleRefresh={triggerRefresh}
-              />
-            ))
-            :
-            filteredLogs?.map(item => (
-              <LogPreview key={item.id}
-                id={item.id}
-                title={item.title}
-                date={item.date}
-                time={item.time}
-                symptoms={Object.keys(item.symptoms)}
-                handleRefresh={triggerRefresh}
-              />
-            ))
+        <>
+          <View className='flex flex-row mx-3'>
+            <TextInput
+              className='p-2 border-b border-gray-300 flex-1'
+              placeholder='Search logs...'
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            <View className='ml-3 mr-1 my-auto'>
+              {sortOrder ?
+                <MaterialIcons name='keyboard-arrow-down' onPress={changeSortOrder} size={36} color='#FFA500' />
+                :
+                <MaterialIcons name='keyboard-arrow-up' onPress={changeSortOrder} size={36} color='#FFA500' />
+              }
+            </View>
+          </View>
 
-          }
-        </ScrollView>
+          <ScrollView className='' >
+            {sortOrder ?
+              filteredLogs?.slice(0).reverse().map(item => (
+                <LogPreview key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  date={item.date}
+                  time={item.time}
+                  symptoms={Object.keys(item.symptoms)}
+                  handleRefresh={triggerRefresh}
+                />
+              ))
+              :
+              filteredLogs?.map(item => (
+                <LogPreview key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  date={item.date}
+                  time={item.time}
+                  symptoms={Object.keys(item.symptoms)}
+                  handleRefresh={triggerRefresh}
+                />
+              ))
+
+            }
+          </ScrollView>
+        </>
       )}
 
 

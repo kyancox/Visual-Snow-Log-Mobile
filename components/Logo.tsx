@@ -17,7 +17,7 @@ const Logo = () => {
                 }}
                 
             />
-            <Text className='ml-2 font-semibold text-2xl'>Visual Snow Log</Text>
+            <Text className='ml-2 text-2xl font-pextrabold'>Visual Snow Log</Text>
         </View>
     )
 }
