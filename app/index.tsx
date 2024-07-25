@@ -62,7 +62,7 @@ const Onboarding = () => {
                     <Feather name='mail' size={24} color={'white'} />
                     <Text className='text-white font-bold p-3 text-center text-lg'>Continue with Email</Text>
                 </Pressable>
-                <Text className='text-center'>or</Text>
+                <Text className='text-center font-pbold'>or</Text>
                 <Pressable className=' bg-projectOrange rounded-full mx-8 flex flex-row items-center justify-center'
                     onPress={() => {
                         supabase.auth.signInAnonymously()

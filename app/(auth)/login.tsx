@@ -96,16 +96,24 @@ export default function Auth() {
         </TouchableOpacity>
 
         <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-                <Text className=''>Don't have an account?</Text>
-                <Pressable
-                    onPress={() => router.push('/signup')}
-                >
-                    <Text className='font-bold text-projectOrange'> Sign up</Text>
-                </Pressable>
-            </View>
+          <Text className=''>Don't have an account?</Text>
+          <Pressable
+            onPress={() => router.push('/signup')}
+          >
+            <Text className='font-bold text-projectOrange'> Sign up</Text>
+          </Pressable>
+        </View>
 
       </View>
 
+      <Pressable className='mt-auto mx-auto'
+        onPress={() => {
+          supabase.auth.signInAnonymously()
+          router.push('/create')
+        }}
+      >
+        <Text className='text-projectOrange'>Continue as Guest</Text>
+      </Pressable>
     </SafeAreaView>
   )
 }
