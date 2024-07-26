@@ -13,8 +13,8 @@ const Onboarding = () => {
 
     return (
         <SafeAreaView className='bg-white h-full'>
-            <Button title='To /pages' onPress={() => router.push('/pages')} />
-            <View className='w-5/6 mx-auto gap-y-3 mt-12'
+            {/* <Button title='To /pages' onPress={() => router.push('/pages')} /> */}
+            <View className='w-5/6 mx-auto gap-y-3 mt-20'
             >
                 <Logo />
                 <Text className='text-5xl mb-4 font-pmedium'>Start tracking your <Text className='text-projectOrange'>Visual Snow Syndrome</Text>.</Text>

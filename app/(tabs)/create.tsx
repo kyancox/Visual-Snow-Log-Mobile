@@ -1,11 +1,12 @@
-import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native'
+import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert, Pressable, Modal } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router'
+import { Image } from 'expo-image';
 
 import SymptomDetails from '@/components/SymptomDetails';
 import Accordion from '@/components/Accordion';
@@ -162,6 +163,64 @@ const Create = () => {
   };
 
   const [submitted, setSubmitted] = useState(false)
+
+  // Modal
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedSymptom, setSelectedSymptom] = useState<string | null>(null);
+
+  const nameToImagePath: { [key: string]: any } = {
+    'Visual static': require('../../assets/images/visualstatic.jpg'),
+    'Afterimages (Palinopsia)': require('../../assets/images/afterimages.jpg'),
+    'Light sensitivity (Photophobia)': require('../../assets/images/lightsensitivity.jpg'),
+    'Migraines': require('../../assets/images/migraines.jpg'),
+    'Headaches': require('../../assets/images/headaches.jpg'),
+    'Floaters': require('../../assets/images/floaters.jpg'),
+    'Ringing in ears (Tinnitus)': require('../../assets/images/ringinginears.jpg'),
+    'Night blindness (Nyctalopia)': require('../../assets/images/nightblindness.jpg')
+  };
+
+  const handleInfoPress = (symptom: { id: string, symptom: string }) => {
+    setSelectedSymptom(symptom.symptom);
+    setModalVisible(true);
+  };
+
+  const modalDetails = {
+    "Visual static": {
+      details: "Visual static appears as tiny flickering dots or 'snow' across your entire visual field, similar to the static seen on an untuned television. Logging the frequency and intensity of your visual static can help track changes over time and identify potential triggers.",
+      tips: ["Reduce screen time", "Use tinted glasses", "Practice relaxation"]
+    },
+    "Afterimages (Palinopsia)": {
+      details: "Afterimages occur when you continue to see an image even after you have looked away. Keeping a log of these occurrences can assist in understanding their patterns and how they might relate to other symptoms.",
+      tips: ["Avoid bright lights", "Use ambient lighting", "Eye exercises"]
+    },
+    "Light sensitivity (Photophobia)": {
+      details: "Light sensitivity can make bright lights or certain lighting conditions uncomfortable or even painful. Recording your photophobia episodes can help determine which environments or times of day are most problematic for you.",
+      tips: ["Wear sunglasses", "Adjust screen brightness", "Use hats/visors"]
+    },
+    "Migraines": {
+      details: "Migraines are intense, throbbing headaches often accompanied by nausea, vomiting, and sensitivity to light and sound. Tracking your migraine episodes, including triggers and severity, can help you manage and potentially reduce their occurrence.",
+      tips: ["Regular sleep", "Avoid triggers", "Use medication"]
+    },
+    "Headaches": {
+      details: "Headaches can vary in type and intensity, often presenting as a dull ache or sharp pain in different areas of the head. Logging headache details such as duration, location, and potential triggers can provide valuable insights into your overall health.",
+      tips: ["Good posture", "Physical activity", "Cold/warm compress"]
+    },
+    "Floaters": {
+      details: "Floaters are small shapes that drift across your vision, often appearing as spots, threads, or cobwebs. Noting the frequency and changes in your floaters can help monitor their impact on your visual experience.",
+      tips: ["Stay hydrated", "Eye exercises", "Consult specialist"]
+    },
+    "Ringing in ears (Tinnitus)": {
+      details: "Tinnitus is the perception of ringing, buzzing, or other noises in your ears that are not caused by external sounds. Documenting your tinnitus episodes can assist in understanding their connection with other symptoms and identifying any patterns.",
+      tips: ["White noise", "Avoid loud noises", "Stress management"]
+    },
+    "Night blindness (Nyctalopia)": {
+      details: "Night blindness involves difficulty seeing in low light or darkness, making activities like driving at night challenging. Keeping track of your experiences with night blindness can help in identifying situations that exacerbate this symptom and aid in finding effective coping strategies.",
+      tips: ["Vitamin A intake", "Use proper lighting", "Night vision aids"]
+    }
+  };
+
+
 
   const clearState = () => {
     setTitle(getDefaultTitle());
@@ -349,8 +408,11 @@ const Create = () => {
               data={defaultSymptoms}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => handleSymptomPress(item)}>
-                  <View className='p-4 bg-gray-200 m-2 rounded-md'>
+                  <View className='p-4 bg-gray-200 m-2 rounded-md flex flex-row items-center justify-center space-x-2'>
                     <Text>{item.symptom}</Text>
+                    <Pressable onPress={() => handleInfoPress(item)}>
+                      <Feather name='info' size={20} color={'grey'} />
+                    </Pressable>
                   </View>
                 </TouchableOpacity>
               )}
@@ -363,12 +425,12 @@ const Create = () => {
               value={customSymptom}
               onChangeText={setCustomSymptom}
             />
-            
-            { customSymptom.length > 0 && (
-            <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
+
+            {customSymptom.length > 0 && (
+              <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
             )}
 
-        
+
           </View>
 
           {symptomsLogged.length > 0 && (
@@ -508,6 +570,55 @@ const Create = () => {
           )}
 
         </ScrollView>
+
+        {selectedSymptom && (
+          <Modal
+            animationType="fade"
+            visible={modalVisible}
+            transparent
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View className='my-auto justify-center items-center'>
+              <View className='w-11/12 bg-white rounded-2xl p-4 shadow-lg'>
+
+                <View className='flex flex-row items-center justify-between w-full mb-1 '>
+                  <Text className='text-lg font-bold'>{selectedSymptom}</Text>
+                  <AntDesign name='close' size={20} color={'grey'} onPress={() => setModalVisible(!modalVisible)} />
+                </View>
+
+                {nameToImagePath[selectedSymptom] ? (
+                  <Image
+                    source={nameToImagePath[selectedSymptom] as any}
+                    className='w-full'
+                    style={{
+                      height: 200,
+                    }}
+                    contentFit="contain"
+                    transition={1000}
+                  />
+                ) : (
+                  <Text>No image available</Text>
+                )}
+
+                <Text className='text-xl font-semibold my-1'>Details</Text>
+                <Text className=''>{modalDetails[selectedSymptom as keyof typeof modalDetails].details}</Text>
+
+                <Text className='text-xl font-semibold my-1'>Tips for Relief</Text>
+                {modalDetails[selectedSymptom as keyof typeof modalDetails].tips.map(tip => (
+                  <Text key={uuidv4()}>&#8226; {tip}</Text>
+                ))}
+                <Button
+                  title="Close"
+                  color={'#FFA500'}
+                  onPress={() => setModalVisible(!modalVisible)}
+                />
+
+              </View>
+            </View>
+          </Modal>
+        )}
 
       </SafeAreaView >
     </KeyboardAvoidingView>
