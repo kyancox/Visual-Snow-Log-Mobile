@@ -1,24 +1,59 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button, SafeAreaView } from 'react-native'
 import { WebView } from 'react-native-webview';
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useEffect, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar';
 
 const community = () => {
+  const webViewRef = useRef<WebView>(null);
+
+  useEffect(() => {
+    // Enable cookies for the WebView
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`
+        document.cookie = "key=value; path=/; HttpOnly";
+      `);
+    }
+  }, []);
+
+  const goBack = () => {
+    if (webViewRef.current) {
+      webViewRef.current.goBack();
+    }
+  };
+
+  const goHome = () => {
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`
+        window.location.href = 'https://www.reddit.com/r/visualsnow/';
+      `);
+    }
+  };
+
+  const goForward = () => {
+    if (webViewRef.current) {
+      webViewRef.current.goForward();
+    }
+  };
+
+
   return (
     <SafeAreaView
-    style={{
-      backgroundColor: '#08080f'
-    }}
-    className='h-screen'
+      className='h-full'
     >
       <StatusBar style="light" />
-      {/* Issue with bottom 'Open Reddit' tab covered by tabbar, due to h-screen. Fix with margin bottom. */}
+      <View className='flex flex-row justify-between p-1'>
+        <Button title="Back" onPress={goBack} color={'#FFA500'}/>
+        <Button title="Home" onPress={goHome} color={'#FFA500'}/>
+        <Button title="Next" onPress={goForward} color={'#FFA500'}/>
+      </View>
       <WebView
-        className='mb-12'
+        ref={webViewRef}
+        className='flex-1'
         source={{ uri: 'https://www.reddit.com/r/visualsnow/' }}
         allowsBackForwardNavigationGestures
-        />
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+      />
     </SafeAreaView>
   )
 }
