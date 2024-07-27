@@ -1,7 +1,6 @@
 import { View, Text, Button, SafeAreaView } from 'react-native'
 import { WebView } from 'react-native-webview';
 import React, { useEffect, useRef } from 'react'
-import { StatusBar } from 'expo-status-bar';
 
 const community = () => {
   const webViewRef = useRef<WebView>(null);
@@ -40,7 +39,6 @@ const community = () => {
     <SafeAreaView
       className='h-full'
     >
-      <StatusBar style="light" />
       <View className='flex flex-row justify-between p-1'>
         <Button title="Back" onPress={goBack} color={'#FFA500'}/>
         <Button title="Home" onPress={goHome} color={'#FFA500'}/>

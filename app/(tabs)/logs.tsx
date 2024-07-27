@@ -76,6 +76,7 @@ const Log = () => {
 
           <Link href={'/create'} className='' asChild>
             <Pressable
+              className='shadow-lg'
               style={{
                 backgroundColor: '#FFA500',
                 padding: 20,
