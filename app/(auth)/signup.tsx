@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView, Text, Pressable, TouchableOpacity } from 'react-native'
+import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView, Text, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { supabase } from '@/lib/supabase'
 import { Apple } from '@/components/Apple'
 import { router } from 'expo-router'
@@ -68,88 +68,95 @@ export default function Auth() {
     }
 
     return (
-        <SafeAreaView className='bg-white h-full'>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+        >
+            <SafeAreaView className='bg-white h-full'>
+
+                <View className='mx-auto w-10/12 space-y-5 my-auto'>
+                    <Logo />
+                    <View className='flex flex-col'>
+                        <Text className='text-2xl mb-1 font-psemibold'>Email</Text>
+                        <TextInput
+                            className={`bg-gray-100 p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
+                            onChangeText={(text) => setEmail(text)}
+                            value={email}
+                            placeholder="email@address.com"
+                            placeholderTextColor="#888"
+                            autoCapitalize={'none'}
+                            onFocus={() => setEmailFocused(true)}
+                            onBlur={() => setEmailFocused(false)}
+                        />
+                    </View>
 
 
-            <View className='mx-auto w-10/12 space-y-5 my-auto'>
-                <Logo />
-                <View className='flex flex-col'>
-                    <Text className='text-2xl mb-1 font-psemibold'>Email</Text>
-                    <TextInput
-                        className={`bg-gray-100 p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                        placeholder="email@address.com"
-                        autoCapitalize={'none'}
-                        onFocus={() => setEmailFocused(true)}
-                        onBlur={() => setEmailFocused(false)}
-                    />
-                </View>
+                    <View>
+                        <Text className='text-2xl mb-1 font-psemibold'>Password</Text>
+                        <TextInput
+                            className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
+                            onChangeText={(text) => setPassword(text)}
+                            value={password}
+                            secureTextEntry={true}
+                            placeholder="Password"
+                            placeholderTextColor="#888"
+                            autoCapitalize={'none'}
+                            onFocus={() => setPasswordFocused(true)}
+                            onBlur={() => setPasswordFocused(false)}
+                        />
+                    </View>
+
+                    <View>
+                        <Text className='text-2xl mb-1 font-psemibold'>Re-enter Password</Text>
+                        <TextInput
+                            className={`bg-gray-100 p-3 border rounded-lg ${secondPasswordFocused ? 'border-projectOrange' : 'border-white'}`}
+                            onChangeText={(text) => setSecondPassword(text)}
+                            value={secondPassword}
+                            secureTextEntry={true}
+                            placeholder="Password"
+                            placeholderTextColor="#888"
+                            autoCapitalize={'none'}
+                            onFocus={() => setSecondPasswordFocused(true)}
+                            onBlur={() => setSecondPasswordFocused(false)}
+                        />
+                    </View>
+
+                    {password !== secondPassword &&
+                        <Text className='text-red-500 text-center'>
+                            Please make sure both passwords are the same.
+                        </Text>
+                    }
 
 
-                <View>
-                    <Text className='text-2xl mb-1 font-psemibold'>Password</Text>
-                    <TextInput
-                        className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                        secureTextEntry={true}
-                        placeholder="Password"
-                        autoCapitalize={'none'}
-                        onFocus={() => setPasswordFocused(true)}
-                        onBlur={() => setPasswordFocused(false)}
-                    />
-                </View>
-
-                <View>
-                    <Text className='text-2xl mb-1 font-psemibold'>Re-enter Password</Text>
-                    <TextInput
-                        className={`bg-gray-100 p-3 border rounded-lg ${secondPasswordFocused ? 'border-projectOrange' : 'border-white'}`}
-                        onChangeText={(text) => setSecondPassword(text)}
-                        value={secondPassword}
-                        secureTextEntry={true}
-                        placeholder="Password"
-                        autoCapitalize={'none'}
-                        onFocus={() => setSecondPasswordFocused(true)}
-                        onBlur={() => setSecondPasswordFocused(false)}
-                    />
-                </View>
-
-                {password !== secondPassword &&
-                    <Text className='text-red-500 text-center'>
-                        Please make sure both passwords are the same.
-                    </Text>
-                }
-
-
-                <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
-                    onPress={() => signUpWithEmail()}
-                    disabled={loading}
-                >
-                    <Text className='text-white font-bold text-center text-lg'>Sign up</Text>
-                </TouchableOpacity>
-
-                <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-                    <Text className=''>Already have an account?</Text>
-                    <Pressable
-                        onPress={() => router.push('/login')}
+                    <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
+                        onPress={() => signUpWithEmail()}
+                        disabled={loading}
                     >
-                        <Text className='font-bold text-projectOrange'> Sign in</Text>
-                    </Pressable>
+                        <Text className='text-white font-bold text-center text-lg'>Sign up</Text>
+                    </TouchableOpacity>
+
+                    <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
+                        <Text className=''>Already have an account?</Text>
+                        <Pressable
+                            onPress={() => router.push('/login')}
+                        >
+                            <Text className='font-bold text-projectOrange'> Sign in</Text>
+                        </Pressable>
+                    </View>
+
                 </View>
 
-            </View>
+                <Pressable className='mt-auto mx-auto'
+                    onPress={() => {
+                        supabase.auth.signInAnonymously()
+                        router.push('/create')
+                    }}
+                >
+                    <Text className='text-projectOrange'>Continue as Guest</Text>
+                </Pressable>
 
-            <Pressable className='mt-auto mx-auto'
-                onPress={() => {
-                    supabase.auth.signInAnonymously()
-                    router.push('/create')
-                }}
-            >
-                <Text className='text-projectOrange'>Continue as Guest</Text>
-            </Pressable>
-
-        </SafeAreaView>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 
