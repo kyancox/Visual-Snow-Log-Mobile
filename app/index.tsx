@@ -1,15 +1,21 @@
 import { View, Text, Button, SafeAreaView, Pressable, Platform } from 'react-native'
 import React from 'react'
-import { useRouter } from 'expo-router'
+import { useRouter, Redirect } from 'expo-router'
 import Logo from '@/components/Logo'
 import { Apple } from '@/components/Apple'
 import { Feather, AntDesign } from '@expo/vector-icons'
 
 import * as AppleAuthentication from 'expo-apple-authentication'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/AuthProvider'
 
 const Onboarding = () => {
     const router = useRouter();
+    const { isAuthenticated } = useAuth()
+
+    if (isAuthenticated) {
+        return <Redirect href={'/create'} />
+    }
 
     return (
         <SafeAreaView className='bg-white h-full'>
