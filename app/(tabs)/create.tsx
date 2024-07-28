@@ -327,6 +327,12 @@ const Create = () => {
     }
   }, [logParam])
 
+  // TextInput Focused States
+  const [titleFocused, setTitleFocused] = useState(false)
+  const [customSymptomFocused, setCustomSymptomFocused] = useState(false)
+  const [medicationsFocused, setMedicationsFocused] = useState(false)
+  const [notesFocused, setNotesFocused] = useState(false)
+
   return (
 
     <KeyboardAvoidingView
@@ -354,17 +360,21 @@ const Create = () => {
             </Text>
             {log?.title ?
               <TextInput
-                className='border rounded shadow p-2 ml-4 flex-1'
+                className={`bg-gray-200 border rounded  p-2 ml-4 flex-1 ${titleFocused ? 'shadow border-projectOrange' : 'border-white'}`}
                 placeholder={title}
                 placeholderTextColor="#888"
                 onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
+                onFocus={() => setTitleFocused(true)}
+                onBlur={() => setTitleFocused(false)}
               />
               :
               <TextInput
-                className='border rounded shadow p-2 ml-4 flex-1'
+              className={`bg-gray-200 border rounded  p-2 ml-4 flex-1 ${titleFocused ? 'shadow border-projectOrange' : 'border-white'}`}
                 placeholder={getDefaultTitle()}
                 placeholderTextColor="#888"
                 onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
+                onFocus={() => setTitleFocused(true)}
+                onBlur={() => setTitleFocused(false)}
               />
             }
           </View>

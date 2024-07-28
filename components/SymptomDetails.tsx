@@ -215,7 +215,7 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
     return (
         <View key={title} className=''>
             <View className='flex flex-row justify-between items-center'>
-                <Text className='text-xl font-bold flex-1'>{title} Details: </Text>
+                <Text className='text-xl font-bold flex-1 capitalize'>{title} Details: </Text>
             </View >
             {/* Intensity */}
             <View className='flex flex-row justify-between items-center'>
@@ -240,30 +240,34 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
             <View>
                 <Text className='text-xl font-semibold'>Duration:</Text>
                 <View className='my-2 flex flex-row justify-around items-center'>
-                    <TextInput
-                        className='border rounded shadow text-center p-2'
-                        placeholder="0"
-                        keyboardType="numeric"
-                        value={hours}
-                        onChangeText={(text) => {
-                            if (/^\d{0,2}$/.test(text) || text === '') {
-                                setHours(text);
-                            }
-                        }}
-                    />
-                    <Text>hours</Text>
-                    <TextInput
-                        className='border rounded shadow text-center p-2'
-                        placeholder="0"
-                        keyboardType="numeric"
-                        value={minutes}
-                        onChangeText={(text) => {
-                            if (/^\d{0,2}$/.test(text) || text === '') {
-                                setMinutes(text);
-                            }
-                        }}
-                    />
-                    <Text>minutes</Text>
+                    <View className='flex-row items-center justify-center space-x-2'>
+                        <TextInput
+                            className='border rounded shadow text-center p-2'
+                            placeholder="0"
+                            keyboardType="numeric"
+                            value={hours}
+                            onChangeText={(text) => {
+                                if (/^\d{0,2}$/.test(text) || text === '') {
+                                    setHours(text);
+                                }
+                            }}
+                        />
+                        <Text>hours</Text>
+                    </View>
+                   <View className='flex-row items-center justify-center space-x-2'>
+                     <TextInput
+                         className='border rounded shadow text-center p-2'
+                         placeholder="0"
+                         keyboardType="numeric"
+                         value={minutes}
+                         onChangeText={(text) => {
+                             if (/^\d{0,2}$/.test(text) || text === '') {
+                                 setMinutes(text);
+                             }
+                         }}
+                     />
+                     <Text>minutes</Text>
+                   </View>
                 </View>
             </View>
 
