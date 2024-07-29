@@ -13,13 +13,15 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
-    'PlusJakartaSans-Bold': require('../assets/fonts/PlusJakartaSans-Bold.ttf'),
-    'PlusJakartaSans-ExtraBold': require('../assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
-    'PlusJakartaSans-ExtraLight': require('../assets/fonts/PlusJakartaSans-ExtraLight.ttf'),
-    'PlusJakartaSans-Light': require('../assets/fonts/PlusJakartaSans-Light.ttf'),
-    'PlusJakartaSans-Medium': require('../assets/fonts/PlusJakartaSans-Medium.ttf'),
-    'PlusJakartaSans-Regular': require('../assets/fonts/PlusJakartaSans-Regular.ttf'),
-    'PlusJakartaSans-SemiBold': require('../assets/fonts/PlusJakartaSans-SemiBold.ttf'),
+    'Onest-Black': require('../assets/fonts/Onest-Black.ttf'),
+    'Onest-Bold': require('../assets/fonts/Onest-Bold.ttf'),
+    'Onest-ExtraBold': require('../assets/fonts/Onest-ExtraBold.ttf'),
+    'Onest-ExtraLight': require('../assets/fonts/Onest-ExtraLight.ttf'),
+    'Onest-Light': require('../assets/fonts/Onest-Light.ttf'),
+    'Onest-Medium': require('../assets/fonts/Onest-Medium.ttf'),
+    'Onest-Regular': require('../assets/fonts/Onest-Regular.ttf'),
+    'Onest-SemiBold': require('../assets/fonts/Onest-SemiBold.ttf'),
+    'Onest-Thin': require('../assets/fonts/Onest-Thin.ttf'),
   })
 
   useEffect(() => {

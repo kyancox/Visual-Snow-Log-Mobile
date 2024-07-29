@@ -13,13 +13,15 @@ module.exports = {
     }
     },
     fontFamily: {
-      pbold: ['PlusJakartaSans-Bold', 'sans-serif'],
-      pextrabold: ['PlusJakartaSans-ExtraBold', 'sans-serif'],
-      pextralight: ['PlusJakartaSans-ExtraLight', 'sans-serif'],
-      plight: ['PlusJakartaSans-Light', 'sans-serif'],
-      pmedium: ['PlusJakartaSans-Medium', 'sans-serif'],
-      pregular: ['PlusJakartaSans-Regular', 'sans-serif'],
-      psemibold: ['PlusJakartaSans-SemiBold', 'sans-serif'],
+      oblack: ['Onest-Black', 'sans-serif'],
+      obold: ['Onest-Bold', 'sans-serif'],
+      oextrabold: ['Onest-ExtraBold', 'sans-serif'],
+      oextralight: ['Onest-ExtraLight', 'sans-serif'],
+      olight: ['Onest-Light', 'sans-serif'],
+      omedium: ['Onest-Medium', 'sans-serif'],
+      oregular: ['Onest-Regular', 'sans-serif'],
+      osemibold: ['Onest-SemiBold', 'sans-serif'],
+      othin: ['Onest-Thin', 'sans-serif'],
     }
   },
   plugins: [],
