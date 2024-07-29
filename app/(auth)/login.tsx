@@ -5,6 +5,7 @@ import { Apple } from '@/components/Apple'
 import { router } from 'expo-router'
 
 import Logo from '@/components/Logo'
+import { MaterialIcons } from '@expo/vector-icons'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -58,6 +59,14 @@ export default function Auth() {
     >
       <SafeAreaView className='bg-white h-full'>
 
+        <View className='flex flex-row items-center justify-start p-3'>
+          <MaterialIcons
+            name='arrow-back-ios-new'
+            size={24}
+            onPress={() => router.back()}
+            color='#FFA500'
+          />
+        </View>
 
         <View className='mx-auto w-10/12 space-y-5 my-auto'>
           <Logo />
