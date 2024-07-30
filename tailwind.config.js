@@ -8,8 +8,9 @@ module.exports = {
         secondary: "#005f73",
         main: "#FFF2E6",
         tabbar: "#08080f",
-        projectOrange: '#FFA500'
-
+        projectOrange: '#FFA500',
+        border: '#EBECEC',
+        placeholder: '#888'
     }
     },
     fontFamily: {
@@ -19,7 +20,7 @@ module.exports = {
       oextralight: ['Onest-ExtraLight', 'sans-serif'],
       olight: ['Onest-Light', 'sans-serif'],
       omedium: ['Onest-Medium', 'sans-serif'],
-      oregular: ['Onest-Regular', 'sans-serif'],
+      o: ['Onest-Regular', 'sans-serif'],
       osemibold: ['Onest-SemiBold', 'sans-serif'],
       othin: ['Onest-Thin', 'sans-serif'],
     }
