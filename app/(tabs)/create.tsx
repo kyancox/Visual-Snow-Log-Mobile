@@ -66,8 +66,8 @@ const Create = () => {
   ];
 
   const [customSymptom, setCustomSymptom] = useState('');
-  const [symptomsLogged, setSymptomsLogged] = useState<{ id: string, symptom: string, details: any }[]>([]);
-
+  const [symptomsLogged, setSymptomsLogged] = useState<{ id: string, symptom: string, details: any }[]>([{id: '1', symptom: 'test', details: []}]);
+// TOOD REMOVE
 
   const handleSymptomPress = (symptom: { id: string; symptom: string; }) => {
     console.log(JSON.stringify(symptomsLogged))
@@ -223,14 +223,15 @@ const Create = () => {
 
 
   const clearState = () => {
-    setTitle(getDefaultTitle());
-    setDate(new Date());
-    setTime(new Date());
-    setCustomSymptom('')
-    setSymptomsLogged([]);
-    setMedications([]);
-    setNotes('');
-    setSubmitted(false);
+    // TOOD REMOVE
+    // setTitle(getDefaultTitle());
+    // setDate(new Date());
+    // setTime(new Date());
+    // setCustomSymptom('')
+    // setSymptomsLogged([]);
+    // setMedications([]);
+    // setNotes('');
+    // setSubmitted(false);
   }
 
   const handleSubmit = async () => {
@@ -337,7 +338,9 @@ const Create = () => {
 
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
+      style={{ flex: 1,
+        backgroundColor: '#eff3f9'
+      }}
     >
       < SafeAreaView
         className='mx-4'
@@ -444,12 +447,16 @@ const Create = () => {
           </View>
 
           {symptomsLogged.length > 0 && (
-            <>
-              <Text className='text-xl font-bold'>Symptoms Logged:</Text>
+            <View className='bg-white border p-2 rounded-lg my-2' 
+            style={{
+              borderColor: '#EBECEC'
+            }}
+            >
+              <Text className='text-lg font-osemibold px-2'>Logged Symptoms</Text>
               <View>
                 {symptomsLogged.map((item) => (
                   <View key={item.id} className='flex-row justify-center items-start'>
-                    <Accordion title={`• ${item.symptom}`} onDelete={() => handleRemoveSymptom(item.id)}>
+                    <Accordion title={item.symptom} onDelete={() => handleRemoveSymptom(item.id)}>
                       <SymptomDetails
                         key={item.id}
                         title={item.symptom}
@@ -471,12 +478,12 @@ const Create = () => {
                   </View>
                 ))}
               </View>
-            </>
+            </View>
           )}
 
 
           {/* Medications / Treatments */}
-          <View >
+          <View>
             <Text className='text-xl font-bold'>Medication/Treatments:</Text>
             {medications.map((item => (
               <View className='flex flex-row items-center m-1' key={item.id}>

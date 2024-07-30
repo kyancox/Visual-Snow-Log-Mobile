@@ -6,9 +6,13 @@ import {
     UIManager,
     Platform,
     LayoutAnimation,
+    TouchableOpacity
 } from 'react-native';
 import React, { useState } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import x from '../assets/icons/x.svg'
+
 
 const Accordion = ({
     title,
@@ -32,25 +36,33 @@ const Accordion = ({
         LayoutAnimation.configureNext({
             duration: 300,
             create: { type: 'easeIn', property: 'opacity' },
-            update: { type: 'linear', springDamping: 0.3, duration: 250 },
+            update: { type: 'linear', springDamping: 0.3, duration: 150 },
         });
         setOpened(!opened);
     }
 
     return (
-        <View className="flex-1 m-2.5 p-3.5 bg-white rounded-lg">
+        <View className="flex-1 m-2 p-3.5 border bg-white rounded-lg"
+            style={{
+                borderColor: '#EBECEC'
+            }}>
             <TouchableWithoutFeedback onPress={toggleAccordion}>
                 <View className="flex-row justify-between items-center">
-                    <Text className="capitalize">{title}</Text>
-                    <View className='flex flex-row justify-center items-center space-x-3'>
-                        <MaterialIcons name='delete' size={24} color='#FFA500'  onPress={onDelete} />
-                        <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
+                    <View className='flex flex-row justify-center items-center space-x-1'>
+                        <MaterialIcons name={opened ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={20} color={'grey'} />
+                        <Text className="capitalize font-omedium text-base">{title}</Text>
                     </View>
+                    <TouchableOpacity onPress={onDelete}>
+                        <Image source={x} style={{ width: 24, height: 24 }} />
+                    </TouchableOpacity>
                 </View>
             </TouchableWithoutFeedback>
 
+            
             {opened && (
-                <View className="mt-2">
+                <View className="">
+                    {/* Divider Line */}
+                    <View style={{ height: 1, backgroundColor: '#EBECEC', }} className='my-3' />
                     {children}
                 </View>
             )}
