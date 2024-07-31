@@ -129,7 +129,6 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
 
     // Time of Day
     const [time, setTime] = useState(details['Time of Day']|| '')
-    console.log('Time: ' + time)
 
     const timeIds = [
         {
@@ -358,14 +357,14 @@ const SymptomDetails = ({ title, details, onDetailsChange }: SymptomDetailsProps
             <Text className='font-omedium'>Additional Notes</Text>
             <TextInput
                 multiline
-                className='text-left border border-border rounded-lg shadow p-2 min-w-[20px] min-h-[75px] items-center font-o'
+                className='text-left border border-border rounded-lg shadow p-2 my-2 min-w-[20px] min-h-[75px] items-center font-o'
                 placeholder={`Add additional notes about your ${title.toLowerCase()}...`}
                 placeholderTextColor={'#888'}
                 value={notes}
-                onChangeText={setNotes}
+                onChangeText={setNotes} 
             />
             <TouchableOpacity
-            className='flex flex-row justify-end mt-3'
+            className='flex flex-row justify-end mt-1'
                 onPress={clearState}>
                 <Text className='text-projectOrange font-olight'>Clear Details</Text>
             </TouchableOpacity>

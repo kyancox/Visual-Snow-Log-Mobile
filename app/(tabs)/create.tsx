@@ -1,6 +1,5 @@
-import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert, Pressable, Modal } from 'react-native'
+import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert, Pressable, Modal, SafeAreaView, Appearance } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,11 +12,16 @@ import Accordion from '@/components/Accordion';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 import { useRefresh } from '@/providers/RefreshContext';
+import SymptomSelectable from '@/components/SymptomSelectable';
+import plus from '@/assets/icons/plus.svg'
+import orangeplus from '@/assets/icons/orangeplus.svg'
+import xtrans from '@/assets/icons/xtrans.svg'
 
 const Create = () => {
 
   const { session, user } = useAuth()
   const { triggerRefresh } = useRefresh()
+  const colorScheme = Appearance.getColorScheme();
 
   const { log: logParam } = useLocalSearchParams();
   const log = logParam && typeof logParam === 'string' ? JSON.parse(logParam) : null;
@@ -66,8 +70,7 @@ const Create = () => {
   ];
 
   const [customSymptom, setCustomSymptom] = useState('');
-  const [symptomsLogged, setSymptomsLogged] = useState<{ id: string, symptom: string, details: any }[]>([{id: '1', symptom: 'test', details: []}]);
-// TOOD REMOVE
+  const [symptomsLogged, setSymptomsLogged] = useState<{ id: string, symptom: string, details: any }[]>([]);
 
   const handleSymptomPress = (symptom: { id: string; symptom: string; }) => {
     console.log(JSON.stringify(symptomsLogged))
@@ -81,6 +84,7 @@ const Create = () => {
     if (customSymptom.trim() && !symptomsLogged.some(s => s.symptom === customSymptom)) {
       setSymptomsLogged([...symptomsLogged, { id: uuidv4(), symptom: customSymptom, details: {} }]);
       setCustomSymptom('');
+      setCustomSymptomPressed(false)
     }
   };
 
@@ -108,6 +112,8 @@ const Create = () => {
     name: string;
   }
 
+  const [medication, setMedication] = useState('')
+  // const [medications, setMedications] = useState<Medication[]>([{id: '1', name: 'med1'}, {id: '2', name: 'med2'},{id: '3', name: 'med1'}, {id: '4', name: 'med2'}, {id: 'sadasdas', name: 'med1'}, {id: 'asggdfd', name: 'med2'},{id: 'qwer', name: 'med1'}, {id: 'zxzxvzvx', name: 'med2'}, ]);
   const [medications, setMedications] = useState<Medication[]>([]);
 
   const deleteMedication = (id: string) => {
@@ -122,6 +128,18 @@ const Create = () => {
       }
       return med;
     }));
+  }
+
+  const clearMedication = () => {
+    setMedication('')
+    setMedicationPressed(false)
+  }
+
+  const addMedication = () => {
+    if (medications.length === 0 || (medications.length > 0 && medications[medications.length - 1].name)) {
+      setMedications([...medications, { id: Date.now().toString(), name: medication }]);
+      clearMedication()
+    }
   }
 
   // Additional Notes
@@ -223,7 +241,7 @@ const Create = () => {
 
 
   const clearState = () => {
-    // TOOD REMOVE
+    // TODO REMOVE
     // setTitle(getDefaultTitle());
     // setDate(new Date());
     // setTime(new Date());
@@ -334,89 +352,141 @@ const Create = () => {
   const [medicationsFocused, setMedicationsFocused] = useState(false)
   const [notesFocused, setNotesFocused] = useState(false)
 
+  const [datePickerVisible, setDatePickerVisibility] = useState(false);
+  const [timePickerVisible, setTimePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const [customSymptomPressed, setCustomSymptomPressed] = useState(false)
+
+  const [medicationPressed, setMedicationPressed] = useState(false)
+
   return (
 
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1,
+      style={{
+        flex: 1,
         backgroundColor: '#eff3f9'
       }}
     >
-      < SafeAreaView
-        className='mx-4'
-      >
+      <SafeAreaView className='mx-4 flex-1' >
+
         {log?.title ?
           <>
             <Text className='text-2xl font-bold text-center'>Editing: {log.title}</Text>
             <Button title='Cancel Edit' color={'red'} onPress={() => router.push(`/create`)} />
           </>
           :
-          <Text className='text-3xl font-extrabold'>Log Symptoms</Text>
+          <Text className='text-center text-xl font-obold mb-2'>Log Symptoms</Text>
         }
         <ScrollView className='h-full'>
 
-
-
-          <View className='flex flex-row justify-between items-center my-2'>
-            <Text className='text-xl font-bold'>
-              Log Title:
+          {/* Log Title */}
+          <View className='my-2 space-y-2'>
+            <Text className='font-osemibold'>
+              Log Title
             </Text>
             {log?.title ?
               <TextInput
-                className={`bg-gray-200 border rounded  p-2 ml-4 flex-1 ${titleFocused ? 'shadow border-projectOrange' : 'border-white'}`}
+                className={`border rounded-lg p-3 font-o border-border bg-white`}
                 placeholder={title}
                 placeholderTextColor="#888"
                 onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
-                onFocus={() => setTitleFocused(true)}
-                onBlur={() => setTitleFocused(false)}
               />
               :
               <TextInput
-              className={`bg-gray-200 border rounded  p-2 ml-4 flex-1 ${titleFocused ? 'shadow border-projectOrange' : 'border-white'}`}
+                className={`border rounded-lg p-3 font-o border-border bg-white`}
                 placeholder={getDefaultTitle()}
                 placeholderTextColor="#888"
                 onChangeText={(text) => (setTitle(text || getDefaultTitle()))}
-                onFocus={() => setTitleFocused(true)}
-                onBlur={() => setTitleFocused(false)}
               />
             }
           </View>
 
-          <View className='flex flex-row justify-between items-center my-1'>
-            <Text className='text-xl font-bold '>
-              Date:
-            </Text>
-            <DateTimePicker
-              className=''
-              testID="dateTimePicker"
-              value={date}
-              mode="date"
-              display="default"
-              onChange={dateChange}
-            />
+          {/* Date & Time */}
+          <View className='flex flex-row justify- items-center my-2 space-x-4'>
+            <View className='flex flex-col items-start justify-center space-y-2 flex-1' >
+              <Text className='font-osemibold'>Date</Text>
+              <TouchableOpacity className='border border-border bg-white p-3 rounded-lg w-full  ' onPress={showDatePicker} >
+                <Text className='font-o text-placeholder'>{date.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+
+              {datePickerVisible && (
+                <Modal
+                  animationType="slide"
+                  visible={datePickerVisible}
+                  transparent
+                  onRequestClose={() => {
+                    hideDatePicker();
+                  }}
+                >
+                  <View className={`border border-border rounded-lg shadow-lg my-auto w-11/12 mx-auto p-2 ${colorScheme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+                    <DateTimePicker
+                      accentColor='#FFA500'
+                      testID="dateTimePicker"
+                      value={date}
+                      mode="date"
+                      display="inline"
+                      onChange={dateChange}
+                    />
+                    <Button title='Close' color='#FFA500' onPress={hideDatePicker} />
+                  </View>
+                </Modal>
+              )}
+            </View>
+            {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
+
+            <View className='flex flex-col items-start justify-center space-y-2 flex-1' >
+              <Text className='font-osemibold '>Time</Text>
+              <TouchableOpacity className='border border-border bg-white p-3 rounded-lg  w-full' onPress={showTimePicker}>
+                <Text className='font-o text-placeholder'>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+              </TouchableOpacity>
+
+              {timePickerVisible && (
+                <Modal
+                  animationType="slide"
+                  visible={timePickerVisible}
+                  transparent
+                  onRequestClose={() => {
+                    hideTimePicker();
+                  }}
+                >
+                  <View className={`border border-border rounded-lg shadow-lg my-auto w-11/12 mx-auto p-2 ${colorScheme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+                    <DateTimePicker
+                      className=''
+                      testID="timePicker"
+                      value={time}
+                      mode="time"
+                      display="spinner"
+                      onChange={timeChange}
+                    />
+                    <Button title='Close' color='#FFA500' onPress={hideTimePicker} />
+                  </View>
+                </Modal>
+              )}
+            </View>
+            {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
           </View>
-          {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
 
-          <View className='flex flex-row justify-between items-center my-1'>
-            <Text className='text-xl font-bold '>
-              Time:
-            </Text>
-
-            <DateTimePicker
-              className=''
-              testID="timePicker"
-              value={time}
-              mode="time"
-              display="default"
-              onChange={timeChange}
-
-            />
-          </View>
-          {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
-
-          <View className=''>
-            <Text className='text-2xl font-bold '>Symptoms: <Text className='text-red-500'>*</Text></Text>
-            <FlatList
+          {/* Symptoms */}
+          <View className='mb-2'>
+            <Text className='font-osemibold '>Symptoms <Text className='text-red-500'>*</Text></Text>
+            {/* <FlatList
               horizontal={true}
               data={defaultSymptoms}
               renderItem={({ item }) => (
@@ -430,9 +500,37 @@ const Create = () => {
                 </TouchableOpacity>
               )}
               keyExtractor={item => item.id}
+            /> */}
 
-            />
-            <TextInput
+            <View className='flex-row flex-wrap justify-center mt-2'>
+              {defaultSymptoms.map((item) => (
+                <SymptomSelectable key={item.id} title={item.symptom} onPress={() => handleSymptomPress(item)} onInfoPress={() => handleInfoPress(item)} />
+              ))}
+              {!customSymptomPressed && (
+                <TouchableOpacity className='flex flex-row items-center mx-auto border border-projectOrange py-2 px-3 border-dashed rounded-full self-start bg-projectOrange/10 space-x-1' onPress={() => setCustomSymptomPressed(true)}>
+                  <Image source={orangeplus} className='bg-' style={{ width: 20, height: 20 }} />
+                  <Text className='text-projectOrange font-o'>Add Custom Symptom</Text>
+                </TouchableOpacity>)}
+            </View>
+
+            {customSymptomPressed && (
+              <View className='flex flex-row mx-1 space-x-2'>
+                <TextInput
+                  multiline
+                  className='border rounded-lg  p-2 flex-1 font-o bg-white border-border'
+                  placeholder="Add custom symptom"
+                  placeholderTextColor='#888'
+                  value={customSymptom}
+                  onChangeText={setCustomSymptom}
+                />
+                <TouchableOpacity className='bg-projectOrange flex items-center justify-center rounded-lg p-1' onPress={addCustomSymptom}>
+                  <Image source={plus} style={{ height: 24, width: 24 }} />
+                </TouchableOpacity>
+
+              </View>
+            )}
+
+            {/* < TextInput
               className='border rounded shadow p-2 mx-4 flex-1'
               placeholder="Add custom symptom"
               value={customSymptom}
@@ -441,20 +539,19 @@ const Create = () => {
 
             {customSymptom.length > 0 && (
               <Button title="Add Symptom" color={'#FFA500'} onPress={addCustomSymptom} />
-            )}
-
+            )} */}
 
           </View>
 
           {symptomsLogged.length > 0 && (
-            <View className='bg-white border p-2 rounded-lg my-2' 
-            style={{
-              borderColor: '#EBECEC'
-            }}
+            <View className='bg-white border p-2 rounded-lg my-2'
+              style={{
+                borderColor: '#EBECEC'
+              }}
             >
-              <Text className='text-lg font-osemibold px-2'>Logged Symptoms</Text>
+              <Text className='text-base font-osemibold px-2'>Logged Symptoms</Text>
               <View>
-                {symptomsLogged.map((item) => (
+                {symptomsLogged.slice().reverse().map((item) => (
                   <View key={item.id} className='flex-row justify-center items-start'>
                     <Accordion title={item.symptom} onDelete={() => handleRemoveSymptom(item.id)}>
                       <SymptomDetails
@@ -483,9 +580,50 @@ const Create = () => {
 
 
           {/* Medications / Treatments */}
-          <View>
-            <Text className='text-xl font-bold'>Medication/Treatments:</Text>
-            {medications.map((item => (
+          <Text className='font-osemibold'>Medication/Treatments:</Text>
+          {medications.length > 0 && (
+            medications.map((item, index) => (
+              <View key={item.id} className='flex flex-row items-center justify-center m-1'>
+                <Text className='font-o text-base flex-1'><Text className='font-osemibold'>{index + 1}.</Text> {item.name}</Text>
+                <TouchableOpacity className='flex items-center justify-center rounded-lg p-1' style={{ backgroundColor: '#F6E1E1' }} onPress={() => deleteMedication(item.id)}>
+                  <Image source={xtrans} style={{ height: 24, width: 24 }} />
+                </TouchableOpacity>
+              </View>
+            ))
+          )}
+
+          <View className='mt-1 mb-3'>
+            {!medicationPressed && (
+              <TouchableOpacity className='flex flex-row items-center justify-center mx-auto border border-projectOrange p-4 border-dashed rounded-lg bg-projectOrange/10 space-x-1 w-full' onPress={() => setMedicationPressed(true)}>
+                <Image source={orangeplus} className='bg-' style={{ width: 20, height: 20 }} />
+                <Text className='font-o text-projectOrange'>Add Medication/Treatments</Text>
+              </TouchableOpacity>
+            )}
+
+            {medicationPressed && (
+              <View className='flex flex-row mx-1 space-x-2'>
+                <TextInput
+                  multiline
+                  className='border rounded-lg  p-2 flex-1 font-o bg-white border-border'
+                  placeholder="Add medication/treatment"
+                  placeholderTextColor='#888'
+                  value={medication}
+                  onChangeText={setMedication}
+                />
+                <View className='space-x-1 flex flex-row items-center justify-center'>
+                  <TouchableOpacity className='bg-projectOrange flex items-center justify-center rounded-lg p-1' onPress={addMedication}>
+                    <Image source={plus} style={{ height: 24, width: 24 }} />
+                  </TouchableOpacity>
+                  <TouchableOpacity className='flex items-center justify-center rounded-lg p-1' style={{ backgroundColor: '#F6E1E1' }} onPress={clearMedication}>
+                    <Image source={xtrans} style={{ height: 24, width: 24 }} />
+                  </TouchableOpacity>
+
+                </View>
+              </View>
+            )}
+
+
+            {/* {medications.map((item => (
               <View className='flex flex-row items-center m-1' key={item.id}>
                 <TextInput
                   multiline
@@ -499,10 +637,11 @@ const Create = () => {
                 <AntDesign name='delete' size={24} color='#FFA500' onPress={() => deleteMedication(item.id)} />
 
 
-                {/* <Button title="Delete" onPress={() => deleteMedication(item.id)} /> */}
+              <Button title="Delete" onPress={() => deleteMedication(item.id)} /> 
               </View>
 
             )))}
+             
 
             <Button
               title='Add'
@@ -513,14 +652,16 @@ const Create = () => {
                 }
               }}
             />
+            */}
 
           </View>
 
-          <Text className='text-xl font-semibold'>Additional Notes:</Text>
+          <Text className='font-osemibold'>Additional Notes:</Text>
           <TextInput
             multiline
-            className='text-center border rounded shadow p-2 mx-4 min-w-[20px] items-center'
+            className='text-left font-o border bg-white border-border rounded-lg  p-3 min-h-[110px] my-2 items-center'
             placeholder={`Add additional notes about ${title}`}
+            placeholderTextColor={'#888'}
             value={notes}
             onChangeText={setNotes}
           />

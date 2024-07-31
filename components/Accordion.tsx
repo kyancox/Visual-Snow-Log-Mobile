@@ -53,7 +53,7 @@ const Accordion = ({
                         <Text className="capitalize font-omedium text-base">{title}</Text>
                     </View>
                     <TouchableOpacity onPress={onDelete}>
-                        <Image source={x} style={{ width: 24, height: 24 }} />
+                        <Image source={x} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
                 </View>
             </TouchableWithoutFeedback>

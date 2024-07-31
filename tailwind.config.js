@@ -10,7 +10,8 @@ module.exports = {
         tabbar: "#08080f",
         projectOrange: '#FFA500',
         border: '#EBECEC',
-        placeholder: '#888'
+        placeholder: '#888',
+        background: '#eff3f9'
     }
     },
     fontFamily: {
