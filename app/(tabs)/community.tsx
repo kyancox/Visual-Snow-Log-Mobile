@@ -39,7 +39,7 @@ const community = () => {
     <SafeAreaView
       className='h-full'
     >
-      <View className='flex flex-row justify-between p-1'>
+      <View className='flex flex-row justify-between p-1 mx-1'>
         <Button title="Back" onPress={goBack} color={'#FFA500'}/>
         <Button title="Home" onPress={goHome} color={'#FFA500'}/>
         <Button title="Next" onPress={goForward} color={'#FFA500'}/>

@@ -71,9 +71,9 @@ export default function Auth() {
         <View className='mx-auto w-10/12 space-y-5 my-auto'>
           <Logo />
           <View className='flex flex-col'>
-            <Text className='text-2xl mb-1 font-psemibold'>Email</Text>
+            <Text className='text-2xl mb-1 font-osemibold'>Email</Text>
             <TextInput
-              className={`bg-gray-100 p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
+              className={`bg-gray-100 font-o p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
               onChangeText={(text) => setEmail(text)}
               value={email}
               placeholder="email@address.com"
@@ -86,9 +86,9 @@ export default function Auth() {
 
 
           <View>
-            <Text className='text-2xl mb-1 font-psemibold'>Password</Text>
+            <Text className='text-2xl mb-1 font-osemibold'>Password</Text>
             <TextInput
-              className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
+              className={`bg-gray-100 font-o p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
               onChangeText={(text) => setPassword(text)}
               value={password}
               secureTextEntry={true}
@@ -99,7 +99,7 @@ export default function Auth() {
               onBlur={() => setPasswordFocused(false)}
             />
             <Pressable className='flex flex-row items-center justify-end mt-2'>
-              <Text className='text-gray-600'>Forgot Password?</Text>
+              <Text className='text-gray-600 font-o'>Forgot Password?</Text>
             </Pressable>
           </View>
 
@@ -107,15 +107,15 @@ export default function Auth() {
             onPress={() => signInWithEmail()}
             disabled={loading}
           >
-            <Text className='text-white font-bold text-center text-lg'>Sign in</Text>
+            <Text className='text-white font-obold text-center text-lg'>Sign in</Text>
           </TouchableOpacity>
 
           <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-            <Text className=''>Don't have an account?</Text>
+            <Text className='font-o '>Don't have an account?</Text>
             <Pressable
               onPress={() => router.push('/signup')}
             >
-              <Text className='font-bold text-projectOrange'> Sign up</Text>
+              <Text className='font-obold text-projectOrange'> Sign up</Text>
             </Pressable>
           </View>
 
@@ -127,7 +127,7 @@ export default function Auth() {
             router.push('/create')
           }}
         >
-          <Text className='text-projectOrange'>Continue as Guest</Text>
+          <Text className='text-projectOrange font-o'>Continue as Guest</Text>
         </Pressable>
       </SafeAreaView>
     </KeyboardAvoidingView>

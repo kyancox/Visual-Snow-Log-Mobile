@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button } from 'react-native'
+import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button, ActivityIndicator } from 'react-native'
 import { Link } from "expo-router";
 import React, { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -55,9 +55,10 @@ const Log = () => {
 
   if (!logs) {
     return (
-      <SafeAreaView className='h-full'>
-        <Text className='mx-auto my-auto text-3xl'>Loading your logs...</Text>
-      </SafeAreaView>
+      <SafeAreaView className='h-full flex flex-col items-center justify-center'>
+        <ActivityIndicator size={48} color={'black'}/>
+        <Text className='font-o text-2xl'>Loading your logs...</Text>
+      </SafeAreaView> 
     );
   }
 
@@ -72,19 +73,18 @@ const Log = () => {
         <View
           className='h-full flex flex-col items-center justify-center px-2'
         >
-          <Text className='text-2xl font-extrabold text-center mb-4'>You currently have no VSS logs.</Text>
+          <Text className='text-2xl font-oextrabold text-center mb-4'>You currently have no VSS logs.</Text>
 
           <Link href={'/create'} className='' asChild>
             <Pressable
-              className='shadow-lg'
+              className='shadow-lg rounded-lg'
               style={{
                 backgroundColor: '#FFA500',
                 padding: 20,
-                borderRadius: 5,
                 elevation: 3,
               }}
             >
-              <Text className='text-white text-2xl font-bold'>Make your first log.</Text>
+              <Text className='text-white text-2xl font-obold'>Make your first log.</Text>
             </Pressable>
           </Link>
 

@@ -10,14 +10,14 @@ const Logo = () => {
         <View className='flex flex-row items-center justify-start'>
             <Image
                 source={{uri: logo}}
-                className=''
+                className='rounded-full'
                 style={{
                     width: 32,
                     height: 32
                 }}
                 
             />
-            <Text className='ml-2 text-2xl font-pextrabold'>Visual Snow Log</Text>
+            <Text className='ml-2 text-2xl font-obold text-proj'>Visual Snow Log</Text>
         </View>
     )
 }

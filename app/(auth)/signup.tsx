@@ -85,9 +85,9 @@ export default function Auth() {
                 <View className='mx-auto w-10/12 space-y-5 my-auto'>
                     <Logo />
                     <View className='flex flex-col'>
-                        <Text className='text-2xl mb-1 font-psemibold'>Email</Text>
+                        <Text className='text-2xl mb-1 font-osemibold'>Email</Text>
                         <TextInput
-                            className={`bg-gray-100 p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
+                            className={`bg-gray-100 font-o p-3 border rounded-lg ${emailFocused ? 'border-projectOrange' : 'border-white'}`}
                             onChangeText={(text) => setEmail(text)}
                             value={email}
                             placeholder="email@address.com"
@@ -100,9 +100,9 @@ export default function Auth() {
 
 
                     <View>
-                        <Text className='text-2xl mb-1 font-psemibold'>Password</Text>
+                        <Text className='text-2xl mb-1 font-osemibold'>Password</Text>
                         <TextInput
-                            className={`bg-gray-100 p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
+                            className={`bg-gray-100 font-o p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
                             onChangeText={(text) => setPassword(text)}
                             value={password}
                             secureTextEntry={true}
@@ -115,9 +115,9 @@ export default function Auth() {
                     </View>
 
                     <View>
-                        <Text className='text-2xl mb-1 font-psemibold'>Re-enter Password</Text>
+                        <Text className='text-2xl mb-1 font-osemibold'>Re-enter Password</Text>
                         <TextInput
-                            className={`bg-gray-100 p-3 border rounded-lg ${secondPasswordFocused ? 'border-projectOrange' : 'border-white'}`}
+                            className={`bg-gray-100 font-o p-3 border rounded-lg ${secondPasswordFocused ? 'border-projectOrange' : 'border-white'}`}
                             onChangeText={(text) => setSecondPassword(text)}
                             value={secondPassword}
                             secureTextEntry={true}
@@ -130,7 +130,7 @@ export default function Auth() {
                     </View>
 
                     {password !== secondPassword &&
-                        <Text className='text-red-500 text-center'>
+                        <Text className='text-red-500 font-o text-center'>
                             Please make sure both passwords are the same.
                         </Text>
                     }
@@ -140,15 +140,15 @@ export default function Auth() {
                         onPress={() => signUpWithEmail()}
                         disabled={loading}
                     >
-                        <Text className='text-white font-bold text-center text-lg'>Sign up</Text>
+                        <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
                     </TouchableOpacity>
 
                     <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-                        <Text className=''>Already have an account?</Text>
+                        <Text className='font-o'>Already have an account?</Text>
                         <Pressable
                             onPress={() => router.push('/login')}
                         >
-                            <Text className='font-bold text-projectOrange'> Sign in</Text>
+                            <Text className='font-obold text-projectOrange'> Sign in</Text>
                         </Pressable>
                     </View>
 
@@ -160,25 +160,10 @@ export default function Auth() {
                         router.push('/create')
                     }}
                 >
-                    <Text className='text-projectOrange'>Continue as Guest</Text>
+                    <Text className='text-projectOrange font-o'>Continue as Guest</Text>
                 </Pressable>
 
             </SafeAreaView>
         </KeyboardAvoidingView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 40,
-        padding: 12,
-    },
-    verticallySpaced: {
-        paddingTop: 4,
-        paddingBottom: 4,
-        alignSelf: 'stretch',
-    },
-    mt20: {
-        marginTop: 20,
-    },
-})
