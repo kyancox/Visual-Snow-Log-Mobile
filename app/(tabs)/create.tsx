@@ -763,7 +763,7 @@ const Create = () => {
               <View className='w-11/12 bg-white rounded-2xl p-4 shadow-lg'>
 
                 <View className='flex flex-row items-center justify-between w-full mb-1 '>
-                  <Text className='text-lg font-bold'>{selectedSymptom}</Text>
+                  <Text className='text-lg font-obold'>{selectedSymptom}</Text>
                   <AntDesign name='close' size={20} color={'grey'} onPress={() => setModalVisible(!modalVisible)} />
                 </View>
 
@@ -781,12 +781,12 @@ const Create = () => {
                   <Text>No image available</Text>
                 )}
 
-                <Text className='text-xl font-semibold my-1'>Details</Text>
-                <Text className=''>{modalDetails[selectedSymptom as keyof typeof modalDetails].details}</Text>
+                <Text className='text-xl font-osemibold my-1'>Details</Text>
+                <Text className='font-o'>{modalDetails[selectedSymptom as keyof typeof modalDetails].details}</Text>
 
-                <Text className='text-xl font-semibold my-1'>Tips for Relief</Text>
+                <Text className='text-xl font-osemibold my-1'>Tips for Relief</Text>
                 {modalDetails[selectedSymptom as keyof typeof modalDetails].tips.map(tip => (
-                  <Text key={uuidv4()}>&#8226; {tip}</Text>
+                  <Text key={uuidv4()} className='font-o'>&#8226; {tip}</Text>
                 ))}
                 <Button
                   title="Close"

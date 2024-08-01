@@ -66,7 +66,7 @@ const Log = () => {
 
   return (
     <SafeAreaView
-      className='flex-1'
+      className='flex-1 bg-background'
     >
 
       {logs?.length === 0 && (

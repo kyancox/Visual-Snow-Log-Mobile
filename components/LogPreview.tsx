@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import { format, parseISO } from 'date-fns'
-import { AntDesign, } from '@expo/vector-icons'
+import { Feather, SimpleLineIcons, Ionicons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
 import { router } from 'expo-router'
 
@@ -74,22 +74,22 @@ const LogPreview = ({ id, title, date, time, symptoms, handleRefresh }: LogPrevi
 
 
     return (
-        <TouchableOpacity className='flex flex-row justify-between rounded shadow bg-gray-300 mx-3 my-2 p-2' onPress={() => router.push(`/logs/${id}`)}>
+        <TouchableOpacity className='flex flex-row justify-between rounded shadow bg-gray-300/60 mx-3 my-2 p-2' onPress={() => router.push(`/logs/${id}`)}>
             <View className='flex-1 mr-2'>
                 <Text className='text-xs font-o'>{formattedDate} at {formattedTime} </Text>
                 <Text className='text-xl font-obold'>{title}</Text>
                 <Text className='font-o'><Text className='font-osemibold'>Symptoms</Text>: {symptoms.join(', ')}</Text>
             </View>
             <View className='flex flex-col items-center justify-center gap-2'>
-                <TouchableOpacity className='p-0.5 rounded' style={{
+                <TouchableOpacity className='p-1 rounded' style={{
                     backgroundColor: "#e89c0e"
                 }}>
-                    <AntDesign name='edit' size={24} color={'#FFF'} onPress={handleEdit} />
+                    <SimpleLineIcons name='pencil' size={20} color={'#FFF'} onPress={handleEdit} />
                 </TouchableOpacity>
                 <TouchableOpacity className='p-0.5 rounded' style={{
                     backgroundColor: "#e89c0e"
                 }}>
-                    <AntDesign name='delete' size={24} color={'#FFF'} onPress={handleDelete} />
+                    <Ionicons name='trash-outline' size={24} color={'#FFF'} onPress={handleDelete} />
                 </TouchableOpacity>
             </View>
         </TouchableOpacity>

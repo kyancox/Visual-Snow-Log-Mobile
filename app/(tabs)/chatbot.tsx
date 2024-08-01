@@ -166,6 +166,9 @@ const Chatbot = () => {
       <Bubble
         {...props}
         wrapperStyle={{
+          left: {
+            backgroundColor: '#FFFFFF'
+          },
           right: {
             backgroundColor: "#FFA500"
           }
@@ -207,7 +210,12 @@ const Chatbot = () => {
 
       </SafeAreaView     >)}
 
-      {chatStarted && (<SafeAreaView className="flex-1" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+      {chatStarted && (
+      <>
+      <SafeAreaView className="flex-1 bg-background"
+        style={{
+          // backgroundColor: 'rgba(255, 255, 255, 0.8)'
+        }}>
         <GiftedChat
           messages={messages}
           onSend={message => onSend(message)}
@@ -219,7 +227,11 @@ const Chatbot = () => {
           renderSend={renderSend}
           renderBubble={renderBubble}
         />
-      </SafeAreaView>)}
+      </SafeAreaView>
+      <View className="p-2 bg-white ">
+      </View>
+    </>
+    )}
     </>
   );
 };
