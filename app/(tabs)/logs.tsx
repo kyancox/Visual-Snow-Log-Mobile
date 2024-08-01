@@ -95,8 +95,9 @@ const Log = () => {
         <>
           <View className='flex flex-row mx-3'>
             <TextInput
-              className='p-2 border-b border-gray-300 flex-1'
+              className='p-2 border-b border-gray-300 flex-1 font-o'
               placeholder='Search logs...'
+              placeholderTextColor='#888'
               value={searchQuery}
               onChangeText={setSearchQuery}
             />

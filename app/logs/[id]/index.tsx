@@ -1,9 +1,14 @@
-import { View, Text, SafeAreaView, Button, ScrollView, Alert } from 'react-native';
+import { View, Text, SafeAreaView, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { format, parseISO } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid'
+import { Image } from 'expo-image'
+import { SimpleLineIcons } from '@expo/vector-icons';
+
+import backarrow from '@/assets/icons/backarrow.svg'
+import arrow from '@/assets/icons/arrow.svg'
 
 type Log = {
   created_at: string | null
@@ -59,7 +64,7 @@ const LogDetails = () => {
     Alert.alert(`Do you want to edit ${log.title}?`, '', [
       {
         text: 'Edit',
-        onPress:() => router.push({ pathname: '/create', params: { log: JSON.stringify(log) } }),
+        onPress: () => router.push({ pathname: '/create', params: { log: JSON.stringify(log) } }),
         style: 'default',
       },
       { text: 'Cancel', style: 'cancel' },
@@ -70,17 +75,17 @@ const LogDetails = () => {
   return (
     <SafeAreaView className=''>
       <View className='flex flex-col items-center justify-center rounded-lg shadow p-2 bg-gray-300 mx-auto my-3'>
-        <Text className='text-3xl font-extrabold '>{log.title}</Text>
-        <Text className='font-semibold'>{formattedDate} at {formattedTime}</Text>
+        <Text className='text-3xl font-obold text-center '>{log.title}</Text>
+        <Text className='font-osemibold'>{formattedDate} at {formattedTime}</Text>
       </View>
       <ScrollView
-        className='bg-white mx-2 rounded-2xl'
+        className='bg-white mx-2 rounded-lg mb-3'
       >
         <View className='my-3 mx-6'>
-          <Text className='text-2xl font-bold'>Symptoms Logged:</Text>
+          <Text className='text-2xl font-obold'>Symptoms Logged:</Text>
           {Object.entries(log.symptoms).map(([symptom, details], index) => (
             <View key={uuidv4()} className='my-1'>
-              <Text className='text-xl font-semibold'
+              <Text className='text-xl font-osemibold'
               //  style={{
               //   color:'#e69502'
               //  }}
@@ -88,10 +93,10 @@ const LogDetails = () => {
               {Object.keys(details).length !== 0 && (
                 <>
                   {Object.entries(details).map(([subKey, subValue], index, array) => (
-                    <Text key={subKey} className='mx-1 text-base'>
-                      <Text className='font-semibold'>- {subKey}</Text>: {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
+                    <Text key={subKey} className='mx-1 font-o text-base'>
+                      <Text className='font-osemibold'>- {subKey}</Text>: {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
                         ? Object.entries(subValue).map(([subItemKey, subItemValue], subIndex, subArray) => (
-                          <Text key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' and '}</Text>
+                          <Text className='font-o' key={subItemKey}>{subItemValue} {subItemKey}{subIndex === subArray.length - 1 ? '' : ' and '}</Text>
                         ))
                         : (Array.isArray(subValue) ?
                           subValue.map((item, index) => {
@@ -118,26 +123,32 @@ const LogDetails = () => {
           ))}
           {log.medications.length > 0 && (
             <>
-              <Text className='text-2xl font-bold'>Medications/Treatments:</Text>
+              <Text className='text-xl font-obold'>Medications/Treatments:</Text>
               {log.medications.map((med, index) => (
-                <Text key={med.id} className='text-lg'>{index + 1}. {med.name}</Text>
+                <Text key={med.id} className='text-base font-o'><Text className='font-osemibold'>{index + 1}.</Text> {med.name}</Text>
               ))}
             </>
           )}
 
           {log.notes && (
             <>
-              <Text className='text-2xl font-bold'>Notes:</Text>
-              <Text className='text-lg'>{log.notes}</Text>
+              <Text className='text-xl font-obold'>Notes:</Text>
+              <Text className='text-base font-o'>{log.notes}</Text>
             </>
           )}
         </View>
 
       </ScrollView>
 
-      <View className='mt-auto'>
-        <Button title="Edit Log" color='#FFA500' onPress={handleEdit} />
-        <Button title="Back to Logs" color='#FFA500' onPress={() => router.push('/logs')} />
+      <View className='mt-auto mx-2 space-y-2'>
+      <TouchableOpacity className='flex flex-row items-center justify-center p-4 rounded-lg bg-projectOrange space-x-2 w-full' onPress={handleEdit}>
+        <SimpleLineIcons name='pencil' size={16} color={'white'} />
+          <Text className='font-osemibold text-base text-white'>Edit Log</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className='flex flex-row items-center justify-center  p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={() => router.back()}>
+          <Image source={backarrow} className='bg-' style={{ width: 24, height: 24 }} />
+          <Text className='font-osemibold text-base text-white'>Back to Logs</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

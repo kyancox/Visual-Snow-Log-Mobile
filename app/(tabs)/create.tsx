@@ -21,7 +21,7 @@ import arrow from '@/assets/icons/arrow.svg'
 const Create = () => {
 
   const { session, user } = useAuth()
-  const { triggerRefresh } = useRefresh()
+  const { refresh, triggerRefresh } = useRefresh()
   const colorScheme = Appearance.getColorScheme();
 
   const { log: logParam } = useLocalSearchParams();
@@ -242,15 +242,14 @@ const Create = () => {
 
 
   const clearState = () => {
-    // TODO REMOVE
-    // setTitle(getDefaultTitle());
-    // setDate(new Date());
-    // setTime(new Date());
-    // setCustomSymptom('')
-    // setSymptomsLogged([]);
-    // setMedications([]);
-    // setNotes('');
-    // setSubmitted(false);
+    setTitle(getDefaultTitle());
+    setDate(new Date());
+    setTime(new Date());
+    setCustomSymptom('')
+    setSymptomsLogged([]);
+    setMedications([]);
+    setNotes('');
+    setSubmitted(false);
   }
 
   const handleSubmit = async () => {
@@ -279,7 +278,6 @@ const Create = () => {
       console.error(error)
       Alert.alert(error.message)
     } else {
-      console.log(`Data: ${JSON.stringify(data)}`)
       Alert.alert(
         'Log submitted!',
         '',
@@ -319,7 +317,8 @@ const Create = () => {
       console.error(error)
       Alert.alert(error.message)
     } else {
-      console.log(`Data: ${JSON.stringify(data)}`)
+      router.push('/create')
+      router.push('/logs')
       Alert.alert(
         'Changes saved!',
         '',
@@ -329,7 +328,6 @@ const Create = () => {
         ]
       )
       clearState()
-      router.push('/create')
       triggerRefresh()
     }
   }
@@ -389,8 +387,10 @@ const Create = () => {
 
         {log?.title ?
           <>
-            <Text className='text-2xl font-bold text-center'>Editing: {log.title}</Text>
-            <Button title='Cancel Edit' color={'red'} onPress={() => router.push(`/create`)} />
+            <Text className='text-xl font-obold text-center'><Text className=''>Editing:</Text> {log.title}</Text>
+            <TouchableOpacity className='mx-auto bg-red-500 py-1 px-3 rounded-full my-1' onPress={() => router.push('/create')}>
+              <Text className='font-o text-base text-white'>Cancel Edit</Text>
+            </TouchableOpacity>
           </>
           :
           <Text className='text-center text-xl font-obold mb-2'>Log Symptoms</Text>
@@ -660,19 +660,32 @@ const Create = () => {
           <Text className='font-osemibold text-lg'>Additional Notes:</Text>
           <TextInput
             multiline
-            className='text-left font-o border bg-white border-border rounded-lg p-3 min-h-[110px] my-1 items-center'
+            className={`text-left font-o border bg-white border-border rounded-lg p-3 min-h-[110px] my-1 items-center ${symptomsLogged.length === 0 ? 'mb-5' : ''}`}
             placeholder={`Add additional notes about ${title}`}
             placeholderTextColor='#888'
             value={notes}
             onChangeText={setNotes}
           />
 
+
           {symptomsLogged.length > 0 && (
-            <TouchableOpacity className='flex flex-row items-center justify-center mx-auto p-4 rounded-lg bg-projectOrange space-x-1 w-full mt-5 mb-10' onPress={() => setMedicationPressed(true)}>
-              <Text className='font-osemibold text-white'>Preview Log</Text>
-              <Image source={arrow} className='bg-' style={{ width: 20, height: 20 }} />
-            </TouchableOpacity>
+
+            <>
+              {log ?
+                <TouchableOpacity className='flex flex-row items-center justify-center mx-auto p-4 rounded-lg bg-projectOrange space-x-1 w-full mt-5 mb-10' onPress={handleEdit}>
+                  <Text className='font-osemibold text-white'>Submit Edit</Text>
+                  <Image source={arrow} className='bg-' style={{ width: 20, height: 20 }} />
+                </TouchableOpacity>
+                :
+                <TouchableOpacity className='flex flex-row items-center justify-center mx-auto p-4 rounded-lg bg-projectOrange space-x-1 w-full mt-5 mb-10' onPress={() => router.push({ pathname: '/logpreview', params: { logData: JSON.stringify(getBodyData()) } })}>
+                  <Text className='font-osemibold text-white'>Preview Log</Text>
+                  <Image source={arrow} className='bg-' style={{ width: 20, height: 20 }} />
+                </TouchableOpacity>
+              }
+            </>
+
           )}
+
 
           {/* Review Section */}
           {/* {symptomsLogged.length > 0 && (
