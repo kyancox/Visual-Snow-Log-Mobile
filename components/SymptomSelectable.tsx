@@ -18,7 +18,7 @@ const SymptomSelectable = ({ title, onPress, onInfoPress }: SymptomSelectablePro
             onPress={onPress}
             style={{ alignSelf: 'flex-start' }}
         >
-            <Text className={`font-olight text-sm `} >{title}</Text>
+            <Text className={`font-olight text-base `} >{title}</Text>
             <TouchableOpacity className='' onPress={onInfoPress}>
                 <Image source={info} style={{ width: 20, height: 20 }} />
             </TouchableOpacity>

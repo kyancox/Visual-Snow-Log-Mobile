@@ -16,6 +16,7 @@ import SymptomSelectable from '@/components/SymptomSelectable';
 import plus from '@/assets/icons/plus.svg'
 import orangeplus from '@/assets/icons/orangeplus.svg'
 import xtrans from '@/assets/icons/xtrans.svg'
+import arrow from '@/assets/icons/arrow.svg'
 
 const Create = () => {
 
@@ -397,8 +398,8 @@ const Create = () => {
         <ScrollView className='h-full'>
 
           {/* Log Title */}
-          <View className='my-2 space-y-2'>
-            <Text className='font-osemibold'>
+          <View className='my-1 space-y-1'>
+            <Text className='text-lg font-osemibold'>
               Log Title
             </Text>
             {log?.title ?
@@ -419,9 +420,9 @@ const Create = () => {
           </View>
 
           {/* Date & Time */}
-          <View className='flex flex-row justify- items-center my-2 space-x-4'>
-            <View className='flex flex-col items-start justify-center space-y-2 flex-1' >
-              <Text className='font-osemibold'>Date</Text>
+          <View className='flex flex-row justify- items-center my-1 space-x-4'>
+            <View className='flex flex-col items-start justify-center space-y-1 flex-1' >
+              <Text className='text-lg font-osemibold'>Date</Text>
               <TouchableOpacity className='border border-border bg-white p-3 rounded-lg w-full  ' onPress={showDatePicker} >
                 <Text className='font-o text-placeholder'>{date.toLocaleDateString()}</Text>
               </TouchableOpacity>
@@ -451,8 +452,8 @@ const Create = () => {
             </View>
             {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
 
-            <View className='flex flex-col items-start justify-center space-y-2 flex-1' >
-              <Text className='font-osemibold '>Time</Text>
+            <View className='flex flex-col items-start justify-center space-y-1 flex-1' >
+              <Text className='font-osemibold text-lg'>Time</Text>
               <TouchableOpacity className='border border-border bg-white p-3 rounded-lg  w-full' onPress={showTimePicker}>
                 <Text className='font-o text-placeholder'>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
               </TouchableOpacity>
@@ -484,8 +485,8 @@ const Create = () => {
           </View>
 
           {/* Symptoms */}
-          <View className='mb-2'>
-            <Text className='font-osemibold '>Symptoms <Text className='text-red-500'>*</Text></Text>
+          <View className='mt-1 mb-2'>
+            <Text className='font-osemibold text-lg '>Symptoms <Text className='text-red-500'>*</Text></Text>
             {/* <FlatList
               horizontal={true}
               data={defaultSymptoms}
@@ -549,7 +550,7 @@ const Create = () => {
                 borderColor: '#EBECEC'
               }}
             >
-              <Text className='text-base font-osemibold px-2'>Logged Symptoms</Text>
+              <Text className='text-lg font-osemibold px-2'>Logged Symptoms</Text>
               <View>
                 {symptomsLogged.slice().reverse().map((item) => (
                   <View key={item.id} className='flex-row justify-center items-start'>
@@ -580,7 +581,7 @@ const Create = () => {
 
 
           {/* Medications / Treatments */}
-          <Text className='font-osemibold'>Medication/Treatments:</Text>
+          <Text className='font-osemibold text-lg'>Medication/Treatments:</Text>
           {medications.length > 0 && (
             medications.map((item, index) => (
               <View key={item.id} className='flex flex-row items-center justify-center m-1'>
@@ -656,18 +657,25 @@ const Create = () => {
 
           </View>
 
-          <Text className='font-osemibold'>Additional Notes:</Text>
+          <Text className='font-osemibold text-lg'>Additional Notes:</Text>
           <TextInput
             multiline
-            className='text-left font-o border bg-white border-border rounded-lg  p-3 min-h-[110px] my-2 items-center'
+            className='text-left font-o border bg-white border-border rounded-lg p-3 min-h-[110px] my-1 items-center'
             placeholder={`Add additional notes about ${title}`}
-            placeholderTextColor={'#888'}
+            placeholderTextColor='#888'
             value={notes}
             onChangeText={setNotes}
           />
 
-          {/* Review Section */}
           {symptomsLogged.length > 0 && (
+            <TouchableOpacity className='flex flex-row items-center justify-center mx-auto p-4 rounded-lg bg-projectOrange space-x-1 w-full mt-5 mb-10' onPress={() => setMedicationPressed(true)}>
+              <Text className='font-osemibold text-white'>Preview Log</Text>
+              <Image source={arrow} className='bg-' style={{ width: 20, height: 20 }} />
+            </TouchableOpacity>
+          )}
+
+          {/* Review Section */}
+          {/* {symptomsLogged.length > 0 && (
             <>
               <Text className='text-xl font-semibold'>Review:</Text>
               <Text><Text className='font-bold'>Title:</Text> {title}</Text>
@@ -713,9 +721,9 @@ const Create = () => {
                 <Text><Text className='font-bold'>Log Notes:</Text> {notes}</Text>
               )}
             </>
-          )}
+          )} */}
 
-          {symptomsLogged.length !== 0 && (
+          {/* {symptomsLogged.length !== 0 && (
 
             <View className='mb-8'>
               {log ?
@@ -725,7 +733,7 @@ const Create = () => {
               }
             </View>
 
-          )}
+          )} */}
 
         </ScrollView>
 
