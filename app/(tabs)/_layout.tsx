@@ -12,6 +12,7 @@ import whitelogsicon from '@/assets/icons/whitelogsicon.svg'
 import moreicon from '@/assets/icons/moreicon.svg'
 import whitemoreicon from '@/assets/icons/whitemoreicon.svg'
 import plus from '@/assets/icons/plus.svg'
+import orangeplus from '@/assets/icons/orangeplus.svg'
 
 
 const TabsLayout = () => {
@@ -25,8 +26,8 @@ const TabsLayout = () => {
           tabBarStyle: {
             borderTopWidth: 0,
             backgroundColor: '#FFFFFF',
-            height: 94,
-            // paddingTop: 24,
+            height: 100,
+            paddingTop: 0,
             marginTop: 0,
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25
@@ -54,11 +55,11 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
+                className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
                 {/* <MaterialIcons name='chat-bubble-outline' color={'#6C6D73'} size={24} /> */}
-               { focused ? <Image source={whitechaticon} style={{ width: 24, height: 24 }} /> :
-                <Image source={chaticon} style={{ width: 24, height: 24 }} />}
+                {focused ? <Image source={whitechaticon} style={{ width: 24, height: 24 }} /> :
+                  <Image source={chaticon} style={{ width: 24, height: 24 }} />}
               </View>
             )
           }}
@@ -68,10 +69,19 @@ const TabsLayout = () => {
           options={{
             title: '',
             headerShown: false,
-            tabBarIcon: ({ color, focused }) =>
-              <View className='p-2.5 items-center justify-center rounded-full bg-projectOrange'>
-                <Image source={plus} style={{ width: 32, height: 32 }} />
-              </View>
+            tabBarIcon: ({ color, focused }) => (
+              <>
+                {focused ?
+                  <View className='p-2.5 items-center justify-center rounded-full border border-projectOrange bg-white'>
+                    <Image source={orangeplus} style={{ width: 32, height: 32 }} />
+                  </View>
+                  :
+                  <View className='p-2.5 items-center justify-center rounded-full bg-projectOrange'>
+                    <Image source={plus} style={{ width: 32, height: 32 }} />
+                  </View>
+                }
+              </>
+            )
 
           }}
         />
@@ -82,11 +92,12 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
+                className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
                 {/* <MaterialIcons name='chat-bubble-outline' color={'#6C6D73'} size={24} /> */}
                 {focused ?
-                  <Image source={whitelogsicon} style={{ width: 24, height: 24 }} />:
+                  <Image source={whitelogsicon} style={{ width: 24, height: 24 }} /> 
+                  :
                   <Image source={logsicon} style={{ width: 24, height: 24 }} />
                 }
               </View>
@@ -99,13 +110,13 @@ const TabsLayout = () => {
             title: '',
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <View 
-              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
+              <View
+                className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
                 {focused ?
-                <Image source={whitemoreicon} style={{ width: 24, height: 24 }} />:
-                <Image source={moreicon} style={{ width: 24, height: 24 }} />
-              }
+                  <Image source={whitemoreicon} style={{ width: 24, height: 24 }} /> :
+                  <Image source={moreicon} style={{ width: 24, height: 24 }} />
+                }
               </View>
             )
           }}
