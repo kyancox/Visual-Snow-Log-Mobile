@@ -11,7 +11,8 @@ module.exports = {
         projectOrange: '#FFA500',
         border: '#EBECEC',
         placeholder: '#888',
-        background: '#eff3f9'
+        background: '#eff3f9',
+        tbbg: '#6C6D73'
     }
     },
     fontFamily: {

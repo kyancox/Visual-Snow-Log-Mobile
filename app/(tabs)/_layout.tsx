@@ -1,15 +1,26 @@
 import { View, Text } from 'react-native'
 import { Tabs, Redirect } from 'expo-router'
 import React from 'react'
-import { MaterialIcons, Fontisto } from '@expo/vector-icons'
+import { MaterialIcons, Ionicons } from '@expo/vector-icons'
+import { Image } from 'expo-image'
+
+import chaticon from '@/assets/icons/chaticon.svg'
+import whitechaticon from '@/assets/icons/whitechaticon.svg'
+import tabbarcreate from '@/assets/icons/tabbarcreate.svg'
+import logsicon from '@/assets/icons/logsicon.svg'
+import whitelogsicon from '@/assets/icons/whitelogsicon.svg'
+import moreicon from '@/assets/icons/moreicon.svg'
+import whitemoreicon from '@/assets/icons/whitemoreicon.svg'
+import plus from '@/assets/icons/plus.svg'
+
 
 const TabsLayout = () => {
   return (
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#FFA500",
-          tabBarInactiveTintColor: "#FFFFFF",
+          tabBarActiveTintColor: "#FFFFFF",
+          tabBarInactiveTintColor: '#6C6D73',
           tabBarShowLabel: false,
           tabBarStyle: {
             borderTopWidth: 0,
@@ -17,6 +28,8 @@ const TabsLayout = () => {
             height: 94,
             // paddingTop: 24,
             marginTop: 0,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25
           },
         }}
       >
@@ -27,15 +40,9 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-                style={{
-                  borderRadius: 35,
-                  backgroundColor: focused ? '#FFFFFF' : '#08080f',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                className='w-11 h-11'
+                className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
-                <MaterialIcons name='reddit' color={color} size={30} />
+                <Ionicons name='logo-reddit' color={color} size={24} />
               </View>
             )
           }}
@@ -47,15 +54,11 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-                style={{
-                  borderRadius: 35,
-                  backgroundColor: focused ? '#FFFFFF' : '#08080f',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                className='w-11 h-11'
+              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
-                <MaterialIcons name='chat-bubble-outline' color={color} size={30} />
+                {/* <MaterialIcons name='chat-bubble-outline' color={'#6C6D73'} size={24} /> */}
+               { focused ? <Image source={whitechaticon} style={{ width: 24, height: 24 }} /> :
+                <Image source={chaticon} style={{ width: 24, height: 24 }} />}
               </View>
             )
           }}
@@ -65,18 +68,11 @@ const TabsLayout = () => {
           options={{
             title: '',
             headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <View
-                className='h-20 rounded-full justify-center items-center border-4'
-                style={{
-                  backgroundColor: focused ? '#FFFFFF' : '#FFA500',
-                  borderColor: '#08080f',
-                }}
-              >
-                {/* <Fontisto/> */}
-                <MaterialIcons name='add' color={color} size={70} />
+            tabBarIcon: ({ color, focused }) =>
+              <View className='p-2.5 items-center justify-center rounded-full bg-projectOrange'>
+                <Image source={plus} style={{ width: 32, height: 32 }} />
               </View>
-            )
+
           }}
         />
         <Tabs.Screen
@@ -86,15 +82,13 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View
-                style={{
-                  borderRadius: 35,
-                  backgroundColor: focused ? '#FFFFFF' : '#08080f',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                className='w-11 h-11'
+              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
-                <MaterialIcons name='library-books' color={color} size={30} />
+                {/* <MaterialIcons name='chat-bubble-outline' color={'#6C6D73'} size={24} /> */}
+                {focused ?
+                  <Image source={whitelogsicon} style={{ width: 24, height: 24 }} />:
+                  <Image source={logsicon} style={{ width: 24, height: 24 }} />
+                }
               </View>
             )
           }}
@@ -105,16 +99,13 @@ const TabsLayout = () => {
             title: '',
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
-              <View
-                style={{
-                  borderRadius: 35,
-                  backgroundColor: focused ? '#FFFFFF' : '#08080f',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                className='w-11 h-11'
+              <View 
+              className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
-                <MaterialIcons name='menu' color={color} size={30} />
+                {focused ?
+                <Image source={whitemoreicon} style={{ width: 24, height: 24 }} />:
+                <Image source={moreicon} style={{ width: 24, height: 24 }} />
+              }
               </View>
             )
           }}
