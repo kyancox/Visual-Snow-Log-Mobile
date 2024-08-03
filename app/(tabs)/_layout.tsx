@@ -13,6 +13,8 @@ import moreicon from '@/assets/icons/moreicon.svg'
 import whitemoreicon from '@/assets/icons/whitemoreicon.svg'
 import plus from '@/assets/icons/plus.svg'
 import orangeplus from '@/assets/icons/orangeplus.svg'
+import redditactive from '@/assets/icons/redditactive.svg'
+import redditinactive from '@/assets/icons/redditinactive.svg'
 
 
 const TabsLayout = () => {
@@ -30,7 +32,9 @@ const TabsLayout = () => {
             paddingTop: 0,
             marginTop: 0,
             borderTopLeftRadius: 25,
-            borderTopRightRadius: 25
+            borderTopRightRadius: 25,
+            shadowRadius: 10,
+            shadowOpacity: .4,
           },
         }}
       >
@@ -43,7 +47,8 @@ const TabsLayout = () => {
               <View
                 className={`items-center justify-center ${focused ? 'bg-tbbg rounded-full p-1.5' : ''}`}
               >
-                <Ionicons name='logo-reddit' color={color} size={24} />
+                {focused ? <Image source={redditactive} style={{ width: 24, height: 24 }} /> :
+                  <Image source={redditinactive} style={{ width: 24, height: 24 }} />}
               </View>
             )
           }}
@@ -96,7 +101,7 @@ const TabsLayout = () => {
               >
                 {/* <MaterialIcons name='chat-bubble-outline' color={'#6C6D73'} size={24} /> */}
                 {focused ?
-                  <Image source={whitelogsicon} style={{ width: 24, height: 24 }} /> 
+                  <Image source={whitelogsicon} style={{ width: 24, height: 24 }} />
                   :
                   <Image source={logsicon} style={{ width: 24, height: 24 }} />
                 }

@@ -180,10 +180,7 @@ const Chatbot = () => {
   return (
     <>
       {!chatStarted && (<SafeAreaView
-        className="flex-1"
-        style={{
-          backgroundColor: '#fcfcfc'
-        }}
+        className="flex-1 bg-background"
       >
         <View className="h-full px-1 flex flex-col items-center justify-center space-y-2">
           <Text className="text-4xl text-center font-oextrabold text-tabbar">VSS Chatbot</Text>
@@ -205,33 +202,32 @@ const Chatbot = () => {
         <Image
           source={require('../../assets/images/image.png')}
           resizeMode="contain"
-          className="w-full -mb-20 mt-auto"
+          style={{ height: 169 }}
+          className="w-full mt-auto"
         />
 
       </SafeAreaView     >)}
 
       {chatStarted && (
-      <>
-      <SafeAreaView className="flex-1 bg-background"
-        style={{
-          // backgroundColor: 'rgba(255, 255, 255, 0.8)'
-        }}>
-        <GiftedChat
-          messages={messages}
-          onSend={message => onSend(message)}
-          user={{
-            _id: 1,
-          }}
-          bottomOffset={100}
-          isTyping={isTyping}
-          renderSend={renderSend}
-          renderBubble={renderBubble}
-        />
-      </SafeAreaView>
-      <View className="p-2 bg-white ">
-      </View>
-    </>
-    )}
+        <>
+          <SafeAreaView className="flex-1 bg-background"
+            style={{
+              // backgroundColor: 'rgba(255, 255, 255, 0.8)'
+            }}>
+            <GiftedChat
+              messages={messages}
+              onSend={message => onSend(message)}
+              user={{
+                _id: 1,
+              }}
+              bottomOffset={100}
+              isTyping={isTyping}
+              renderSend={renderSend}
+              renderBubble={renderBubble}
+            />
+          </SafeAreaView>
+        </>
+      )}
     </>
   );
 };
