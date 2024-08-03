@@ -10,6 +10,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import backarrow from '@/assets/icons/backarrow.svg'
 import arrow from '@/assets/icons/arrow.svg'
 import { useRefresh } from '@/providers/RefreshContext';
+import { useAuth } from '@/providers/AuthProvider';
 
 
 type Log = {
@@ -31,6 +32,7 @@ const LogDetails = () => {
     const [submitted, setSubmitted] = useState(false)
     const [loading, setLoading] = useState(false)
     const router = useRouter();
+    const { session, user } = useAuth()
 
     useEffect(() => {
         const fetchLogDetails = async () => {
@@ -104,10 +106,10 @@ const LogDetails = () => {
                 'Log submitted!',
                 '',
                 [
-                  { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`), style: 'default', isPreferred: true },
-                  { text: 'Exit', style: 'cancel' }
+                    { text: 'View Log', onPress: () => router.push(`/logs/${data[0].id}`), style: 'default', isPreferred: true },
+                    { text: 'Exit', style: 'cancel' }
                 ]
-              )
+            )
             triggerRefresh()
         }
         setLoading(false)
@@ -183,21 +185,31 @@ const LogDetails = () => {
             </ScrollView>
 
             <View className='mt-auto mx-2 space-y-2'>
-                <TouchableOpacity className='flex flex-row items-center justify-center p-4 rounded-lg bg-projectOrange space-x-2 w-full' onPress={() => router.back()}>
-                    <Text className='font-osemibold text-base text-white'>Edit Log</Text>
-                    <SimpleLineIcons name='pencil' size={16} color={'white'} />
+                <TouchableOpacity className='flex flex-row items-center justify-center p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={() => router.back()}>
+                    {/* <Image source={backarrow} style={{ width: 24, height: 24 }} /> */}
+                    <Text className='font-osemibold text-base text-white'>Back</Text>
+                    {/* <SimpleLineIcons name='pencil' size={16} color={'white'} /> */}
                 </TouchableOpacity>
-                <TouchableOpacity className='flex flex-row items-center justify-center  p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={handleSubmit}>
-                    <Text className='font-osemibold text-base text-white'>Submit Log</Text>
-                    <Image source={arrow} className='bg-' style={{ width: 24, height: 24 }} />
-                </TouchableOpacity>
+                {user ?
+                    <TouchableOpacity className='flex flex-row items-center justify-center  p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={handleSubmit}>
+                        <Text className='font-osemibold text-base text-white'>Submit Log</Text>
+                        <Image source={arrow} className='bg-' style={{ width: 24, height: 24 }} />
+                    </TouchableOpacity>
+                    :
+                    <>
+                        <Text className='text-center font-osemibold text-base my-2 '>Log in to submit this log!</Text>
+                        <TouchableOpacity className='flex flex-row items-center justify-center  p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={() => router.push('/login')}>
+                            <Text className='font-osemibold text-base text-white'>Log in</Text>
+                        </TouchableOpacity>
+                    </>
+                }
             </View>
 
             {loading && (
                 <Modal
-                animationType='fade'
-                visible={loading}
-                transparent
+                    animationType='fade'
+                    visible={loading}
+                    transparent
                 >
                     <View className='mx-auto my-auto bg-white border border-border rounded-lg p-4 space-y-2'>
                         <ActivityIndicator />

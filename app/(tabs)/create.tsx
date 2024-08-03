@@ -507,12 +507,12 @@ const Create = () => {
               {defaultSymptoms.map((item) => (
                 <SymptomSelectable key={item.id} title={item.symptom} onPress={() => handleSymptomPress(item)} onInfoPress={() => handleInfoPress(item)} />
               ))}
+            </View>
               {!customSymptomPressed && (
                 <TouchableOpacity className='flex flex-row items-center mx-auto border border-projectOrange py-2 px-3 border-dashed rounded-full self-start bg-projectOrange/10 space-x-1' onPress={() => setCustomSymptomPressed(true)}>
                   <Image source={orangeplus} className='bg-' style={{ width: 20, height: 20 }} />
                   <Text className='text-projectOrange font-o'>Add Custom Symptom</Text>
                 </TouchableOpacity>)}
-            </View>
 
             {customSymptomPressed && (
               <View className='flex flex-row mx-1 space-x-2'>

@@ -14,12 +14,26 @@ import {
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat, IMessage, Send, SendProps, Bubble, BubbleProps } from 'react-native-gifted-chat'
 import { v4 as uuidv4 } from 'uuid';
+import * as Device from 'expo-device'
+
 
 const Chatbot = () => {
   const error = console.error; console.error = (...args) => { if (/defaultProps/.test(args[0])) return; error(...args); };
   // https://www.youtube.com/watch?v=Lag9Pj_33hM
   const [chatStarted, setChatStarted] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    // Check if the device is a tablet
+    const checkIfTablet = async () => {
+      const deviceType = await Device.getDeviceTypeAsync();
+      setIsTablet(deviceType === Device.DeviceType.TABLET);
+    };
+
+    checkIfTablet();
+  }, []);
+
 
   const gptAvatar = require('../../assets/images/gpt-trans.png');
 
@@ -199,12 +213,13 @@ const Chatbot = () => {
           </Pressable>
         </View>
 
-        <Image
-          source={require('../../assets/images/image.png')}
-          resizeMode="contain"
-          style={{ height: 169 }}
-          className="w-full mt-auto"
-        />
+        {!isTablet && (
+          <Image
+            source={require('../../assets/images/image.png')}
+            resizeMode="contain"
+            style={{ height: 166 }}
+            className="w-full mt-auto"
+          />)}
 
       </SafeAreaView     >)}
 

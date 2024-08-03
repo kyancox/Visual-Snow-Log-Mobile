@@ -1,5 +1,5 @@
-import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button, ActivityIndicator } from 'react-native'
-import { Link } from "expo-router";
+import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button, ActivityIndicator, TouchableOpacity, ImageBackground } from 'react-native'
+import { Link, router } from "expo-router";
 import React, { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
@@ -10,6 +10,8 @@ import useDebounce from '@/hooks/useDebounce';
 import { useToast } from "react-native-toast-notifications";
 import { MaterialIcons } from '@expo/vector-icons';
 
+import blurredlogs from '@/assets/images/blurredlogs.png'
+
 const Log = () => {
   const [logs, setLogs] = useState<any[] | null>(null)
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -18,6 +20,7 @@ const Log = () => {
   const { refresh, triggerRefresh } = useRefresh()
   const toast = useToast()
   const isFirstRender = useRef(true);
+  const { session, user } = useAuth()
 
   useEffect(() => {
     const readUserLogs = async () => {
@@ -53,12 +56,37 @@ const Log = () => {
     log.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
   )
 
+  if (!user) {
+    return (
+      <SafeAreaView className='flex-1'>
+        <ImageBackground source={require('@/assets/images/blurredlogs.png')} resizeMode='contain'
+          className='h-full items-center justify-center bg-background'
+        >
+          <View className='p-7 shadow-lg bg-white rounded-lg items-center justify-center space-y-4 '>
+            <Text className='font-o text-2xl'>Log in to view your logs!</Text>
+            <TouchableOpacity onPress={() => router.push('/login')}
+              className='shadow-lg rounded-lg '
+              style={{
+                backgroundColor: '#FFA500',
+                padding: 20,
+                elevation: 3,
+              }}>
+              <Text className='font-obold text-center text-2xl text-white'>Log in</Text>
+            </TouchableOpacity>
+            
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+
+    );
+  }
+
   if (!logs) {
     return (
-      <SafeAreaView className='h-full flex flex-col items-center justify-center'>
-        <ActivityIndicator size={48} color={'black'}/>
+      <SafeAreaView className='h-full flex flex-col items-center justify-center bg-background'>
+        <ActivityIndicator size={48} color={'black'} />
         <Text className='font-o text-2xl'>Loading your logs...</Text>
-      </SafeAreaView> 
+      </SafeAreaView>
     );
   }
 

@@ -19,7 +19,7 @@ import redditinactive from '@/assets/icons/redditinactive.svg'
 
 const TabsLayout = () => {
   return (
-    <>
+  <>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#FFFFFF",
@@ -31,8 +31,8 @@ const TabsLayout = () => {
             height: 100,
             paddingTop: 0,
             marginTop: 0,
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
             shadowRadius: 10,
             shadowOpacity: .4,
           },
