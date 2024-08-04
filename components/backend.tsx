@@ -1,4 +1,4 @@
-import { View, Text, Button, Alert } from 'react-native'
+import { View, Text, Button, Alert, Pressable } from 'react-native'
 import React from 'react'
 import { useAuth } from '@/providers/AuthProvider'
 
@@ -25,9 +25,13 @@ const Backend = () => {
     }
 
     return (
-        <View>
-            <Button title='Export CSV to Email' onPress={handleExport} />
-        </View>
+
+        <Pressable className='mx-auto my-0.5 w-6/12 p-2.5 rounded-full space-x-1 flex flex-row items-center justify-center bg-projectOrange'
+
+            onPress={handleExport}
+        >
+            <Text className='text-white font-osemibold text-center text-'>Export Logs to Email</Text>
+        </Pressable>
     )
 }
 

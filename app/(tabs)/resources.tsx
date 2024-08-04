@@ -1,14 +1,18 @@
-import { View, Text, FlatList, TouchableOpacity, ScrollView, Button, Pressable } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ScrollView, Button, Pressable, SafeAreaView, Alert, Linking } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, Redirect, router } from 'expo-router'
-import { FontAwesome6, MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome6, MaterialIcons, Ionicons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/AuthProvider'
 import { useReducedMotion } from 'react-native-reanimated'
 import { useRefresh } from '@/providers/RefreshContext'
+import { Image } from 'expo-image'
+import { InAppBrowser } from 'react-native-inappbrowser-reborn'
 
-import Backend from '@/app/backend'
+import changeorglogo from '@/assets/images/changeorglogo.png'
+import Video from '@/components/Video'
+import openUrl from '@/components/openUrl'
+
 
 const Resources = () => {
 
@@ -33,11 +37,11 @@ const Resources = () => {
   const renderSettingsItem = ({ icon, text, routename }: settingsItemProps) => {
     return (
       <TouchableOpacity
-        className='flex-row p-1 border rounded shadow'
+        className='flex-row p-1 border  shadow items-center justify-start space-x-2 bg-white border-border '
         onPress={() => { router.push(routename) }}
       >
         <MaterialIcons className='' name={icon} size={24} color="black" />
-        <Text className='ml-2 text-base'>{text}</Text>
+        <Text className=' text-base font-o'>{text}</Text>
       </TouchableOpacity>
     );
   }
@@ -47,51 +51,89 @@ const Resources = () => {
     triggerRefresh()
   }
 
+  const redditWiki = 'https://www.reddit.com/r/visualsnow/wiki/index/'
+  const wikiPage = 'https://en.wikipedia.org/wiki/Visual_snow_syndrome'
+  const petitionLink = 'https://www.change.org/p/raising-awareness-of-visual-snow-syndrome-and-research?utm_medium=custom_url&utm_source=share_petition&recruited_by_id=99cdd3a0-eb9d-11ee-a014-5d4fd1f994e0'
+
+  const openUrl = async (url: string) => {
+    if (await InAppBrowser.isAvailable()) {
+      InAppBrowser.open(url, {
+        // iOS Properties
+        animated: true,
+        modalEnabled: true,
+        // Android Properties
+        showTitle: true,
+      })
+    } else {
+      Linking.openURL(url)
+    }
+  }
+
+
   return (
     <SafeAreaView
-      className='h-screen'
+      className='h-full bg-background'
     >
       <ScrollView>
 
-        <Backend />
 
-        {!session ? (
-          <Button title='Login' onPress={() => router.push('/(auth)/login')} />
-        ) : (
-          <Text className='text-center text-xl font-extrabold'>Logged in: {user?.email}</Text>
-        )}
 
-        <Button title='Log Out' onPress={handleLogOut} />
-
-        <Pressable className='mx-auto w-7/12 p-3 rounded-full space-x-1 flex flex-row items-center justify-center'
-          style={{
-            backgroundColor: '#748cdb'
-          }}
-          onPress={() => router.push('https://discord.com/invite/q2T37Ujrft')}
-        >
-          <FontAwesome6 name='discord' size={24} color={'white'} />
-          <Text className='text-white font-bold text-center text-base'>Visual Snow Discord</Text>
-        </Pressable>
-
-        <View className='mx-1 px-1'>
-          <Text className='text-xl'>Settings</Text>
-          <View className='bg-gray-50'>
-            {settingsItems.map((item, index) => (
-              <React.Fragment key={index}>
-                {renderSettingsItem(item)}
-              </React.Fragment>
-
-            ))}
-          </View>
+        <View className='flex flex-col items-center justify-center gap-y-1.5'>
+          {!session ? (
+            <Button title='Login' onPress={() => router.push('/(auth)/login')} />
+          ) : (
+            <>
+              <Text className='text-center text-lg font-obold'>Logged in as:<Text className='font-o text-base'> {user?.email}</Text></Text>
+            </>
+          )}
+          <Pressable className='mx-auto w-7/12 p-3 rounded-full space-x-1 flex flex-row items-center justify-center shadow'
+            style={{
+              backgroundColor: '#748cdb'
+            }}
+            onPress={() => router.push('https://discord.com/invite/q2T37Ujrft')}
+          >
+            <FontAwesome6 name='discord' size={24} color={'white'} />
+            <Text className='text-white font-bold text-center text-base'>Visual Snow Discord</Text>
+          </Pressable>
+          <Pressable className='mx-auto w-7/12 p-3 rounded-full space-x-1 flex flex-row items-center justify-center shadow'
+            style={{
+              backgroundColor: '#FF5700'
+            }}
+            onPress={() => openUrl(redditWiki)}
+          >
+            <Ionicons name='logo-reddit' size={24} color={'white'} />
+            <Text className='text-white font-bold text-center text-base'>Reddit Wiki</Text>
+          </Pressable>
+          <Pressable className='mx-auto w-7/12 p-3 rounded-full space-x-1 flex flex-row items-center justify-center shadow '
+            style={{
+              backgroundColor: '#FFF'
+            }}
+            onPress={() => openUrl(wikiPage)}
+          >
+            <FontAwesome6 name='wikipedia-w' size={24} color={'black'} />
+            <Text className='text-black font-bold text-center text-base'>Wikipedia</Text>
+          </Pressable>
+          <Pressable className='mx-auto w-7/12 p-3 rounded-full space-x-1 flex flex-row items-center justify-center shadow '
+            style={{
+              backgroundColor: '#ec2b22'
+            }}
+            onPress={() => openUrl(petitionLink)}
+          >
+            <Image source={changeorglogo} style={{ width: 24, height: 24 }} />
+            <Text className='text-white font-bold text-center text-base'>Change.org Petition</Text>
+          </Pressable>
         </View>
 
+
+
         <View className='mx-4'>
-          <Text className='text-secondary text-xl font-bold'>
+          <Text className=' text-lg font-obold'>
             What is Visual Snow Syndrome?
           </Text>
-          <Text className='text-black text-base'>
+          <Text className='text-black font-o text-base'>
             Visual Snow Syndrome (VSS) is a neurological condition that affects an individual's vision, causing them to see static, much like the static seen on a television screen. It can also include other visual disturbances such as afterimages, light sensitivity, and floaters.
           </Text>
+          <Video />
           <Text className='text-secondary text-xl font-bold'>
             Helpful Organizations
           </Text>
@@ -101,6 +143,77 @@ const Resources = () => {
           <Text>
             [Visual Snow Initiative] <Link href='https://www.visualsnowinitiative.org/'>https://www.visualsnowinitiative.org/</Link>
           </Text>
+        </View>
+
+        {/* <FlatList
+              horizontal={true}
+              data={defaultSymptoms}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleSymptomPress(item)}>
+                  <View className='p-4 bg-gray-200 m-2 rounded-md flex flex-row items-center justify-center space-x-2'>
+                    <Text>{item.symptom}</Text>
+                    <Pressable onPress={() => handleInfoPress(item)}>
+                      <Feather name='info' size={20} color={'grey'} />
+                    </Pressable>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.id}
+            /> */}
+
+        <View className='mx-1 px-1'>
+          <Text className='text-xl font-obold'>Settings</Text>
+
+          <View className='rounded-lg border border-border bg-white'>
+
+            <TouchableOpacity
+              className='flex-row p-1 mx-1 border-b shadow items-center justify-start space-x-2 border-border'
+              onPress={() => { router.push('') }}
+            >
+              <MaterialIcons className='' name={'person-outline'} size={24} color="black" />
+              <Text className=' text-base font-o'>{'Edit Account'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className='flex-row p-1 mx-1 border-b shadow items-center justify-start space-x-2 border-border'
+              onPress={() => { router.push('') }}
+            >
+              <MaterialIcons className='' name={'help-outline'} size={24} color="black" />
+              <Text className=' text-base font-o'>{'Help & Support'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className='flex-row p-1 mx-1 border-b shadow items-center justify-start space-x-2 border-border'
+              onPress={() => { router.push('/(settings)/terms') }}
+            >
+              <MaterialIcons className='' name={'info-outline'} size={24} color="black" />
+              <Text className=' text-base font-o'>{'Terms and Policies'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className='flex-row p-1 mx-1 border-b shadow items-center justify-start space-x-2 border-border'
+              onPress={() => { router.push('') }}
+            >
+              <MaterialIcons className='' name={'outlined-flag'} size={24} color="black" />
+              <Text className=' text-base font-o'>{'Report a Problem'}</Text>
+            </TouchableOpacity>
+            {user && (
+              <TouchableOpacity
+                className='flex-row p-1 mx-1 border-b shadow items-center justify-start space-x-2 border-border'
+                onPress={() => {
+                  Alert.alert('Are you sure you want to log out?', '', [
+                    {
+                      text: 'Log Out',
+                      onPress: handleLogOut,
+                      style: 'default',
+                    },
+                    { text: 'Cancel', style: 'cancel' },
+                  ]);
+                }}
+              >
+                <MaterialIcons className='' name={'logout'} size={24} color="black" />
+                <Text className=' text-base font-o'>{'Log Out'}</Text>
+              </TouchableOpacity>
+            )}
+          </View >
+
         </View>
 
       </ScrollView>
