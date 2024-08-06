@@ -14,7 +14,8 @@
     },
     "ios": {
       "usesAppleSignIn": true,
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kyancox.visualsnow"
     },
     "android": {
       "adaptiveIcon": {

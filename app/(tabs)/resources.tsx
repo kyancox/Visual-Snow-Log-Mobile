@@ -7,11 +7,10 @@ import { useAuth } from '@/providers/AuthProvider'
 import { useReducedMotion } from 'react-native-reanimated'
 import { useRefresh } from '@/providers/RefreshContext'
 import { Image } from 'expo-image'
-import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import * as WebBrowser from 'expo-web-browser';
 
 import changeorglogo from '@/assets/images/changeorglogo.png'
 import Video from '@/components/Video'
-import openUrl from '@/components/openUrl'
 
 
 const Resources = () => {
@@ -51,22 +50,24 @@ const Resources = () => {
     triggerRefresh()
   }
 
+  const discordLink = 'https://discord.com/invite/q2T37Ujrft'
   const redditWiki = 'https://www.reddit.com/r/visualsnow/wiki/index/'
   const wikiPage = 'https://en.wikipedia.org/wiki/Visual_snow_syndrome'
   const petitionLink = 'https://www.change.org/p/raising-awareness-of-visual-snow-syndrome-and-research?utm_medium=custom_url&utm_source=share_petition&recruited_by_id=99cdd3a0-eb9d-11ee-a014-5d4fd1f994e0'
 
   const openUrl = async (url: string) => {
-    if (await InAppBrowser.isAvailable()) {
-      InAppBrowser.open(url, {
-        // iOS Properties
-        animated: true,
-        modalEnabled: true,
-        // Android Properties
-        showTitle: true,
-      })
-    } else {
-      Linking.openURL(url)
-    }
+    let result = await WebBrowser.openBrowserAsync(url)
+    // if (await InAppBrowser.isAvailable()) {
+    //   InAppBrowser.open(url, {
+    //     // iOS Properties
+    //     animated: true,
+    //     modalEnabled: true,
+    //     // Android Properties
+    //     showTitle: true,
+    //   })
+    // } else {
+    //   Linking.openURL(url)
+    // }
   }
 
 
@@ -90,7 +91,7 @@ const Resources = () => {
             style={{
               backgroundColor: '#748cdb'
             }}
-            onPress={() => router.push('https://discord.com/invite/q2T37Ujrft')}
+            onPress={() => openUrl(discordLink)}
           >
             <FontAwesome6 name='discord' size={24} color={'white'} />
             <Text className='text-white font-bold text-center text-base'>Visual Snow Discord</Text>
