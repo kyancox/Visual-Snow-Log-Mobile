@@ -395,7 +395,9 @@ const Create = () => {
           :
           <Text className='text-center text-xl font-obold mb-2'>Log Symptoms</Text>
         }
-        <ScrollView className='h-full'>
+        <ScrollView className='h-full'
+        showsVerticalScrollIndicator={false}
+        >
 
           {/* Log Title */}
           <View className='my-1 space-y-1'>

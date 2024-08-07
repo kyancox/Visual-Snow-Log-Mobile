@@ -140,7 +140,7 @@ const Log = () => {
               </View>
             </View>
 
-          <ScrollView className='' >
+          <ScrollView className='pt-1' >
             {sortOrder ?
               filteredLogs?.slice(0).reverse().map(item => (
                 <LogPreview key={item.id}

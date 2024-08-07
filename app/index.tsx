@@ -23,7 +23,7 @@ const Onboarding = () => {
             <View className='w-5/6 mx-auto gap-y-3 mt-20'
             >
                 <Logo />
-                <Text className='text-5xl mb-4 font-omedium'>Start tracking your <Text className='text-projectOrange'>Visual Snow Syndrome</Text>.</Text>
+                <Text className='text-5xl mb-4 font-o'>Start tracking your <Text className='text-projectOrange'>Visual Snow Syndrome</Text>.</Text>
 
                 <Pressable className=' bg-black rounded-full mx-8 flex flex-row items-center justify-center'
                     onPress={async () => {
@@ -60,13 +60,13 @@ const Onboarding = () => {
                     }}
                 >
                     <AntDesign name='apple1' size={24} color={'white'} />
-                    <Text className='text-white font-obold p-3 text-center text-lg'>Continue with Apple</Text>
+                    <Text className='text-white font-osemibold p-3 text-center text-lg'>Continue with Apple</Text>
                 </Pressable>
                 <Pressable className=' bg-projectOrange rounded-full mx-8 flex flex-row items-center justify-center'
                     onPress={() => router.push('/signup')}
                 >
                     <Feather name='mail' size={24} color={'white'} />
-                    <Text className='text-white font-obold p-3 text-center text-lg'>Continue with Email</Text>
+                    <Text className='text-white font-osemibold p-3 text-center text-lg'>Continue with Email</Text>
                 </Pressable>
                 <Text className='text-center font-osemibold'>or</Text>
                 <Pressable className=' bg-projectOrange rounded-full mx-8 flex flex-row items-center justify-center'
@@ -76,7 +76,7 @@ const Onboarding = () => {
                     }}
                 >
                     <AntDesign name='eyeo' size={24} color={'white'} />
-                    <Text className='text-white font-obold p-3 text-center text-lg'>Continue as Guest</Text>
+                    <Text className='text-white font-osemibold p-3 text-center text-lg'>Continue as Guest</Text>
                 </Pressable>
 
             </View>
