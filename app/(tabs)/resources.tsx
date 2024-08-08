@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 import changeorglogo from '@/assets/images/changeorglogo.png'
 import Video from '@/components/Video'
-import AccountSettingsModal from '@/components/AccountSettingsModal';
 
 
 const Resources = () => {
@@ -219,7 +218,7 @@ const Resources = () => {
           {user && (
             <TouchableOpacity
               className='flex-row items-center space-x-1'
-              onPress={() => setAccountModalVisible(true)}
+              onPress={() => router.push('/(settings)/account')}
             >
               <Text className='font-omedium text-base'>Edit Account</Text>
               <MaterialIcons name='arrow-forward-ios' size={18} color='#FFA500' />
@@ -310,7 +309,6 @@ const Resources = () => {
           </View>
         </Modal>
       )}
-      <AccountSettingsModal visible={accountModalVisible} onClose={() => setAccountModalVisible(false)} />
     </SafeAreaView >
   )
 }
