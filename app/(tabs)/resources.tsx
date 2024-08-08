@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Button, Pressable, SafeAreaView, Alert, Linking, Modal } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Button, Pressable, SafeAreaView, Alert, Modal, Share } from 'react-native'
 import React, { useState } from 'react'
 import { Link, Redirect, router } from 'expo-router'
 import { FontAwesome6, MaterialIcons, Ionicons, AntDesign, Feather } from '@expo/vector-icons'
@@ -10,6 +10,7 @@ import { Image } from 'expo-image'
 import * as WebBrowser from 'expo-web-browser';
 import WebView from 'react-native-webview'
 import { v4 as uuidv4 } from 'uuid'
+import { openURL } from 'expo-linking'
 
 import changeorglogo from '@/assets/images/changeorglogo.png'
 import Video from '@/components/Video'
@@ -112,6 +113,22 @@ const Resources = () => {
       tips: ["Vitamin A intake", "Use proper lighting", "Night vision aids"]
     }
   };
+
+  const sendText = () => {
+    try {
+      openURL('sms:+17186834214')
+    } catch (error) {
+      Alert.alert('Error', 'Unable to send text message.');
+    }
+  }
+
+  const sendEmail = async () => {
+    try {
+      openURL('mailto:visualsnowlog@gmail.com?Subject=Visual Snow Log Feedback')
+    } catch (error) {
+      Alert.alert('Error', 'Unable to open email client.');
+    }
+  }
 
   return (
     <SafeAreaView className='flex-1 bg-background'>
@@ -228,7 +245,19 @@ const Resources = () => {
             <Text className='font-omedium text-base'>Terms and Policies</Text>
             <MaterialIcons name='arrow-forward-ios' size={18} color='#FFA500' />
           </TouchableOpacity>
-          <TouchableOpacity className='flex-row items-center space-x-1' onPress={() => router.push('/(settings)/terms')}>
+          <TouchableOpacity
+            className='flex-row items-center space-x-1'
+            onPress={() => {
+              Alert.alert(
+                'How would you like to send feedback?',
+                '',
+                [
+                  { text: 'Email', onPress: sendEmail },
+                  { text: 'Text', onPress: sendText },
+                  { text: 'Cancel', style: 'cancel' }
+                ]
+              )
+            }}>
             <Text className='font-omedium text-base'>Send Feedback</Text>
             <MaterialIcons name='arrow-forward-ios' size={18} color='#FFA500' />
           </TouchableOpacity>
