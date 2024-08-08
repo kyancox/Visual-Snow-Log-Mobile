@@ -396,7 +396,7 @@ const Create = () => {
           <Text className='text-center text-xl font-obold mb-2'>Log Symptoms</Text>
         }
         <ScrollView className='h-full'
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
 
           {/* Log Title */}
@@ -510,11 +510,11 @@ const Create = () => {
                 <SymptomSelectable key={item.id} title={item.symptom} onPress={() => handleSymptomPress(item)} onInfoPress={() => handleInfoPress(item)} />
               ))}
             </View>
-              {!customSymptomPressed && (
-                <TouchableOpacity className='flex flex-row items-center mx-auto border border-projectOrange py-2 px-3 border-dashed rounded-full self-start bg-projectOrange/10 space-x-1' onPress={() => setCustomSymptomPressed(true)}>
-                  <Image source={orangeplus} className='bg-' style={{ width: 20, height: 20 }} />
-                  <Text className='text-projectOrange font-o'>Add Custom Symptom</Text>
-                </TouchableOpacity>)}
+            {!customSymptomPressed && (
+              <TouchableOpacity className='flex flex-row items-center mx-auto border border-projectOrange py-2 px-3 border-dashed rounded-full self-start bg-projectOrange/10 space-x-1' onPress={() => setCustomSymptomPressed(true)}>
+                <Image source={orangeplus} className='bg-' style={{ width: 20, height: 20 }} />
+                <Text className='text-projectOrange font-o'>Add Custom Symptom</Text>
+              </TouchableOpacity>)}
 
             {customSymptomPressed && (
               <View className='flex flex-row mx-1 space-x-2'>
@@ -660,15 +660,24 @@ const Create = () => {
           </View>
 
           <Text className='font-osemibold text-lg'>Additional Notes:</Text>
-          <TextInput
-            multiline
-            className={`text-left font-o border bg-white border-border rounded-lg p-3 min-h-[110px] my-1 items-center ${symptomsLogged.length === 0 ? 'mb-5' : ''}`}
-            placeholder={`Add additional notes about ${title}`}
-            placeholderTextColor='#888'
-            value={notes}
-            onChangeText={setNotes}
-          />
+          <View className={`${symptomsLogged.length === 0 ? 'mb-5' : ''}`}>
+            <TextInput
+              multiline
+              className={`text-left font-o border bg-white border-border rounded-lg p-3 min-h-[110px] my-1 items-center `}
+              placeholder={`Add additional notes about ${title}`}
+              placeholderTextColor='#888'
+              value={notes}
+              onChangeText={setNotes}
+            />
 
+            {symptomsLogged.length !== 0 && (
+              <TouchableOpacity
+                className='flex flex-row justify-end mt-1'
+                onPress={clearState}>
+                <Text className='text-projectOrange font-olight'>Clear Details</Text>
+              </TouchableOpacity>
+            )}
+          </View >
 
           {symptomsLogged.length > 0 && (
 
