@@ -27,6 +27,7 @@ export default function Auth() {
     const [passwordFocused, setPasswordFocused] = useState(false)
     const [secondPassword, setSecondPassword] = useState('')
     const [secondPasswordFocused, setSecondPasswordFocused] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
     async function signInWithEmail() {
         setLoading(true)
@@ -105,7 +106,7 @@ export default function Auth() {
                             className={`bg-gray-100 font-o p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
                             onChangeText={(text) => setPassword(text)}
                             value={password}
-                            secureTextEntry={true}
+                            secureTextEntry={!showPassword}
                             placeholder="Password"
                             placeholderTextColor="#888"
                             autoCapitalize={'none'}
@@ -120,13 +121,16 @@ export default function Auth() {
                             className={`bg-gray-100 font-o p-3 border rounded-lg ${secondPasswordFocused ? 'border-projectOrange' : 'border-white'}`}
                             onChangeText={(text) => setSecondPassword(text)}
                             value={secondPassword}
-                            secureTextEntry={true}
+                            secureTextEntry={!showPassword}
                             placeholder="Password"
                             placeholderTextColor="#888"
                             autoCapitalize={'none'}
                             onFocus={() => setSecondPasswordFocused(true)}
                             onBlur={() => setSecondPasswordFocused(false)}
                         />
+                        <Pressable className='flex flex-row items-center justify-end mt-2' onPress={() => setShowPassword(!showPassword)}>
+                            <Text className='text-gray-600 font-o'>{showPassword ? 'Hide Password' : 'Show Password'}</Text>
+                        </Pressable>
                     </View>
 
                     {password !== secondPassword &&

@@ -25,6 +25,7 @@ export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [emailFocused, setEmailFocused] = useState(false)
   const [passwordFocused, setPasswordFocused] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   async function signInWithEmail() {
     setLoading(true)
@@ -91,15 +92,15 @@ export default function Auth() {
               className={`bg-gray-100 font-o p-3 border rounded-lg ${passwordFocused ? 'border-projectOrange' : 'border-white'}`}
               onChangeText={(text) => setPassword(text)}
               value={password}
-              secureTextEntry={true}
+              secureTextEntry={!showPassword}
               placeholder="Password"
               placeholderTextColor="#888"
               autoCapitalize={'none'}
               onFocus={() => setPasswordFocused(true)}
               onBlur={() => setPasswordFocused(false)}
             />
-            <Pressable className='flex flex-row items-center justify-end mt-2'>
-              <Text className='text-gray-600 font-o'>Forgot Password?</Text>
+            <Pressable className='flex flex-row items-center justify-end mt-2' onPress={() => setShowPassword(!showPassword)}>
+              <Text className='text-gray-600 font-o'>{showPassword ? 'Hide Password' : 'Show Password'}</Text>
             </Pressable>
           </View>
 
