@@ -57,7 +57,7 @@ const Log = () => {
     log.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
   )
 
-  if (!user) {
+  if (!user || user?.is_anonymous) {
     return (
       <SafeAreaView className='flex-1'>
         <ImageBackground source={require('@/assets/images/blurredlogs.png')} resizeMode='contain'

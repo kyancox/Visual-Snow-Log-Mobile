@@ -137,7 +137,7 @@ const Resources = () => {
 
         }>
 
-        {!session ? (
+        {(!session || user?.is_anonymous) ? (
           <Pressable className='sticky flex flex-row items-center justify-center mx-auto p-3 rounded-lg bg-projectOrange  w-11/12' onPress={() => router.push('/(auth)/login')}>
             <Text className='font-obold text-base text-white'>Log in to Visual Snow Log</Text>
           </Pressable>
@@ -232,7 +232,7 @@ const Resources = () => {
 
         <Text className='text-xl font-obold text-center '>Settings</Text>
         <View className='mx-4 space-y-1 my-1'>
-          {user && (
+          {(user && !user?.is_anonymous) && (
             <TouchableOpacity
               className='flex-row items-center space-x-1'
               onPress={() => router.push('/(settings)/account')}
@@ -261,7 +261,7 @@ const Resources = () => {
             <Text className='font-omedium text-base'>Send Feedback</Text>
             <MaterialIcons name='arrow-forward-ios' size={18} color='#FFA500' />
           </TouchableOpacity>
-          {user && (
+          {(user && !user.is_anonymous) && (
             <TouchableOpacity
               className='flex-row items-center space-x-1'
               onPress={() => {
@@ -282,7 +282,7 @@ const Resources = () => {
 
         </View>
 
-        {session ? (
+        {(session && !user?.is_anonymous) ? (
           <Text className='text-center text-lg font-obold mt-1 mb-4'>Logged in as:<Text className='font-o text-base'> {user?.email}</Text></Text>
         ) :
           <View className='mb-4' />

@@ -190,7 +190,7 @@ const LogDetails = () => {
                     <Text className='font-osemibold text-base text-white'>Back</Text>
                     {/* <SimpleLineIcons name='pencil' size={16} color={'white'} /> */}
                 </TouchableOpacity>
-                {user ?
+                {( !user?.is_anonymous && user ) ?
                     <TouchableOpacity className='flex flex-row items-center justify-center  p-4 rounded-lg bg-projectOrange space-x-1 w-full' onPress={handleSubmit}>
                         <Text className='font-osemibold text-base text-white'>Submit Log</Text>
                         <Image source={arrow} className='bg-' style={{ width: 24, height: 24 }} />

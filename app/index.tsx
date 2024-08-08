@@ -11,9 +11,10 @@ import { useAuth } from '@/providers/AuthProvider'
 
 const Onboarding = () => {
     const router = useRouter();
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, session, user } = useAuth()
 
-    if (isAuthenticated) {
+
+    if (isAuthenticated || session || user) {
         return <Redirect href={'/create'} />
     }
 
