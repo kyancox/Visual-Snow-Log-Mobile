@@ -3,9 +3,10 @@ import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView, Tex
 import { supabase } from '@/lib/supabase'
 import { Apple } from '@/components/Apple'
 import { router } from 'expo-router'
+import * as AppleAuthentication from 'expo-apple-authentication'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 
 import Logo from '@/components/Logo'
-import { MaterialIcons } from '@expo/vector-icons'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -140,12 +141,52 @@ export default function Auth() {
                     }
 
 
-                    <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
-                        onPress={() => signUpWithEmail()}
-                        disabled={loading}
-                    >
-                        <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
-                    </TouchableOpacity>
+                <View className='space-y-2'>
+                        <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
+                            onPress={() => signUpWithEmail()}
+                            disabled={loading}
+                        >
+                            <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
+                        </TouchableOpacity>
+                    
+                        <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
+                            onPress={async () => {
+                                try {
+                                    const credential = await AppleAuthentication.signInAsync({
+                                        requestedScopes: [
+                                            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                                            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                                        ],
+                                    })
+                                    // Sign in via Supabase Auth.
+                                    if (credential.identityToken) {
+                                        const {
+                                            error,
+                                            data: { user },
+                                        } = await supabase.auth.signInWithIdToken({
+                                            provider: 'apple',
+                                            token: credential.identityToken,
+                                        })
+                                        console.log(JSON.stringify({ error, user }, null, 2))
+                                        if (!error) {
+                                            // User is signed in.
+                                        }
+                                    } else {
+                                        throw new Error('No identityToken.')
+                                    }
+                                } catch (e: any) {
+                                    if (e.code === 'ERR_REQUEST_CANCELED') {
+                                        // handle that the user canceled the sign-in flow
+                                    } else {
+                                        // handle other errors
+                                    }
+                                }
+                            }}
+                        >
+                            <AntDesign name='apple1' size={18} color={'white'} />
+                            <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
+                        </Pressable>
+                </View>
 
                     <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
                         <Text className='font-o'>Already have an account?</Text>
