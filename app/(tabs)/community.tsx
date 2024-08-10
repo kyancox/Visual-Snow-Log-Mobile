@@ -1,9 +1,11 @@
 import { View, Text, Button, SafeAreaView } from 'react-native'
 import { WebView } from 'react-native-webview';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const community = () => {
   const webViewRef = useRef<WebView>(null);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(false);
 
   useEffect(() => {
     // Enable cookies for the WebView
@@ -15,7 +17,7 @@ const community = () => {
   }, []);
 
   const goBack = () => {
-    if (webViewRef.current) {
+    if (webViewRef.current && canGoBack) {
       webViewRef.current.goBack();
     }
   };
@@ -29,20 +31,24 @@ const community = () => {
   };
 
   const goForward = () => {
-    if (webViewRef.current) {
+    if (webViewRef.current && canGoForward) {
       webViewRef.current.goForward();
     }
   };
 
+  const handleNavigationStateChange = (navState: any) => {
+    setCanGoBack(navState.canGoBack);
+    setCanGoForward(navState.canGoForward);
+  };
 
   return (
     <SafeAreaView
       className='h-full'
     >
       <View className='flex flex-row justify-between mx-2 my-0.5'>
-        <Button title="Back" onPress={goBack} color={'#FFA500'}/>
+        <Button title="Back" onPress={goBack} color={'#FFA500'} disabled={!canGoBack}/>
         <Button title="Home" onPress={goHome} color={'#FFA500'}/>
-        <Button title="Next" onPress={goForward} color={'#FFA500'}/>
+        <Button title="Next" onPress={goForward} color={'#FFA500'} disabled={!canGoForward}/>
       </View>
       <WebView
         ref={webViewRef}
@@ -51,6 +57,7 @@ const community = () => {
         allowsBackForwardNavigationGestures
         javaScriptEnabled={true}
         domStorageEnabled={true}
+        onNavigationStateChange={handleNavigationStateChange}
       />
     </SafeAreaView>
   )
