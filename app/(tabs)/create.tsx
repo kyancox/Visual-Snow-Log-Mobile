@@ -50,11 +50,17 @@ const Create = () => {
   const dateChange = (event: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
+    if (Platform.OS === 'android') {
+      hideDatePicker()
+    }
   };
 
   const timeChange = (event: any, selectedTime: Date | undefined) => {
     const currentTime = selectedTime || time;
     setTime(currentTime);
+    if (Platform.OS === 'android') {
+      hideTimePicker()
+    }
   };
 
   // Symptoms
@@ -430,15 +436,31 @@ const Create = () => {
               </TouchableOpacity>
 
               {datePickerVisible && (
-                <Modal
-                  animationType="slide"
-                  visible={datePickerVisible}
-                  transparent
-                  onRequestClose={() => {
-                    hideDatePicker();
-                  }}
-                >
-                  <View className={`border border-border rounded-lg shadow-lg my-auto w-11/12 mx-auto p-2 ${colorScheme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+                Platform.OS === 'ios' ?
+                  (
+                    <Modal
+                      animationType="slide"
+                      visible={datePickerVisible}
+                      transparent
+                      onRequestClose={() => {
+                        hideDatePicker();
+                      }}
+                    >
+                      <View className={`border border-border rounded-lg shadow-lg my-auto w-11/12 mx-auto p-2 ${colorScheme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+                        <DateTimePicker
+                          accentColor='#FFA500'
+                          testID="dateTimePicker"
+                          value={date}
+                          mode="date"
+                          display="inline"
+                          onChange={dateChange}
+                        />
+                        <Button title='Close' color='#FFA500' onPress={hideDatePicker} />
+                      </View>
+                    </Modal>
+                  )
+                  :
+                  (
                     <DateTimePicker
                       accentColor='#FFA500'
                       testID="dateTimePicker"
@@ -447,9 +469,7 @@ const Create = () => {
                       display="inline"
                       onChange={dateChange}
                     />
-                    <Button title='Close' color='#FFA500' onPress={hideDatePicker} />
-                  </View>
-                </Modal>
+                  )
               )}
             </View>
             {/* <Text className='mt-1'>Selected Date: {date.toLocaleDateString()}</Text> */}
@@ -461,7 +481,7 @@ const Create = () => {
               </TouchableOpacity>
 
               {timePickerVisible && (
-                <Modal
+                Platform.OS === 'ios' ? (<Modal
                   animationType="slide"
                   visible={timePickerVisible}
                   transparent
@@ -480,7 +500,19 @@ const Create = () => {
                     />
                     <Button title='Close' color='#FFA500' onPress={hideTimePicker} />
                   </View>
-                </Modal>
+                </Modal>)
+                  :
+                  (
+                    <DateTimePicker
+                      className=''
+                      testID="timePicker"
+                      value={time}
+                      mode="time"
+                      display="spinner"
+                      onChange={timeChange}
+                    />
+                  )
+
               )}
             </View>
             {/* <Text className='mt-1'>Selected Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text> */}
