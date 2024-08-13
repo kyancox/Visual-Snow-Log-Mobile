@@ -14,7 +14,7 @@ const Onboarding = () => {
     const { isAuthenticated, session, user } = useAuth()
 
 
-    if (isAuthenticated || session || user) {
+    if (isAuthenticated) {
         return <Redirect href={'/create'} />
     }
 
@@ -82,7 +82,7 @@ const Onboarding = () => {
 
             </View>
 
-            <View className='mx-auto mt-auto flex flex-row '>
+            <View className={`mx-auto mt-auto flex flex-row ${Platform.OS === 'android' ? 'mb-4' : ''}`}>
                 <Text className='font-o'>Already have an account?</Text>
                 <Pressable
                     onPress={() => router.push('/login')}

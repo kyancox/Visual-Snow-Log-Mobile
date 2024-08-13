@@ -29,6 +29,7 @@ export default function Auth() {
     const [secondPassword, setSecondPassword] = useState('')
     const [secondPasswordFocused, setSecondPasswordFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
     async function signInWithEmail() {
         setLoading(true)
@@ -95,8 +96,14 @@ export default function Auth() {
                             placeholder="email@address.com"
                             placeholderTextColor="#888"
                             autoCapitalize={'none'}
-                            onFocus={() => setEmailFocused(true)}
-                            onBlur={() => setEmailFocused(false)}
+                            onFocus={() => {
+                                setEmailFocused(true)
+                                setKeyboardVisible(true)
+                            }}
+                            onBlur={() => {
+                                setEmailFocused(false)
+                                setKeyboardVisible(false)
+                            }}
                         />
                     </View>
 
@@ -111,8 +118,14 @@ export default function Auth() {
                             placeholder="Password"
                             placeholderTextColor="#888"
                             autoCapitalize={'none'}
-                            onFocus={() => setPasswordFocused(true)}
-                            onBlur={() => setPasswordFocused(false)}
+                            onFocus={() => {
+                                setPasswordFocused(true)
+                                setKeyboardVisible(true)
+                            }}
+                            onBlur={() => {
+                                setPasswordFocused(false)
+                                setKeyboardVisible(false)
+                            }}
                         />
                     </View>
 
@@ -126,8 +139,14 @@ export default function Auth() {
                             placeholder="Password"
                             placeholderTextColor="#888"
                             autoCapitalize={'none'}
-                            onFocus={() => setSecondPasswordFocused(true)}
-                            onBlur={() => setSecondPasswordFocused(false)}
+                            onFocus={() => {
+                                setSecondPasswordFocused(true)
+                                setKeyboardVisible(true)
+                            }}
+                            onBlur={() => {
+                                setSecondPasswordFocused(false)
+                                setKeyboardVisible(false)
+                            }}
                         />
                         <Pressable className='flex flex-row items-center justify-end mt-2' onPress={() => setShowPassword(!showPassword)}>
                             <Text className='text-gray-600 font-o'>{showPassword ? 'Hide Password' : 'Show Password'}</Text>
@@ -141,14 +160,14 @@ export default function Auth() {
                     }
 
 
-                <View className='space-y-2'>
+                    <View className='space-y-2'>
                         <TouchableOpacity className=' bg-projectOrange rounded-lg flex p-2 flex-row items-center justify-center'
                             onPress={() => signUpWithEmail()}
                             disabled={loading}
                         >
                             <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
                         </TouchableOpacity>
-                    
+
                         <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
                             onPress={async () => {
                                 try {
@@ -186,7 +205,7 @@ export default function Auth() {
                             <AntDesign name='apple1' size={18} color={'white'} />
                             <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
                         </Pressable>
-                </View>
+                    </View>
 
                     <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
                         <Text className='font-o'>Already have an account?</Text>
@@ -199,14 +218,16 @@ export default function Auth() {
 
                 </View>
 
-                <Pressable className='mt-auto mx-auto'
-                    onPress={() => {
-                        supabase.auth.signInAnonymously()
-                        router.push('/create')
-                    }}
-                >
-                    <Text className='text-projectOrange font-o'>Continue as Guest</Text>
-                </Pressable>
+                {!isKeyboardVisible && (
+                    <Pressable className={`mt-auto mx-auto ${Platform.OS === 'android' ? 'mb-4' : ''}`}
+                        onPress={() => {
+                            supabase.auth.signInAnonymously()
+                            router.push('/create')
+                        }}
+                    >
+                        <Text className='text-projectOrange font-o'>Continue as Guest</Text>
+                    </Pressable>
+                )}
 
             </SafeAreaView>
         </KeyboardAvoidingView>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView, Text, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Alert, StyleSheet, View, AppState, Button, TextInput, SafeAreaView, Text, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, Keyboard } from 'react-native'
 import { supabase } from '@/lib/supabase'
 import { Apple } from '@/components/Apple'
 import { router } from 'expo-router'
@@ -27,6 +27,7 @@ export default function Auth() {
   const [emailFocused, setEmailFocused] = useState(false)
   const [passwordFocused, setPasswordFocused] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
   async function signInWithEmail() {
     setLoading(true)
@@ -81,8 +82,14 @@ export default function Auth() {
               placeholder="email@address.com"
               placeholderTextColor="#888"
               autoCapitalize={'none'}
-              onFocus={() => setEmailFocused(true)}
-              onBlur={() => setEmailFocused(false)}
+              onFocus={() => {
+                setEmailFocused(true)
+                setKeyboardVisible(true)
+              }}
+              onBlur={() => {
+                setEmailFocused(false)
+                setKeyboardVisible(false)
+              }}
             />
           </View>
 
@@ -97,8 +104,14 @@ export default function Auth() {
               placeholder="Password"
               placeholderTextColor="#888"
               autoCapitalize={'none'}
-              onFocus={() => setPasswordFocused(true)}
-              onBlur={() => setPasswordFocused(false)}
+              onFocus={() => {
+                setPasswordFocused(true)
+                setKeyboardVisible(true)
+              }}
+              onBlur={() => {
+                setPasswordFocused(false)
+                setKeyboardVisible(false)
+              }}
             />
             <Pressable className='flex flex-row items-center justify-end mt-2' onPress={() => setShowPassword(!showPassword)}>
               <Text className='text-gray-600 font-o'>{showPassword ? 'Hide Password' : 'Show Password'}</Text>
@@ -153,7 +166,7 @@ export default function Auth() {
 
 
 
-          <View className='mx-auto mt-auto flex flex-row items-center justify-center mb-24 '>
+          <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
             <Text className='font-o '>Don't have an account?</Text>
             <Pressable
               onPress={() => router.push('/signup')}
@@ -164,14 +177,16 @@ export default function Auth() {
 
         </View>
 
-        <Pressable className='mt-auto mx-auto'
-          onPress={() => {
-            supabase.auth.signInAnonymously()
-            router.push('/create')
-          }}
-        >
-          <Text className='text-projectOrange font-o'>Continue as Guest</Text>
-        </Pressable>
+        {!isKeyboardVisible && (
+          <Pressable className={`mt-auto mx-auto ${Platform.OS === 'android' ? 'mb-4' : ''}`}
+            onPress={() => {
+              supabase.auth.signInAnonymously()
+              router.push('/create')
+            }}
+          >
+            <Text className='text-projectOrange font-o'>Continue as Guest</Text>
+          </Pressable>
+        )}
       </SafeAreaView>
     </KeyboardAvoidingView>
   )
