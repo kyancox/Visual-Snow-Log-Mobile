@@ -168,43 +168,46 @@ export default function Auth() {
                             <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
                         </TouchableOpacity>
 
-                        <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
-                            onPress={async () => {
-                                try {
-                                    const credential = await AppleAuthentication.signInAsync({
-                                        requestedScopes: [
-                                            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                                            AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                                        ],
-                                    })
-                                    // Sign in via Supabase Auth.
-                                    if (credential.identityToken) {
-                                        const {
-                                            error,
-                                            data: { user },
-                                        } = await supabase.auth.signInWithIdToken({
-                                            provider: 'apple',
-                                            token: credential.identityToken,
+                        {Platform.OS === 'ios' && (
+                            <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
+                                onPress={async () => {
+                                    try {
+                                        const credential = await AppleAuthentication.signInAsync({
+                                            requestedScopes: [
+                                                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                                                AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                                            ],
                                         })
-                                        console.log(JSON.stringify({ error, user }, null, 2))
-                                        if (!error) {
-                                            // User is signed in.
+                                        // Sign in via Supabase Auth.
+                                        if (credential.identityToken) {
+                                            const {
+                                                error,
+                                                data: { user },
+                                            } = await supabase.auth.signInWithIdToken({
+                                                provider: 'apple',
+                                                token: credential.identityToken,
+                                            })
+                                            console.log(JSON.stringify({ error, user }, null, 2))
+                                            if (!error) {
+                                                // User is signed in.
+                                            }
+                                        } else {
+                                            throw new Error('No identityToken.')
                                         }
-                                    } else {
-                                        throw new Error('No identityToken.')
+                                    } catch (e: any) {
+                                        if (e.code === 'ERR_REQUEST_CANCELED') {
+                                            // handle that the user canceled the sign-in flow
+                                        } else {
+                                            // handle other errors
+                                        }
                                     }
-                                } catch (e: any) {
-                                    if (e.code === 'ERR_REQUEST_CANCELED') {
-                                        // handle that the user canceled the sign-in flow
-                                    } else {
-                                        // handle other errors
-                                    }
-                                }
-                            }}
-                        >
-                            <AntDesign name='apple1' size={18} color={'white'} />
-                            <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
-                        </Pressable>
+                                }}
+                            >
+                                <AntDesign name='apple1' size={18} color={'white'} />
+                                <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
+                            </Pressable>
+                        )}
+
                     </View>
 
                     <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
