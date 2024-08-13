@@ -153,7 +153,7 @@ export default function Auth() {
 
 
 
-          <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
+          <View className='mx-auto mt-auto flex flex-row items-center justify-center mb-24 '>
             <Text className='font-o '>Don't have an account?</Text>
             <Pressable
               onPress={() => router.push('/signup')}
