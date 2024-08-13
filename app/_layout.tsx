@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Platform } from 'react-native'
 import { Stack, SplashScreen } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ToastProvider } from 'react-native-toast-notifications'
@@ -47,22 +47,24 @@ const RootLayout = () => {
         <ToastProvider
           offset={100}
         >
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="logpreview" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(more)" options={{ headerShown: false }} />
-            <Stack.Screen name="(settings)" options={{
-              headerShown: false,
-              presentation: 'modal'
-            }} />
-            <Stack.Screen name="logs/[id]" options={{
-              headerShown: false,
-              headerBackTitleVisible: false,
-
-            }} />
-          </Stack>
+          <View className={`flex-1 ${Platform.OS === 'android' ? 'pt-6 bg-background' : ''}`}>
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="logpreview" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+              <Stack.Screen name="(more)" options={{ headerShown: false }} />
+              <Stack.Screen name="(settings)" options={{
+                headerShown: false,
+                presentation: 'modal'
+              }} />
+              <Stack.Screen name="logs/[id]" options={{
+                headerShown: false,
+                headerBackTitleVisible: false,
+            
+              }} />
+            </Stack>
+          </View>
         </ToastProvider>
       </RefreshProvider>
     </AuthProvider>
