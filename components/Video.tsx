@@ -10,7 +10,7 @@ export default function App() {
         ref={video}
         className='w-full'
         style={styles.video}
-        source={require('@/assets/videos/visualsnowrelief.mp4')}
+        source={require('@/assets/videos/visualsnowrelief.mov')}
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
