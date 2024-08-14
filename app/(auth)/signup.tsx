@@ -174,7 +174,6 @@ export default function Auth() {
                                     try {
                                         const credential = await AppleAuthentication.signInAsync({
                                             requestedScopes: [
-                                                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
                                                 AppleAuthentication.AppleAuthenticationScope.EMAIL,
                                             ],
                                         })
