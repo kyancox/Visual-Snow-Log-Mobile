@@ -22,6 +22,19 @@ const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ visible, on
         router.back()
     }
 
+    const handleDeleteAccount = async () => {
+        const userId = user!.id
+        const { data, error } = await supabase.auth.admin.deleteUser(
+            userId
+          )
+        if (error) {
+            Alert.alert('Could not delete account. Please try again.')
+            return
+        }
+        handleLogOut()  
+        Alert.alert('Account successfully deleted.')
+    }
+
     return (
         // <Modal
         //     animationType="slide"
@@ -32,7 +45,7 @@ const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ visible, on
         // >
         <View className='h-full bg-background'>
 
-            <View className=' bg-white w-full border-t border-b border-0.5 border-gray-300 my-5'>
+            <View className=' bg-white w-full border-t border-b border-0.5 border-gray-300 mt-5'>
 
 
                 {/* 
@@ -64,6 +77,21 @@ const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({ visible, on
                 </TouchableOpacity>
 
             </View>
+            <TouchableOpacity
+                className='py-2 bg-white w-full border-t border-b border-0.5 border-gray-300 my-4'
+                onPress={() => {
+                    Alert.alert('Are you sure you want to delete your account? This cannot be undone.', '', [
+                        {
+                            text: 'Delete Account',
+                            onPress: handleDeleteAccount,
+                            style: 'destructive',
+                        },
+                        { text: 'Cancel', style: 'cancel' },
+                    ]);
+                }}
+            >
+                <Text className='text-red-500 font-osemibold text-base text-center' >Delete account</Text>
+            </TouchableOpacity>
             <TouchableOpacity
                 className='py-2 bg-white w-full border-t border-b border-0.5 border-gray-300'
                 onPress={() => {
