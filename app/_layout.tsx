@@ -3,6 +3,7 @@ import { Stack, SplashScreen } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ToastProvider } from 'react-native-toast-notifications'
 import { useFonts } from "expo-font";
+import { StatusBar } from 'expo-status-bar';
 
 import AuthProvider from '@/providers/AuthProvider'
 import { RefreshProvider } from '@/providers/RefreshContext'
@@ -48,6 +49,7 @@ const RootLayout = () => {
           offset={100}
         >
           <View className={`flex-1 ${Platform.OS === 'android' ? 'pt-6 bg-background' : ''}`}>
+            <StatusBar style='dark' />
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="logpreview" options={{ headerShown: false }} />
