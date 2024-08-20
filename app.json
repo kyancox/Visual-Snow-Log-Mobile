@@ -2,7 +2,7 @@
   "expo": {
     "name": "Visual Snow Log",
     "slug": "VisualSnowLog",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,7 +15,8 @@
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.kyancox.visualsnow"
+      "bundleIdentifier": "com.kyancox.visualsnow",
+      "buildNumber": "2"
     },
     "android": {
       "package": "com.kyancox.visualsnow",
