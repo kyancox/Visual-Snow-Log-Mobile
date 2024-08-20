@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.jpg",
+      "image": "assets/images/splash.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -16,13 +16,13 @@
       "usesAppleSignIn": true,
       "supportsTablet": true,
       "bundleIdentifier": "com.kyancox.visualsnow",
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "package": "com.kyancox.visualsnow",
-      "versionCode": 1, 
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
