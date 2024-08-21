@@ -27,7 +27,7 @@ const Onboarding = () => {
                 <Text className='text-5xl mb-4 font-o'>Start tracking your <Text className='text-projectOrange'>Visual Snow Syndrome</Text>.</Text>
 
                 {/* Comment out Apple OAuth because of temporary bug, fix later */}
-                {Platform.OS === 'ios' && (    
+                {/* {Platform.OS === 'ios' && (    
                 <Pressable className=' bg-black rounded-full mx-8 flex flex-row items-center justify-center'
                     onPress={async () => {
                         try {
@@ -64,7 +64,7 @@ const Onboarding = () => {
                     <AntDesign name='apple1' size={24} color={'white'} />
                     <Text className='text-white font-osemibold p-3 text-center text-lg'>Continue with Apple</Text>
                 </Pressable>
-            )}
+            )} */}
 
                 <Pressable className=' bg-projectOrange rounded-full mx-8 flex flex-row items-center justify-center'
                     onPress={() => router.push('/signup')}
