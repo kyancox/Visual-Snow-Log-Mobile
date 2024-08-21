@@ -16,7 +16,7 @@
       "usesAppleSignIn": true,
       "supportsTablet": true,
       "bundleIdentifier": "com.kyancox.visualsnow",
-      "buildNumber": "9",
+      "buildNumber": "10",
       "entitlements": {
         "com.apple.developer.applesignin": [
           "Default"
