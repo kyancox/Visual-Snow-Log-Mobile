@@ -15,8 +15,8 @@
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.kyancox.visualsnow",
-      "buildNumber": "10",
+      "bundleIdentifier": "org.name.VisualSnow",
+      "buildNumber": "12",
       "entitlements": {
         "com.apple.developer.applesignin": [
           "Default"
