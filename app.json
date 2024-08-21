@@ -10,13 +10,13 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFA500"
     },
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
       "bundleIdentifier": "com.kyancox.visualsnow",
-      "buildNumber": "5",
+      "buildNumber": "9",
       "entitlements": {
         "com.apple.developer.applesignin": [
           "Default"
