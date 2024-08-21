@@ -168,7 +168,8 @@ export default function Auth() {
                             <Text className='text-white font-obold text-center text-lg'>Sign up</Text>
                         </TouchableOpacity>
 
-                        {Platform.OS === 'ios' && (
+                        {/* Comment out Apple OAuth because of temporary bug, fix later */}
+                        {/* {Platform.OS === 'ios' && (
                             <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
                                 onPress={async () => {
                                     try {
@@ -200,38 +201,38 @@ export default function Auth() {
                                             // handle other errors
                                         }
                                     }
-                                }}
+                                }} 
                             >
-                                <AntDesign name='apple1' size={18} color={'white'} />
-                                <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
-                            </Pressable>
-                        )}
-
-                    </View>
-
-                    <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
-                        <Text className='font-o'>Already have an account?</Text>
-                        <Pressable
-                            onPress={() => router.push('/login')}
-                        >
-                            <Text className='font-obold text-projectOrange'> Sign in</Text>
-                        </Pressable>
-                    </View>
+                        <AntDesign name='apple1' size={18} color={'white'} />
+                        <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
+                    </Pressable>
+                        )}*/}
 
                 </View>
 
-                {!isKeyboardVisible && (
-                    <Pressable className={`mt-auto mx-auto ${Platform.OS === 'android' ? 'mb-4' : ''}`}
-                        onPress={() => {
-                            supabase.auth.signInAnonymously()
-                            router.push('/create')
-                        }}
+                <View className='mx-auto mt-auto flex flex-row items-center justify-center '>
+                    <Text className='font-o'>Already have an account?</Text>
+                    <Pressable
+                        onPress={() => router.push('/login')}
                     >
-                        <Text className='text-projectOrange font-o'>Continue as Guest</Text>
+                        <Text className='font-obold text-projectOrange'> Sign in</Text>
                     </Pressable>
-                )}
+                </View>
 
-            </SafeAreaView>
-        </KeyboardAvoidingView>
+            </View>
+
+            {!isKeyboardVisible && (
+                <Pressable className={`mt-auto mx-auto ${Platform.OS === 'android' ? 'mb-4' : ''}`}
+                    onPress={() => {
+                        supabase.auth.signInAnonymously()
+                        router.push('/create')
+                    }}
+                >
+                    <Text className='text-projectOrange font-o'>Continue as Guest</Text>
+                </Pressable>
+            )}
+
+        </SafeAreaView>
+        </KeyboardAvoidingView >
     )
 }

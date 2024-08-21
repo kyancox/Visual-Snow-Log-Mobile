@@ -126,7 +126,8 @@ export default function Auth() {
               <Text className='text-white font-obold text-center text-lg'>Sign in</Text>
             </TouchableOpacity>
 
-            {Platform.OS === 'ios' && (
+            {/* Comment out Apple OAuth because of temporary bug, fix later */}
+            {/* {Platform.OS === 'ios' && (
               <Pressable className=' bg-black rounded-lg flex flex-row items-center justify-center p-2 space-x-2'
                 onPress={async () => {
                   try {
@@ -163,7 +164,7 @@ export default function Auth() {
                 <AntDesign name='apple1' size={18} color={'white'} />
                 <Text className='text-white font-osemibold text-center text-lg'>Continue with Apple</Text>
               </Pressable>
-            )}
+            )} */}
 
           </View>
 
