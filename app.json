@@ -16,7 +16,7 @@
       "usesAppleSignIn": true,
       "supportsTablet": true,
       "bundleIdentifier": "org.name.VisualSnow",
-      "buildNumber": "12",
+      "buildNumber": "14",
       "entitlements": {
         "com.apple.developer.applesignin": [
           "Default"

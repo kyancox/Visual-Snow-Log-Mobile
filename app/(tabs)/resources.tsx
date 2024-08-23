@@ -81,38 +81,46 @@ const Resources = () => {
 
   const modalDetails = {
     "Visual static": {
-      details: "Visual static appears as tiny flickering dots or 'snow' across your entire visual field, similar to the static seen on an untuned television. Logging the frequency and intensity of your visual static can help track changes over time and identify potential triggers.",
-      tips: ["Reduce screen time", "Use tinted glasses", "Practice relaxation"]
+        details: "Visual static appears as tiny flickering dots or 'snow' across your entire visual field, similar to the static seen on an untuned television. Logging the frequency and intensity of your visual static can help track changes over time and identify potential triggers.",
+        tips: ["Use FL-41 tinted glasses", "Avoid bright lights", "Consult a specialist"],
+        source: "https://www.visioncenter.org/conditions/visual-snow-syndrome/"
     },
     "Afterimages (Palinopsia)": {
-      details: "Afterimages occur when you continue to see an image even after you have looked away. Keeping a log of these occurrences can assist in understanding their patterns and how they might relate to other symptoms.",
-      tips: ["Avoid bright lights", "Use ambient lighting", "Eye exercises"]
+        details: "Afterimages occur when you continue to see an image even after you have looked away. Keeping a log of these occurrences can assist in understanding their patterns and how they might relate to other symptoms.",
+        tips: ["Wear safety equipment to prevent head injuries", "Manage chronic conditions like migraines", "Avoid certain medications or consult your doctor"],
+        source: "https://my.clevelandclinic.org/health/symptoms/palinopsia"
     },
     "Light sensitivity (Photophobia)": {
-      details: "Light sensitivity can make bright lights or certain lighting conditions uncomfortable or even painful. Recording your photophobia episodes can help determine which environments or times of day are most problematic for you.",
-      tips: ["Wear sunglasses", "Adjust screen brightness", "Use hats/visors"]
+        details: "Light sensitivity can make bright lights or certain lighting conditions uncomfortable or even painful. Recording your photophobia episodes can help determine which environments or times of day are most problematic for you.",
+        tips: ["Wear sunglasses", "Adjust screen brightness", "Use hats/visors"],
+        source: "https://www.healthline.com/health/photophobia"
     },
     "Migraines": {
-      details: "Migraines are intense, throbbing headaches often accompanied by nausea, vomiting, and sensitivity to light and sound. Tracking your migraine episodes, including triggers and severity, can help you manage and potentially reduce their occurrence.",
-      tips: ["Regular sleep", "Avoid triggers", "Use medication"]
+        details: "Migraines are intense, throbbing headaches often accompanied by nausea, vomiting, and sensitivity to light and sound. Tracking your migraine episodes, including triggers and severity, can help you manage and potentially reduce their occurrence.",
+        tips: ["Maintain regular sleep", "Identify and avoid triggers", "Use prescribed medications"],
+        source: "https://www.healthline.com/health/migraine"
     },
     "Headaches": {
-      details: "Headaches can vary in type and intensity, often presenting as a dull ache or sharp pain in different areas of the head. Logging headache details such as duration, location, and potential triggers can provide valuable insights into your overall health.",
-      tips: ["Good posture", "Physical activity", "Cold/warm compress"]
+        details: "Headaches can vary in type and intensity, often presenting as a dull ache or sharp pain in different areas of the head. Logging headache details such as duration, location, and potential triggers can provide valuable insights into your overall health.",
+        tips: ["Maintain good posture", "Engage in regular physical activity", "Apply cold/warm compresses"],
+        source: "https://newsnetwork.mayoclinic.org/discussion/6-tips-for-headache-relief/"
     },
     "Floaters": {
-      details: "Floaters are small shapes that drift across your vision, often appearing as spots, threads, or cobwebs. Noting the frequency and changes in your floaters can help monitor their impact on your visual experience.",
-      tips: ["Stay hydrated", "Eye exercises", "Consult specialist"]
+        details: "Floaters are small shapes that drift across your vision, often appearing as spots, threads, or cobwebs. Noting the frequency and changes in your floaters can help monitor their impact on your visual experience.",
+        tips: ["Stay hydrated", "Perform eye exercises", "Consult an eye specialist if there are significant changes"],
+        source: "https://www.allaboutvision.com/conditions/spotsfloats.htm"
     },
     "Ringing in ears (Tinnitus)": {
-      details: "Tinnitus is the perception of ringing, buzzing, or other noises in your ears that are not caused by external sounds. Documenting your tinnitus episodes can assist in understanding their connection with other symptoms and identifying any patterns.",
-      tips: ["White noise", "Avoid loud noises", "Stress management"]
+        details: "Tinnitus is the perception of ringing, buzzing, or other noises in your ears that are not caused by external sounds. Documenting your tinnitus episodes can assist in understanding their connection with other symptoms and identifying any patterns.",
+        tips: ["Use white noise machines", "Protect your ears from loud noises", "Practice stress management techniques"],
+        source: "https://www.ata.org/managing-your-tinnitus"
     },
     "Night blindness (Nyctalopia)": {
-      details: "Night blindness involves difficulty seeing in low light or darkness, making activities like driving at night challenging. Keeping track of your experiences with night blindness can help in identifying situations that exacerbate this symptom and aid in finding effective coping strategies.",
-      tips: ["Vitamin A intake", "Use proper lighting", "Night vision aids"]
+        details: "Night blindness involves difficulty seeing in low light or darkness, making activities like driving at night challenging. Keeping track of your experiences with night blindness can help in identifying situations that exacerbate this symptom and aid in finding effective coping strategies.",
+        tips: ["Ensure adequate Vitamin A intake", "Use appropriate lighting", "Consider using night vision aids"],
+        source: "https://my.clevelandclinic.org/health/symptoms/10118-night-blindness-nyctalopia"
     }
-  };
+};
 
   const sendText = () => {
     try {
@@ -324,7 +332,7 @@ const Resources = () => {
               <Text className='text-xl font-osemibold my-1'>Details</Text>
               <Text className='font-o'>{modalDetails[selectedSymptom as keyof typeof modalDetails].details}</Text>
 
-              <Text className='text-xl font-osemibold my-1'>Tips for Relief</Text>
+              <Text className='text-xl font-osemibold my-1'>Tips for Relief (<Text className='text-lg  text-projectOrange' onPress={() => openUrl(modalDetails[selectedSymptom as keyof typeof modalDetails].source)}>Source</Text>)</Text>
               {modalDetails[selectedSymptom as keyof typeof modalDetails].tips.map(tip => (
                 <Text key={uuidv4()} className='font-o'>&#8226; {tip}</Text>
               ))}
