@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { openURL } from 'expo-linking'
 
 import changeorglogo from '@/assets/images/changeorglogo.png'
+import simulatoreye from '@/assets/images/simulatoreye.png'
 import Video from '@/components/Video'
 
 
@@ -31,6 +32,7 @@ const Resources = () => {
   const redditWiki = 'https://www.reddit.com/r/visualsnow/wiki/index/'
   const wikiPage = 'https://en.wikipedia.org/wiki/Visual_snow_syndrome'
   const petitionLink = 'https://www.change.org/p/raising-awareness-of-visual-snow-syndrome-and-research?utm_medium=custom_url&utm_source=share_petition&recruited_by_id=99cdd3a0-eb9d-11ee-a014-5d4fd1f994e0'
+  const simulatorLink = 'https://visionsimulations.com/visual-snow.htm'
 
   const openUrl = async (url: string) => {
     let result = await WebBrowser.openBrowserAsync(url)
@@ -186,6 +188,14 @@ const Resources = () => {
           >
             <Image source={changeorglogo} style={{ width: 24, height: 24 }} />
             <Text className='text-white font-obold text-center text-base'>Change.org Petition</Text>
+          </Pressable>
+
+          <Pressable className='mx-auto w-11/12 p-3 rounded-lg space-x-1 flex flex-row items-center justify-center'
+            style={{ backgroundColor: '#20242c' }}
+            onPress={() => openUrl(simulatorLink)}
+          >
+            <Image source={simulatoreye} style={{ width: 24, height: 24 }} />
+            <Text className='text-white font-obold text-center text-base'>Visual Snow Simulator</Text>
           </Pressable>
 
         </View>
