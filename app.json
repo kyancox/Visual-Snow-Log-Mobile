@@ -14,9 +14,14 @@
     },
     "ios": {
       "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      },
       "supportsTablet": true,
       "bundleIdentifier": "org.name.VisualSnow",
-      "buildNumber": "14",
+      "buildNumber": "15",
       "entitlements": {
         "com.apple.developer.applesignin": [
           "Default"
@@ -25,7 +30,7 @@
     },
     "android": {
       "package": "com.kyancox.visualsnow",
-      "versionCode": 1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -39,7 +44,8 @@
     "plugins": [
       "expo-router",
       "expo-apple-authentication",
-      "expo-video"
+      "expo-video",
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true

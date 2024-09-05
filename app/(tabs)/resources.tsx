@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Button, Pressable, SafeAreaView, Alert, Modal, Share } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Pressable, SafeAreaView, Alert, Modal, Share } from 'react-native'
 import React, { useState } from 'react'
 import { Link, Redirect, router } from 'expo-router'
 import { FontAwesome6, MaterialIcons, Ionicons, AntDesign, Feather } from '@expo/vector-icons'
@@ -15,6 +15,7 @@ import { openURL } from 'expo-linking'
 import changeorglogo from '@/assets/images/changeorglogo.png'
 import simulatoreye from '@/assets/images/simulatoreye.png'
 import Video from '@/components/Video'
+import NativeButton from '@/components/NativeButton'
 
 
 const Resources = () => {
@@ -346,9 +347,8 @@ const Resources = () => {
               {modalDetails[selectedSymptom as keyof typeof modalDetails].tips.map(tip => (
                 <Text key={uuidv4()} className='font-o'>&#8226; {tip}</Text>
               ))}
-              <Button
+              <NativeButton
                 title="Close"
-                color={'#FFA500'}
                 onPress={() => setModalVisible(!modalVisible)}
               />
 

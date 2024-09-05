@@ -213,7 +213,7 @@ const Chatbot = () => {
           </Pressable>
         </View>
 
-        {!isTablet && (
+        {!isTablet && Platform.OS === 'ios' && (
           <Image
             source={require('../../assets/images/image.png')}
             resizeMode="contain"

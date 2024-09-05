@@ -48,7 +48,7 @@ const RootLayout = () => {
         <ToastProvider
           offset={100}
         >
-          <View className={`flex-1 ${Platform.OS === 'android' ? 'pt-6 bg-background' : ''}`}>
+          <View className={`flex-1 ${Platform.OS === 'android' ? 'pt-10 bg-background' : ''}`}>
             <StatusBar style='dark' />
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />

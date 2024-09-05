@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert, Pressable, Modal, SafeAreaView, Appearance } from 'react-native'
+import { View, Text, TextInput, Platform, FlatList, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert, Pressable, Modal, SafeAreaView, Appearance } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import 'react-native-get-random-values';
@@ -18,6 +18,7 @@ import plus from '@/assets/icons/plus.svg'
 import orangeplus from '@/assets/icons/orangeplus.svg'
 import xtrans from '@/assets/icons/xtrans.svg'
 import arrow from '@/assets/icons/arrow.svg'
+import NativeButton from '@/components/NativeButton';
 
 const Create = () => {
 
@@ -479,7 +480,7 @@ const Create = () => {
                           display="inline"
                           onChange={dateChange}
                         />
-                        <Button title='Close' color='#FFA500' onPress={hideDatePicker} />
+                        <NativeButton title='Close' onPress={hideDatePicker} />
                       </View>
                     </Modal>
                   )
@@ -522,7 +523,7 @@ const Create = () => {
                       display="spinner"
                       onChange={timeChange}
                     />
-                    <Button title='Close' color='#FFA500' onPress={hideTimePicker} />
+                    <NativeButton title='Close' onPress={hideTimePicker} />
                   </View>
                 </Modal>)
                   :
@@ -855,9 +856,8 @@ const Create = () => {
                 {modalDetails[selectedSymptom as keyof typeof modalDetails].tips.map(tip => (
                   <Text key={uuidv4()} className='font-o'>&#8226; {tip}</Text>
                 ))}
-                <Button
+                <NativeButton
                   title="Close"
-                  color={'#FFA500'}
                   onPress={() => setModalVisible(!modalVisible)}
                 />
 

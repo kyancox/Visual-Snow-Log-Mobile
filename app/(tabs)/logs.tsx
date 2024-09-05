@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button, ActivityIndicator, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, Text, Pressable, ScrollView, SafeAreaView, TextInput, Button, ActivityIndicator, TouchableOpacity, ImageBackground, Platform } from 'react-native'
 import { Link, router } from "expo-router";
 import React, { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -59,26 +59,47 @@ const Log = () => {
 
   if (!user || user?.is_anonymous) {
     return (
-      <SafeAreaView className='flex-1'>
-        <ImageBackground source={require('@/assets/images/blurredlogs.png')} resizeMode='contain'
-          className='h-full items-center justify-center bg-background'
-        >
-          <View className='p-6 shadow-lg bg-white rounded-lg items-center justify-center space-y-2.5 '>
-            <Text className='font-o text-2xl'>Log in to view your logs!</Text>
-            <TouchableOpacity onPress={() => router.push('/login')}
-              className='shadow-lg rounded-lg '
-              style={{
-                backgroundColor: '#FFA500',
-                padding: 15,
-                elevation: 3,
-              }}>
-              <Text className='font-obold text-center text-xl text-white'>Log in</Text>
-            </TouchableOpacity>
+      <>
+        { Platform.OS === 'ios' ? (
+            <SafeAreaView className='flex-1'>
+              <ImageBackground source={require('@/assets/images/blurredlogs.png')} resizeMode='contain'
+                className='h-full items-center justify-center bg-background'
+              >
+                <View className='p-6 shadow-lg bg-white rounded-lg items-center justify-center space-y-2.5 '>
+                  <Text className='font-o text-2xl'>Log in to view your logs!</Text>
+                  <TouchableOpacity onPress={() => router.push('/login')}
+                    className='shadow-lg rounded-lg '
+                    style={{
+                      backgroundColor: '#FFA500',
+                      padding: 15,
+                      elevation: 3,
+                    }}>
+                    <Text className='font-obold text-center text-xl text-white'>Log in</Text>
+                  </TouchableOpacity>
 
-          </View>
-        </ImageBackground>
-      </SafeAreaView>
+                </View>
+              </ImageBackground>
+            </SafeAreaView>
+          ) : (
 
+            <SafeAreaView className='h-full items-center justify-center bg-background' >
+              <View className='p-6 shadow-lg bg-white rounded-lg items-center justify-center space-y-2.5 '>
+                <Text className='font-o text-2xl'>Log in to view your logs!</Text>
+                <TouchableOpacity onPress={() => router.push('/login')}
+                  className='shadow-lg rounded-lg '
+                  style={{
+                    backgroundColor: '#FFA500',
+                    padding: 15,
+                    elevation: 3,
+                  }}>
+                  <Text className='font-obold text-center text-xl text-white'>Log in</Text>
+                </TouchableOpacity>
+
+              </View>
+            </SafeAreaView>
+          )
+        }
+      </>
     );
   }
 
@@ -122,23 +143,23 @@ const Log = () => {
 
       {logs && (
         <>
-            <Backend />
-            <View className='flex flex-row mx-3'>
-              <TextInput
-                className='p-2 border-b border-gray-300 flex-1 font-o'
-                placeholder='Search logs...'
-                placeholderTextColor='#888'
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-              <View className='ml-3 mr-1 my-auto'>
-                {sortOrder ?
-                  <MaterialIcons name='keyboard-arrow-down' onPress={changeSortOrder} size={36} color='#FFA500' />
-                  :
-                  <MaterialIcons name='keyboard-arrow-up' onPress={changeSortOrder} size={36} color='#FFA500' />
-                }
-              </View>
+          <Backend />
+          <View className='flex flex-row mx-3'>
+            <TextInput
+              className='p-2 border-b border-gray-300 flex-1 font-o'
+              placeholder='Search logs...'
+              placeholderTextColor='#888'
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            <View className='ml-3 mr-1 my-auto'>
+              {sortOrder ?
+                <MaterialIcons name='keyboard-arrow-down' onPress={changeSortOrder} size={36} color='#FFA500' />
+                :
+                <MaterialIcons name='keyboard-arrow-up' onPress={changeSortOrder} size={36} color='#FFA500' />
+              }
             </View>
+          </View>
 
           <ScrollView className='pt-1' >
             {sortOrder ?

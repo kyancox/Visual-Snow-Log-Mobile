@@ -1,6 +1,7 @@
-import { View, Text, Button, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView } from 'react-native'
 import { WebView } from 'react-native-webview';
 import React, { useEffect, useRef, useState } from 'react'
+import NativeButton from '@/components/NativeButton';
 
 const community = () => {
   const webViewRef = useRef<WebView>(null);
@@ -46,9 +47,9 @@ const community = () => {
       className='h-full'
     >
       <View className='flex flex-row justify-between mx-2 my-0.5'>
-        <Button title="Back" onPress={goBack} color={'#FFA500'} disabled={!canGoBack}/>
-        <Button title="Home" onPress={goHome} color={'#FFA500'}/>
-        <Button title="Next" onPress={goForward} color={'#FFA500'} disabled={!canGoForward}/>
+        <NativeButton title="Back" onPress={goBack}  disabled={!canGoBack}/>
+        <NativeButton title="Home" onPress={goHome} />
+        <NativeButton title="Next" onPress={goForward} disabled={!canGoForward}/>
       </View>
       <WebView
         ref={webViewRef}
