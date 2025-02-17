@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+<h1 align="center">
+  Visual Snow Log
+</h1>
+<p align="center">
+ A mobile app designed for those with Visual Snow Syndrome (VSS), a rare condition that affects ~3% of the world including myself. Visual Snow Log allows users to log and track their VSS symptoms over time, and export them to their email to show their doctor. Built with <a href="https://expo.dev/" target="_blank">Expo</a>, <a href="https://reactnative.dev/" target="_blank">React Native</a>, and <a href="https://supabase.com/" target="_blank">Supabase</a>.
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![demo](https://raw.githubusercontent.com/kyancox/kyancox.com/master/public/visualsnowdemo.png)
 
-## Get started
+## Demo
 
-1. Install dependencies
+[![Visual Snow Log Demo](https://img.youtube.com/vi/LownPmmUE6c/0.jpg)](https://www.youtube.com/watch?v=LownPmmUE6c)
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
+## Tech Stack & UI Libraries
 
-   ```bash
-    npx expo start
-   ```
+-   [React Native](https://reactnative.dev/)
+-   [Expo](https://expo.dev/)
+-   [Supabase](https://supabase.com/)
 
-In the output, you'll find options to open the app in a
+## Backend Tech Stack
+-   [FastAPI](https://fastapi.tiangolo.com/)
+-   [Docker](https://www.docker.com/)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Backend Repository: <a href="https://github.com/kyancox/VisualSnow-Export-API" target="_blank">https://github.com/kyancox/VisualSnow-Export-API</a>
